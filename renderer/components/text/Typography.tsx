@@ -9,5 +9,5 @@ const FlexTypography = styled(MuiTypography)(({ theme }) => ({
 }));
 
 export default function Typography(props: MuiTypographyProps) {
-  return <FlexTypography {...props} />;
+  return <FlexTypography color="textPrimary" {...props} />;
 }
