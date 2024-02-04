@@ -9,7 +9,7 @@ In order to fulfill all requirements for this project, instructions for setting 
 
 https://docs.google.com/document/d/1Rmm5mffy3_ZfKL1YVxMG4sQmB97_lMQpyFaBDqBQbQM/edit?usp=sharing
 
-## Instructions for code setup and execution: Electron with Typescript application example
+## Instructions for code setup and execution
 
 This example shows how to use Next.js inside an Electron application. To avoid a lot of configuration, we use Next.js as a router for pages, and use server rendering to speed up the initial render of the application. Both Next.js and Electron layers are written in TypeScript and compiled to JavaScript during the build process.
 
