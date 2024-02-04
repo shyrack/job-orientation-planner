@@ -13,7 +13,8 @@
     "pack-app": "npm run build && electron-builder --dir",
     "dist": "npm run build && electron-builder",
     "type-check": "tsc -p ./renderer/tsconfig.json && tsc -p ./electron-src/tsconfig.json",
-    "make": "npm run clean && npm run build && npx electron-packager . job-orientation-planner --all"
+    "make": "npm run clean && npm run build && npx electron-packager . job-orientation-planner --all",
+    "test": "jest"
   },
   "dependencies": {
     "@emotion/react": "^11.11.3",
