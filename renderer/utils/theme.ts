@@ -8,5 +8,8 @@ export default createTheme({
       disabled: "grey"
     },
     mode: "dark"
+  },
+  shape: {
+    borderRadius: 20
   }
 });

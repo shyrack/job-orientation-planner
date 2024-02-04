@@ -10,7 +10,7 @@ type IndexPageProps = {};
 export default function IndexPage(props: IndexPageProps) {
   return (
     <PageProvider>
-      <Typography color="textPrimary" variant="h5" sx={(theme) => ({ margin: theme.spacing(2) })}>
+      <Typography variant="h5" sx={(theme) => ({ margin: theme.spacing(2) })}>
         Processes:
       </Typography>
       <Panel processDefinition={testProcessDef}></Panel>
