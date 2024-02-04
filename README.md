@@ -1,4 +1,4 @@
-# Job Orientation planner
+# Job Orientation Planner
 This *Job Orientation Planner* is a tool developed as part of the SUD lessons for the assignment of event dates for students.
 
 ---
