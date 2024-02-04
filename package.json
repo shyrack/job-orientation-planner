@@ -1,7 +1,9 @@
 {
   "private": true,
   "main": "main/index.js",
-  "productName": "ElectronTypescriptNext",
+  "name": "job-orientation-planner",
+  "version": "0.0.1",
+  "productName": "Job Orientation Planner",
   "scripts": {
     "clean": "rimraf dist main renderer/out renderer/.next",
     "dev": "npm run build-electron && electron .",
