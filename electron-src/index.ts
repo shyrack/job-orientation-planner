@@ -12,13 +12,14 @@ app.on("ready", async () => {
   await prepareNext("./renderer");
 
   const mainWindow = new BrowserWindow({
+    autoHideMenuBar: true,
     width: 800,
     height: 600,
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
-      preload: join(__dirname, "preload.js"),
-    },
+      preload: join(__dirname, "preload.js")
+    }
   });
 
   const url = isDev
@@ -26,7 +27,7 @@ app.on("ready", async () => {
     : format({
         pathname: join(__dirname, "../renderer/out/index.html"),
         protocol: "file:",
-        slashes: true,
+        slashes: true
       });
 
   mainWindow.loadURL(url);
