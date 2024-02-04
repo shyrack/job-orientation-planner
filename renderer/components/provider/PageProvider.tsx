@@ -5,6 +5,7 @@ import Theme from "../../utils/theme";
 const PageBackground = styled("div")(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
   display: "flex",
+  flexWrap: "wrap",
   height: "100vh",
   width: "100vw"
 }));
