@@ -1,6 +1,6 @@
 import { ThemeProvider, styled } from "@mui/material";
 import React from "react";
-import Theme from "../utils/theme";
+import Theme from "../../utils/theme";
 
 const PageBackground = styled("div")(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
