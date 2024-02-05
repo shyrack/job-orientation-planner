@@ -5,11 +5,12 @@ export class AppState implements ICloneable<AppState> {
   constructor() {}
 
   public clone() {
-    const clonedInstance = new AppState();
+    return Object.assign({}, this);
+  }
 
-    _.forEach(Object.keys(this) as Array<keyof AppState>, (key) => {
-      clonedInstance[key] = this[key];
-    });
+  public cloneAndModify(modifier: (appState: AppState) => void) {
+    const clonedInstance = this.clone();
+    modifier(clonedInstance);
 
     return clonedInstance;
   }
