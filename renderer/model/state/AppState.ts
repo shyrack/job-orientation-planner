@@ -5,7 +5,7 @@ export class AppState implements ICloneable<AppState> {
   constructor() {}
 
   public clone() {
-    return Object.assign({}, this);
+    return Object.create(this);
   }
 
   public cloneAndModify(modifier: (appState: AppState) => void) {
