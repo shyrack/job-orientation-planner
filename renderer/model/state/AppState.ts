@@ -1,4 +1,4 @@
-import _ from "lodash";
+import { createContext } from "react";
 import { ICloneable } from "../../utils/ICloneable";
 
 export class AppState implements ICloneable<AppState> {
@@ -15,3 +15,5 @@ export class AppState implements ICloneable<AppState> {
     return clonedInstance;
   }
 }
+
+export const AppStateContext = createContext(new AppState());
