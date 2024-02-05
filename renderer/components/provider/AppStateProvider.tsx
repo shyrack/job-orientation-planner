@@ -7,6 +7,9 @@ type AppStateProviderProps = {
 
 export default function AppStateProvider(props: AppStateProviderProps) {
   const { children } = props;
+  const [appState, setAppState] = React.useState(new AppState());
 
-  return <AppStateContext.Provider value={new AppState()}>{children}</AppStateContext.Provider>;
+  return (
+    <AppStateContext.Provider value={{ state: appState, setState: setAppState }}>{children}</AppStateContext.Provider>
+  );
 }

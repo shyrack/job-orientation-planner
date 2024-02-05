@@ -1,5 +1,7 @@
-import { createContext } from "react";
+import React from "react";
 import { ICloneable } from "../../utils/ICloneable";
+
+export type AppStateModifier = (appState: AppState) => void;
 
 export class AppState implements ICloneable<AppState> {
   constructor() {}
@@ -8,7 +10,7 @@ export class AppState implements ICloneable<AppState> {
     return Object.create(this);
   }
 
-  public cloneAndModify(modifier: (appState: AppState) => void) {
+  public cloneAndModify(modifier: AppStateModifier) {
     const clonedInstance = this.clone();
     modifier(clonedInstance);
 
@@ -16,4 +18,9 @@ export class AppState implements ICloneable<AppState> {
   }
 }
 
-export const AppStateContext = createContext(new AppState());
+export const AppStateContext = React.createContext({
+  state: new AppState(),
+  setState: ((state?: AppState) => {
+    throw new Error("Not yet implemented.");
+  }) as React.Dispatch<React.SetStateAction<AppState>>
+});
