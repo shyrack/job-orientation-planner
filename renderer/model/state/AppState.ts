@@ -4,7 +4,11 @@ import { ICloneable } from "../../utils/ICloneable";
 export type AppStateModifier = (appState: AppState) => void;
 
 export class AppState implements ICloneable<AppState> {
-  constructor() {}
+  public name: string;
+
+  constructor() {
+    this.name = "bla";
+  }
 
   public clone(): AppState {
     return Object.create(this);
