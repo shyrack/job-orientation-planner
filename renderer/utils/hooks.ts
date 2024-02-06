@@ -7,7 +7,7 @@ export function useAppState<T>(accessor: (appState: AppState) => T) {
 
   React.useEffect(() => {
     setAccessedSubState(accessor(appState));
-  }, [appState]);
+  }, [accessor, appState, setAccessedSubState]);
 
   const modifyAppState = React.useCallback(
     (modifier: AppStateModifier) => {

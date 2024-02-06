@@ -1,3 +1,4 @@
+import _ from "lodash";
 import React from "react";
 import { ICloneable } from "../../utils/ICloneable";
 
@@ -11,7 +12,7 @@ export class AppState implements ICloneable<AppState> {
   }
 
   public clone(): AppState {
-    return Object.create(this);
+    return _.cloneDeep(this);
   }
 
   public cloneAndModify(modifier: AppStateModifier) {
