@@ -1,8 +1,8 @@
 import { ProcessDefinition } from "./ProcessDefinition";
 
 export class TestProcessDefinition extends ProcessDefinition {
-  constructor(name: string, url: string) {
-    super(name, url);
+  constructor() {
+    super("Test process", "/process/test");
   }
 
   public execute() {}

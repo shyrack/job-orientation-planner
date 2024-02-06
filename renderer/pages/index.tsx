@@ -3,7 +3,7 @@ import PageProvider from "../components/provider/PageProvider";
 import Typography from "../components/text/Typography";
 import { TestProcessDefinition } from "../model/process/definition/TestProcessDefinition";
 
-const testProcessDef = new TestProcessDefinition("Test process", "/process/test");
+const testProcessDef = new TestProcessDefinition();
 
 type IndexPageProps = {};
 
