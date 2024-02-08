@@ -1,7 +1,6 @@
 import { ThemeProvider, styled } from "@mui/material";
 import React from "react";
 import Theme from "../../utils/theme";
-import AppStateProvider from "./AppStateProvider";
 
 const PageBackground = styled("div")(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
@@ -20,9 +19,7 @@ export default function PageProvider(props: PageProviderProps) {
 
   return (
     <ThemeProvider theme={Theme}>
-      <AppStateProvider>
-        <PageBackground>{children}</PageBackground>
-      </AppStateProvider>
+      <PageBackground>{children}</PageBackground>
     </ThemeProvider>
   );
 }

@@ -1,9 +1,9 @@
 import Panel from "../components/process/Panel";
 import PageProvider from "../components/provider/PageProvider";
 import Typography from "../components/text/Typography";
-import { ImportExcelProcessDefinition } from "../model/process/definition/ImportExcelProcessDefinition";
+import { TestProcessDefinition } from "../model/process/definition/TestProcessDefinition";
 
-const testProcessDef = new ImportExcelProcessDefinition("Import excel file");
+const testProcessDef = new TestProcessDefinition();
 
 type IndexPageProps = {};
 
