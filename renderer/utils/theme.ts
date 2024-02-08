@@ -3,9 +3,9 @@ import { createTheme } from "@mui/material";
 export default createTheme({
   palette: {
     text: {
-      primary: "white",
-      secondary: "lightgrey",
-      disabled: "grey"
+      primary: "#fff",
+      secondary: "#999",
+      disabled: "#777"
     },
     mode: "dark"
   },
