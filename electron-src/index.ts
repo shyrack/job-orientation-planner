@@ -30,6 +30,8 @@ app.on("ready", async () => {
         slashes: true
       });
 
+  if (isDev) mainWindow.webContents.openDevTools();
+
   mainWindow.loadURL(url);
 });
 
