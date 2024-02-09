@@ -10,7 +10,8 @@ export default function Test(props: TestProps) {
       <ProcessContainer
         steps={[
           new TestProcessStepDefinition("First test process step."),
-          new TestProcessStepDefinition("Second test process step.")
+          new TestProcessStepDefinition("Second test process step."),
+          new TestProcessStepDefinition("Third test process step.")
         ]}
       ></ProcessContainer>
     </PageProvider>
