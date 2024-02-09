@@ -1,12 +1,11 @@
-import { StepContentProps, StepLabelProps, StepProps } from "@mui/material";
+import { StepLabelProps, StepProps } from "@mui/material";
+import React from "react";
+import { Nullable } from "../../../../utils/types";
+
+export type ProcessStepFunctionalComponentProps = {};
 
 export abstract class ProcessStepDefinition {
-  constructor(
-    private label: string,
-    private muiStepProps?: StepProps,
-    private muiStepContentProps?: StepContentProps,
-    private muiStepLabelProps?: StepLabelProps
-  ) {}
+  constructor(private label: string, private muiStepProps?: StepProps, private muiStepLabelProps?: StepLabelProps) {}
 
   public getLabel() {
     return this.label;
@@ -16,13 +15,12 @@ export abstract class ProcessStepDefinition {
     return this.muiStepProps;
   }
 
-  public getMuiStepContentProps() {
-    return this.muiStepContentProps;
-  }
-
   public getMuiStepLabelProps() {
     return this.muiStepLabelProps;
   }
 
   public abstract validate(): boolean;
+  public abstract getStepContentFunctionalComponent(): (
+    props: ProcessStepFunctionalComponentProps
+  ) => Nullable<React.JSX.Element>;
 }

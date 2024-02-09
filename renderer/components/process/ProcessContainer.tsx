@@ -1,9 +1,10 @@
-import { Button, Step, StepContent, StepLabel, Stepper, StepperProps, Tooltip, styled } from "@mui/material";
+import { Button, Step, StepLabel, Stepper, StepperProps, Tooltip, styled } from "@mui/material";
 import _ from "lodash";
 import React from "react";
 import { ProcessStepDefinition } from "../../model/process/definition/step/ProcessStepDefinition";
 import FlexContainer from "../common/flex/FlexContainer";
 import FlexSpacer from "../common/flex/FlexSpacer";
+import ProcessStepContainer from "./ProcessStepContainer";
 
 const ProcessContainerWrapper = styled(FlexContainer)({
   flexDirection: "column"
@@ -16,8 +17,8 @@ const ProcessContainerButtonWrapper = styled(FlexContainer)({
 
 const ProcessContainerStepper = styled(Stepper)({
   display: "flex",
-  flexGrow: 1,
-  flexShrink: 0,
+  flexGrow: 0,
+  flexShrink: 1,
   flexWrap: "wrap"
 });
 
@@ -53,7 +54,6 @@ export default function ProcessContainer(props: ProcessContainerProps) {
       <ProcessContainerStepper activeStep={activeStep} nonLinear={true} {...otherProps}>
         {_.map(steps, (step, stepIndex) => {
           const stepProps = step.getMuiStepProps();
-          const stepContentProps = step.getMuiStepContentProps();
           const labelProps = step.getMuiStepLabelProps();
           const label = step.getLabel();
           const isValid = step.validate();
@@ -61,11 +61,11 @@ export default function ProcessContainer(props: ProcessContainerProps) {
           return (
             <Step key={`${label}-${stepIndex}`} completed={isValid} {...stepProps}>
               <StepLabel {...labelProps}>{label}</StepLabel>
-              <StepContent {...stepContentProps}></StepContent>
             </Step>
           );
         })}
       </ProcessContainerStepper>
+      <ProcessStepContainer activeStep={activeStep} steps={steps} />
       <ProcessContainerButtonWrapper>
         <Tooltip title={isFirstStep ? "Keine vorherigen Schritte" : ""}>
           <span>
