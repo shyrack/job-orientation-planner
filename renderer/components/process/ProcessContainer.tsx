@@ -1,17 +1,24 @@
-import { Button, Step, StepLabel, Stepper, StepperProps, Tooltip, styled } from "@mui/material";
+import { Button, Step, StepContent, StepLabel, Stepper, StepperProps, Tooltip, styled } from "@mui/material";
 import _ from "lodash";
 import React from "react";
 import { ProcessStepDefinition } from "../../model/process/definition/step/ProcessStepDefinition";
 import FlexContainer from "../common/flex/FlexContainer";
 import FlexSpacer from "../common/flex/FlexSpacer";
 
-const ProcessContainerWrapper = styled(FlexContainer)();
+const ProcessContainerWrapper = styled(FlexContainer)({
+  flexDirection: "column"
+});
 
 const ProcessContainerButtonWrapper = styled(FlexContainer)({
   flexGrow: 0,
-  flexShrink: 1,
-  height: "fit-content",
-  width: "100%"
+  flexShrink: 1
+});
+
+const ProcessContainerStepper = styled(Stepper)({
+  display: "flex",
+  flexGrow: 1,
+  flexShrink: 0,
+  flexWrap: "wrap"
 });
 
 type ProcessContainerProps = { steps: Array<ProcessStepDefinition> } & StepperProps;
@@ -43,9 +50,10 @@ export default function ProcessContainer(props: ProcessContainerProps) {
 
   return (
     <ProcessContainerWrapper>
-      <Stepper activeStep={activeStep} {...otherProps}>
+      <ProcessContainerStepper activeStep={activeStep} nonLinear={true} {...otherProps}>
         {_.map(steps, (step, stepIndex) => {
           const stepProps = step.getMuiStepProps();
+          const stepContentProps = step.getMuiStepContentProps();
           const labelProps = step.getMuiStepLabelProps();
           const label = step.getLabel();
           const isValid = step.validate();
@@ -53,10 +61,11 @@ export default function ProcessContainer(props: ProcessContainerProps) {
           return (
             <Step key={`${label}-${stepIndex}`} completed={isValid} {...stepProps}>
               <StepLabel {...labelProps}>{label}</StepLabel>
+              <StepContent {...stepContentProps}></StepContent>
             </Step>
           );
         })}
-      </Stepper>
+      </ProcessContainerStepper>
       <ProcessContainerButtonWrapper>
         <Tooltip title={isFirstStep ? "Keine vorherigen Schritte" : ""}>
           <span>

@@ -1,7 +1,12 @@
-import { StepLabelProps, StepProps } from "@mui/material";
+import { StepContentProps, StepLabelProps, StepProps } from "@mui/material";
 
 export abstract class ProcessStepDefinition {
-  constructor(private label: string, private muiStepProps?: StepProps, private muiStepLabelProps?: StepLabelProps) {}
+  constructor(
+    private label: string,
+    private muiStepProps?: StepProps,
+    private muiStepContentProps?: StepContentProps,
+    private muiStepLabelProps?: StepLabelProps
+  ) {}
 
   public getLabel() {
     return this.label;
@@ -9,6 +14,10 @@ export abstract class ProcessStepDefinition {
 
   public getMuiStepProps() {
     return this.muiStepProps;
+  }
+
+  public getMuiStepContentProps() {
+    return this.muiStepContentProps;
   }
 
   public getMuiStepLabelProps() {
