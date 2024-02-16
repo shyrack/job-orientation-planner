@@ -1,4 +1,5 @@
 import React from "react";
+import * as AppStateFile from "../model/state/AppState";
 import { AppState, AppStateContext, AppStateModifier } from "../model/state/AppState";
 
 /**
@@ -14,6 +15,9 @@ import { AppState, AppStateContext, AppStateModifier } from "../model/state/AppS
  *
  * @param accessor A function that is given the app's global state and returns part of it.
  * @returns An object containing the returned sub state of the accessor and a modifying method for safely changing app's global state.
+ *
+ * @see {@link AppStateFile.AppState}
+ * @see {@link https://react.dev/}
  */
 export function useAppState<T>(accessor: (appState: AppState) => T) {
   const { setState, state: appState } = React.useContext(AppStateContext);
