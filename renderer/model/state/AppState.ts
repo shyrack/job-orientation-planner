@@ -1,7 +1,11 @@
 import _ from "lodash";
 import React from "react";
+import companyTestData from "../../../electron-src/data/testdata/Companies.json";
+import studentTestData from "../../../electron-src/data/testdata/Students.json";
+import { ViewDefinition } from "../../components/view/View";
 import AppStateProvider from "../../components/provider/AppStateProvider";
-import pupilView from "../../components/view/definitions/PupilView";
+import { CompanyColumns } from "../table/companyView";
+import { StudentColumns } from "../table/studentView";
 import { ICloneable } from "../../utils/ICloneable";
 import * as hooks from "../../utils/hooks";
 
@@ -11,6 +15,8 @@ import * as hooks from "../../utils/hooks";
  * @author Florian Jahn
  */
 export type AppStateModifier = (appState: AppState) => void;
+
+export type AvailableViews = "company" | "student";
 
 /**
  * A class for defining and implementing app's global state. The classes instance is accessible in React functional components via {@link hooks.useAppState}.
@@ -26,10 +32,21 @@ export type AppStateModifier = (appState: AppState) => void;
 export class AppState implements ICloneable<AppState> {
   public name: string;
 
-  public currentView = pupilView;
+  public company: ViewDefinition<typeof CompanyColumns> = {
+    columns: CompanyColumns,
+    rows: []
+  };
+
+  public student: ViewDefinition<typeof StudentColumns> = {
+    columns: StudentColumns,
+    rows: []
+  };
 
   constructor() {
     this.name = "bla";
+
+    this.company.rows = companyTestData;
+    this.student.rows = studentTestData;
   }
 
   /**
