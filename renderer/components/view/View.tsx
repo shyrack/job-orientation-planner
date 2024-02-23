@@ -32,7 +32,7 @@ export default function View(props: ViewProps) {
     (appState) => appState.viewName
   );
 
-  const { accessedSubState: view, modifyAppState } = useAppState(
+  const { accessedSubState: view } = useAppState(
     (appState) =>
       appState[viewName as unknown as keyof AppState] as ViewDefinition<
         ColumnDefinitions<string>

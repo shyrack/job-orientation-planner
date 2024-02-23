@@ -8,7 +8,8 @@ const PageBackground = styled("div")(({ theme }) => ({
   display: "flex",
   flexDirection: "column",
   height: "100vh",
-  width: "100vw"
+  width: "100vw",
+  overflow: "hidden"
 }));
 
 type PageProviderProps = {
