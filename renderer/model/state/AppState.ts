@@ -1,12 +1,14 @@
 import _ from "lodash";
 import React from "react";
 import companyTestData from "../../../electron-src/data/testdata/Companies.json";
+import roomTestData from "../../../electron-src/data/testdata/Rooms.json";
 import studentTestData from "../../../electron-src/data/testdata/Students.json";
 import AppStateProvider from "../../components/provider/AppStateProvider";
 import { ViewDefinition } from "../../components/view/View";
 import { ICloneable } from "../../utils/ICloneable";
 import * as hooks from "../../utils/hooks";
 import { CompanyColumns } from "../table/companyView";
+import { RoomColumns } from "../table/roomView";
 import { StudentColumns } from "../table/studentView";
 
 /**
@@ -21,7 +23,9 @@ export type AppStateModifier = (appState: AppState) => void;
  *
  * @author Florian Jahn
  */
-type AppStateSetStateDispatcher = React.Dispatch<React.SetStateAction<AppState>>;
+type AppStateSetStateDispatcher = React.Dispatch<
+  React.SetStateAction<AppState>
+>;
 
 export type AvailableViews = "company" | "student";
 
@@ -40,7 +44,7 @@ export class AppState implements ICloneable<AppState> {
   private static appStateDispatcher?: AppStateSetStateDispatcher;
   private static currentInstance?: AppState;
 
-  public name: string;
+  public viewName: string;
 
   public company: ViewDefinition<typeof CompanyColumns> = {
     columns: CompanyColumns,
@@ -52,11 +56,17 @@ export class AppState implements ICloneable<AppState> {
     rows: []
   };
 
+  public room: ViewDefinition<typeof RoomColumns> = {
+    columns: RoomColumns,
+    rows: []
+  };
+
   constructor() {
-    this.name = "bla";
+    this.viewName = "room";
 
     this.company.rows = companyTestData;
     this.student.rows = studentTestData;
+    this.room.rows = roomTestData;
   }
 
   /**
@@ -90,7 +100,9 @@ export class AppState implements ICloneable<AppState> {
     return clonedInstance;
   }
 
-  public static setAppStateDispatcher(appStateDispatcher: AppStateSetStateDispatcher) {
+  public static setAppStateDispatcher(
+    appStateDispatcher: AppStateSetStateDispatcher
+  ) {
     AppState.appStateDispatcher = appStateDispatcher;
   }
 
@@ -116,7 +128,8 @@ export class AppState implements ICloneable<AppState> {
     const currentInstance = AppState.currentInstance;
 
     if (currentInstance) {
-      const clonedAndModifiedInstance = currentInstance.cloneAndModify(modifier);
+      const clonedAndModifiedInstance =
+        currentInstance.cloneAndModify(modifier);
       const appStateDispatcher = AppState.safelyAccessAppStateDispatcher();
 
       appStateDispatcher(clonedAndModifiedInstance);

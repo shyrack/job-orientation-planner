@@ -1,8 +1,14 @@
 import { Box } from "@mui/system";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { AppState, AvailableViews } from "../../model/state/AppState";
+import { AppState } from "../../model/state/AppState";
 import { ColumnDefinitions, RowDefinition } from "../../model/table/view";
 import { useAppState } from "../../utils/hooks";
+import { styled } from "@mui/material";
+
+const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
+  width: "100%",
+  backgroundcolor: "red"
+}));
 
 export type ViewDefinition<T extends ColumnDefinitions<string>> = {
   columns: T;
@@ -10,7 +16,6 @@ export type ViewDefinition<T extends ColumnDefinitions<string>> = {
 };
 
 type ViewProps = {
-  viewName: AvailableViews;
   pageSize?: number;
 };
 
@@ -21,7 +26,11 @@ type ViewProps = {
  * @param pageSize (Optional) Number of rows per page. Default is 10
  */
 export default function View(props: ViewProps) {
-  const { pageSize, viewName } = props;
+  const { pageSize } = props;
+
+  const { accessedSubState: viewName } = useAppState(
+    (appState) => appState.viewName
+  );
 
   const { accessedSubState: view, modifyAppState } = useAppState(
     (appState) =>
@@ -32,7 +41,7 @@ export default function View(props: ViewProps) {
 
   return (
     <Box>
-      <DataGrid
+      <StyledDataGrid
         columns={view.columns as unknown as GridColDef[]}
         rows={view.rows}
         initialState={{
@@ -44,7 +53,7 @@ export default function View(props: ViewProps) {
         }}
         checkboxSelection
         disableRowSelectionOnClick
-      ></DataGrid>
+      ></StyledDataGrid>
     </Box>
   );
 }
