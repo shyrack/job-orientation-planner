@@ -3,9 +3,10 @@ import { join } from "path";
 import { format } from "url";
 
 // Packages
-import { BrowserWindow, app, ipcMain, IpcMainEvent } from "electron";
+import { BrowserWindow, IpcMainEvent, app, ipcMain } from "electron";
 import isDev from "electron-is-dev";
 import prepareNext from "electron-next";
+import { registerEventListeners } from "./database/database";
 
 // Prepare the renderer once the app is ready
 app.on("ready", async () => {
@@ -37,6 +38,8 @@ app.on("ready", async () => {
 
 // Quit the app once all windows are closed
 app.on("window-all-closed", app.quit);
+
+registerEventListeners();
 
 // listen the channel `message` and resend the received message to the renderer process
 ipcMain.on("message", (event: IpcMainEvent, message: any) => {
