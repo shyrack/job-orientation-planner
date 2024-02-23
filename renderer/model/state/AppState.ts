@@ -2,12 +2,12 @@ import _ from "lodash";
 import React from "react";
 import companyTestData from "../../../electron-src/data/testdata/Companies.json";
 import studentTestData from "../../../electron-src/data/testdata/Students.json";
-import { ViewDefinition } from "../../components/view/View";
 import AppStateProvider from "../../components/provider/AppStateProvider";
-import { CompanyColumns } from "../table/companyView";
-import { StudentColumns } from "../table/studentView";
+import { ViewDefinition } from "../../components/view/View";
 import { ICloneable } from "../../utils/ICloneable";
 import * as hooks from "../../utils/hooks";
+import { CompanyColumns } from "../table/companyView";
+import { StudentColumns } from "../table/studentView";
 
 /**
  * Type for a function that is given the current app's global state. Function is allowed to modify.
@@ -15,6 +15,13 @@ import * as hooks from "../../utils/hooks";
  * @author Florian Jahn
  */
 export type AppStateModifier = (appState: AppState) => void;
+
+/**
+ * Type for setState function from React's useState hook.
+ *
+ * @author Florian Jahn
+ */
+type AppStateSetStateDispatcher = React.Dispatch<React.SetStateAction<AppState>>;
 
 export type AvailableViews = "company" | "student";
 
@@ -30,6 +37,9 @@ export type AvailableViews = "company" | "student";
  * @see {@link https://react.dev/}
  */
 export class AppState implements ICloneable<AppState> {
+  private static appStateDispatcher?: AppStateSetStateDispatcher;
+  private static currentInstance?: AppState;
+
   public name: string;
 
   public company: ViewDefinition<typeof CompanyColumns> = {
@@ -79,6 +89,41 @@ export class AppState implements ICloneable<AppState> {
 
     return clonedInstance;
   }
+
+  public static setAppStateDispatcher(appStateDispatcher: AppStateSetStateDispatcher) {
+    AppState.appStateDispatcher = appStateDispatcher;
+  }
+
+  public static safelyAccessAppStateDispatcher() {
+    if (AppState.appStateDispatcher) {
+      return AppState.appStateDispatcher;
+    } else {
+      throw new Error("AppState's React useState dispatcher was undefined.");
+    }
+  }
+
+  public static setCurrentInstance(appState: AppState) {
+    AppState.currentInstance = appState;
+  }
+
+  /**
+   *
+   * @author Florian Jahn
+   *
+   * @param modifier Method for safely modifying app's global state.
+   */
+  public static modifyAppState(modifier: AppStateModifier) {
+    const currentInstance = AppState.currentInstance;
+
+    if (currentInstance) {
+      const clonedAndModifiedInstance = currentInstance.cloneAndModify(modifier);
+      const appStateDispatcher = AppState.safelyAccessAppStateDispatcher();
+
+      appStateDispatcher(clonedAndModifiedInstance);
+    } else {
+      throw new Error("AppState's instance was undefined.");
+    }
+  }
 }
 
 /**
@@ -91,8 +136,5 @@ export class AppState implements ICloneable<AppState> {
  * @see {@link https://react.dev/}
  */
 export const AppStateContext = React.createContext({
-  state: new AppState(),
-  setState: ((state?: AppState) => {
-    throw new Error("Not yet implemented.");
-  }) as React.Dispatch<React.SetStateAction<AppState>>
+  state: new AppState()
 });
