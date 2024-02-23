@@ -2,8 +2,10 @@ import Panel from "../components/process/Panel";
 import PageProvider from "../components/provider/PageProvider";
 import Typography from "../components/text/Typography";
 import { TestProcessDefinition } from "../model/process/definition/TestProcessDefinition";
+import { ViewTestProcessDefinition } from "../model/process/definition/ViewTestProcessDefinition";
 
 const testProcessDef = new TestProcessDefinition();
+const viewTestProcessDef = new ViewTestProcessDefinition();
 
 type IndexPageProps = {};
 
@@ -13,7 +15,8 @@ export default function IndexPage(props: IndexPageProps) {
       <Typography variant="h5" sx={(theme) => ({ margin: theme.spacing(2) })}>
         Processes:
       </Typography>
-      <Panel processDefinition={testProcessDef}></Panel>
+      <Panel processDefinition={testProcessDef} />
+      <Panel processDefinition={viewTestProcessDef} />
     </PageProvider>
   );
 }

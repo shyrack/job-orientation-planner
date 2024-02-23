@@ -1,14 +1,17 @@
 [
   {
     "id": 1,
-    "name": "Telekom"
+    "name": "Zentis",
+    "field": "Industriekaufleute"
   },
   {
     "id": 2,
-    "name": "RWE"
+    "name": "Grünethal",
+    "field": "Industriekaufleute \nBWL Plus (Industriekfm. Plus BWL-Studium) \nKaufleute für Büromanagement"
   },
   {
     "id": 3,
-    "name": "Bundeswehr"
+    "name": "Bauhaus",
+    "field": "Einzelhandelkaufsleute"
   }
 ]

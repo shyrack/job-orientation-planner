@@ -10,15 +10,26 @@ export const CompanyIdColumnDefinition: ColumnDefinition<"id"> = {
 
 export const CompanyNameColumnDefinition: ColumnDefinition<"name"> = {
   field: "name",
-  headerName: "Company Name",
+  headerName: "Unternehmen",
+  width: 150
+};
+
+export const CompanyFieldColumnDefinition: ColumnDefinition<"field"> = {
+  field: "field",
+  headerName: "Ausbildungsberufe/Studiengänge",
   width: 300
 };
 
 export const CompanyColumns: ColumnDefinitions<string> = [
   CompanyIdColumnDefinition,
-  CompanyNameColumnDefinition
+  CompanyNameColumnDefinition,
+  CompanyFieldColumnDefinition
 ];
 
 export type CompanyRowDefinition = RowDefinition<
-  [typeof CompanyIdColumnDefinition, typeof CompanyNameColumnDefinition]
+  [
+    typeof CompanyIdColumnDefinition,
+    typeof CompanyNameColumnDefinition,
+    typeof CompanyFieldColumnDefinition
+  ]
 >;
