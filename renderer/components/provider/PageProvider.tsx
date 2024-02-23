@@ -6,7 +6,7 @@ import Navbar from "../navbar/Navbar";
 const PageBackground = styled("div")(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
   display: "flex",
-  flexWrap: "wrap",
+  flexDirection: "column",
   height: "100vh",
   width: "100vw"
 }));
@@ -27,3 +27,4 @@ export default function PageProvider(props: PageProviderProps) {
     </ThemeProvider>
   );
 }
+2;
