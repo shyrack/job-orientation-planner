@@ -14,4 +14,6 @@ export class TestProcessStepDefinition extends ProcessStepDefinition {
   public validate(): boolean {
     return false;
   }
+
+  public execute() {}
 }

@@ -10,6 +10,10 @@ export default function ProcessStepContainer(props: ProcessStepContainerProps) {
   const currentStep = React.useMemo(() => steps[activeStep], [activeStep, steps]);
   const CurrentStepComponent = React.useMemo(() => currentStep.getStepContentFunctionalComponent(), [currentStep]);
 
+  React.useEffect(() => {
+    currentStep.execute();
+  }, [currentStep]);
+
   return (
     <FlexContainer>
       <CurrentStepComponent />

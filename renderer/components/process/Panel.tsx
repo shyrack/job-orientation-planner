@@ -31,9 +31,13 @@ export default function Panel(props: PanelProps) {
   const name = React.useMemo(() => processDefinition.getName(), [processDefinition]);
   const url = React.useMemo(() => processDefinition.getUrl(), [processDefinition]);
 
-  const onClick = React.useCallback((event: React.MouseEvent<HTMLDivElement>) => {
-    window.location.href = url;
-  }, []);
+  const onClick = React.useCallback(
+    (event: React.MouseEvent<HTMLDivElement>) => {
+      window.location.href = url;
+      processDefinition.execute();
+    },
+    [processDefinition]
+  );
 
   return (
     <ProcessPanelCard onClick={onClick}>

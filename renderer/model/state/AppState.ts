@@ -10,6 +10,7 @@ import * as hooks from "../../utils/hooks";
 import { CompanyColumns } from "../table/companyView";
 import { RoomColumns } from "../table/roomView";
 import { StudentColumns } from "../table/studentView";
+import { ProcessDefinition } from "../process/definition/ProcessDefinition";
 
 /**
  * Type for a function that is given the current app's global state. Function is allowed to modify.
@@ -23,9 +24,7 @@ export type AppStateModifier = (appState: AppState) => void;
  *
  * @author Florian Jahn
  */
-type AppStateSetStateDispatcher = React.Dispatch<
-  React.SetStateAction<AppState>
->;
+type AppStateSetStateDispatcher = React.Dispatch<React.SetStateAction<AppState>>;
 
 export type AvailableViews = "company" | "student";
 
@@ -100,9 +99,7 @@ export class AppState implements ICloneable<AppState> {
     return clonedInstance;
   }
 
-  public static setAppStateDispatcher(
-    appStateDispatcher: AppStateSetStateDispatcher
-  ) {
+  public static setAppStateDispatcher(appStateDispatcher: AppStateSetStateDispatcher) {
     AppState.appStateDispatcher = appStateDispatcher;
   }
 
@@ -128,8 +125,7 @@ export class AppState implements ICloneable<AppState> {
     const currentInstance = AppState.currentInstance;
 
     if (currentInstance) {
-      const clonedAndModifiedInstance =
-        currentInstance.cloneAndModify(modifier);
+      const clonedAndModifiedInstance = currentInstance.cloneAndModify(modifier);
       const appStateDispatcher = AppState.safelyAccessAppStateDispatcher();
 
       appStateDispatcher(clonedAndModifiedInstance);
