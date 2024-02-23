@@ -23,4 +23,5 @@ export abstract class ProcessStepDefinition {
   public abstract getStepContentFunctionalComponent(): (
     props: ProcessStepFunctionalComponentProps
   ) => Nullable<React.JSX.Element>;
+  public abstract execute(): void;
 }
