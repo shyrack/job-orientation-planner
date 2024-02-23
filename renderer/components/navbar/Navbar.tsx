@@ -11,7 +11,11 @@ export default function Navbar() {
   const navItems = ["Prozesse", "Tabellen", "Credits"];
 
   const StyledBox = styled(Box)(({ theme }) => ({
-    display: "flex"
+    display: "flex",
+    position: "relative",
+    height: "64px",
+    width: "100%",
+    flexShrink: 1
   }));
 
   const onClick = () => {
