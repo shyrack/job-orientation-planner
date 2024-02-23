@@ -1,6 +1,6 @@
 import React from "react";
 import * as AppStateFile from "../model/state/AppState";
-import { AppState, AppStateContext, AppStateModifier } from "../model/state/AppState";
+import { AppState, AppStateContext } from "../model/state/AppState";
 
 /**
  * A React hook for accessing the apps global state from all functional components.
@@ -20,20 +20,14 @@ import { AppState, AppStateContext, AppStateModifier } from "../model/state/AppS
  * @see {@link https://react.dev/}
  */
 export function useAppState<T>(accessor: (appState: AppState) => T) {
-  const { setState, state: appState } = React.useContext(AppStateContext);
+  const { state: appState } = React.useContext(AppStateContext);
   const [accessedSubState, setAccessedSubState] = React.useState(accessor(appState));
 
   React.useEffect(() => {
     setAccessedSubState(accessor(appState));
   }, [accessor, appState, setAccessedSubState]);
 
-  const modifyAppState = React.useCallback(
-    (modifier: AppStateModifier) => {
-      const clonedAppState = appState.cloneAndModify(modifier);
-      setState(clonedAppState);
-    },
-    [appState, setState]
-  );
+  const modifyAppState = React.useCallback(AppState.modifyAppState, []);
 
   return { accessedSubState, modifyAppState };
 }

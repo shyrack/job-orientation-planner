@@ -1,6 +1,7 @@
 import { ThemeProvider, styled } from "@mui/material";
 import React from "react";
 import Theme from "../../utils/theme";
+import Navbar from "../navbar/Navbar";
 
 const PageBackground = styled("div")(({ theme }) => ({
   backgroundColor: theme.palette.background.default,
@@ -19,7 +20,10 @@ export default function PageProvider(props: PageProviderProps) {
 
   return (
     <ThemeProvider theme={Theme}>
-      <PageBackground>{children}</PageBackground>
+      <PageBackground>
+        <Navbar />
+        {children}
+      </PageBackground>
     </ThemeProvider>
   );
 }
