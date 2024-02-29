@@ -1,44 +1,32 @@
-import { ColumnDefinition, ColumnDefinitions, RowDefinition } from "./view";
+import {
+  ColumnDefinitions,
+  RowDefinition,
+  createColumnDefinition
+} from "./view";
 
-export const TimeslotIDColDef: ColumnDefinition<"id"> = {
-  field: "id",
-  headerName: "ID",
-  width: 90
-};
+export const TimeslotIDColDef = createColumnDefinition("id", "ID", 90);
 
-// room.roomnumber
-export const TimeslotRoomColDef: ColumnDefinition<"room"> = {
-  field: "room",
-  headerName: "Raum",
-  width: 90
-};
+export const TimeslotRoomColDef = createColumnDefinition("room", "Raum", 90);
 
-// company.name
-export const TimeslotCompanyColDef: ColumnDefinition<"company"> = {
-  field: "company",
-  headerName: "Unternehmen",
-  width: 150
-};
+export const TimeslotCompanyColDef = createColumnDefinition(
+  "company",
+  "Unternehmen",
+  150
+);
 
-// Is this needed?
-// event.eventname
-export const TimeslotEventColDef: ColumnDefinition<"event"> = {
-  field: "event",
-  headerName: "Event",
-  width: 150
-};
+export const TimeslotEventColDef = createColumnDefinition(
+  "event.eventname",
+  "Event",
+  150
+);
 
-export const TimeslotStartColDef: ColumnDefinition<"start"> = {
-  field: "start",
-  headerName: "Startzeit",
-  width: 90
-};
+export const TimeslotStartColDef = createColumnDefinition(
+  "start",
+  "Startzeit",
+  90
+);
 
-export const TimeslotEndColDef: ColumnDefinition<"end"> = {
-  field: "end",
-  headerName: "Endzeit",
-  width: 90
-};
+export const TimeslotEndColDef = createColumnDefinition("end", "Endzeit", 90);
 
 export const TimeslotColumns: ColumnDefinitions<string> = [
   TimeslotIDColDef,

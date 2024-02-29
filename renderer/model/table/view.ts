@@ -13,3 +13,15 @@ export type RowDefinition<T extends ColumnDefinition<string>[]> = T extends
   | ColumnDefinition<infer K>
   ? Record<K, any>[]
   : never;
+
+export function createColumnDefinition<K extends string>(
+  field: K,
+  headerName: string,
+  width: number
+): ColumnDefinition<K> {
+  return {
+    field,
+    headerName,
+    width
+  };
+}

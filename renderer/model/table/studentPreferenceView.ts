@@ -1,55 +1,51 @@
-import { ColumnDefinition, ColumnDefinitions, RowDefinition } from "./view";
+import {
+  ColumnDefinition,
+  ColumnDefinitions,
+  RowDefinition,
+  createColumnDefinition
+} from "./view";
 
-export const StudentPreferenceIDColDef: ColumnDefinition<"preference-id"> = {
-  field: "preference-id",
-  headerName: "Schüler-Präferenz",
-  width: 90
-};
+export const StudentPreferenceIDColDef = createColumnDefinition(
+  "preference-id",
+  "Schüler-Präferenz",
+  90
+);
 
-// student.surname
-export const StudentPreferenceStudentSurnameColDef: ColumnDefinition<"student-surname"> =
-  {
-    field: "student-surname",
-    headerName: "Schüler Nachname",
-    width: 150
-  };
+export const StudentPreferenceStudentSurnameColDef = createColumnDefinition(
+  "student-surname",
+  "Schüler Nachname",
+  150
+);
 
-// student.first-name
-export const StudentPreferenceStudentFirstnameColDef: ColumnDefinition<"student-first-name"> =
-  {
-    field: "student-first-name",
-    headerName: "Schüler Nachname",
-    width: 150
-  };
+export const StudentPreferenceStudentFirstnameColDef = createColumnDefinition(
+  "student-first-name",
+  "Schüler Vorname",
+  150
+);
 
-// student.class.classname
-export const StudentPreferenceClassColDef: ColumnDefinition<"student-class"> = {
-  field: "student-class",
-  headerName: "Klasse",
-  width: 90
-};
+export const StudentPreferenceClassColDef = createColumnDefinition(
+  "student-class",
+  "Klasse",
+  90
+);
 
-// company.companyName
-export const StudentPreferenceCompanyNameColDef: ColumnDefinition<"company-name"> =
-  {
-    field: "company-name",
-    headerName: "Unternehmen",
-    width: 150
-  };
+export const StudentPreferenceCompanyNameColDef = createColumnDefinition(
+  "company-name",
+  "Unternehmen",
+  150
+);
 
-// company.companyField
-export const StudentPreferenceCompanyFieldColDef: ColumnDefinition<"company-field"> =
-  {
-    field: "company-field",
-    headerName: "Ausbildungsberufe/Studiengänge",
-    width: 150
-  };
+export const StudentPreferenceCompanyFieldColDef = createColumnDefinition(
+  "company-field",
+  "Ausbildungsberufe/Studiengänge",
+  150
+);
 
-export const StudentPreferencePriorityColDef: ColumnDefinition<"priority"> = {
-  field: "priority",
-  headerName: "Priorität",
-  width: 90
-};
+export const StudentPreferencePriorityColDef = createColumnDefinition(
+  "priority",
+  "Priorität",
+  90
+);
 
 export const SPColumns: ColumnDefinitions<string> = [
   StudentPreferenceIDColDef,

@@ -1,16 +1,12 @@
-import { ColumnDefinition, ColumnDefinitions, RowDefinition } from "./view";
+import {
+  ColumnDefinitions,
+  RowDefinition,
+  createColumnDefinition
+} from "./view";
 
-export const EventIDColDef: ColumnDefinition<"id"> = {
-  field: "id",
-  headerName: "ID",
-  width: 90
-};
+export const EventIDColDef = createColumnDefinition("id", "ID", 90);
 
-export const EventNameColDef: ColumnDefinition<"name"> = {
-  field: "name",
-  headerName: "Eventname",
-  width: 150
-};
+export const EventNameColDef = createColumnDefinition("name", "Eventname", 150);
 
 export const EventColumns: ColumnDefinitions<string> = [
   EventIDColDef,
