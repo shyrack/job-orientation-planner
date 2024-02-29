@@ -8,25 +8,34 @@ import Box from "@mui/system/Box";
 import NavbarItem from "./NavbarItem";
 
 export default function Navbar() {
-  const navItems = ["Prozesse", "Tabellen", "Credits"];
+  const navItems = [
+    { name: "Prozesse", pageId: "/" },
+    { name: "Tabellen", pageId: "/Table/tables" },
+    { name: "Database Setup", pageId: "/DB/db_index" },
+    { name: "Credits", pageId: "/" }
+  ];
 
   const StyledBox = styled(Box)(({ theme }) => ({
     display: "flex",
     position: "relative",
     height: "64px",
     width: "100%",
-    flexShrink: 1
+    flexShrink: 1,
   }));
 
-  const onClick = () => {
+  const onClickHome = () => {
     window.location.href = "/";
+  };
+
+  const onItemClick = (pageId: string) => {
+    window.location.href = `${pageId}`;
   };
 
   return (
     <StyledBox>
       <AppBar component="nav">
         <Toolbar>
-          <IconButton onClick={onClick}>
+          <IconButton onClick={onClickHome}>
             <HomeIcon />
           </IconButton>
           <Typography
@@ -36,11 +45,12 @@ export default function Navbar() {
           >
             JOP
           </Typography>
-          {navItems.map((name, index) => (
+          {navItems.map((item, index) => (
             <NavbarItem
               key={`NavBar-Item-${index}`}
-              name={name}
-              pageId="blubber"
+              name={item.name}
+              pageId={item.pageId}
+              onItemClick={onItemClick}
             />
           ))}
         </Toolbar>

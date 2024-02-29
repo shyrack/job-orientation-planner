@@ -45,6 +45,8 @@ export class AppState implements ICloneable<AppState> {
   private static appStateDispatcher?: AppStateSetStateDispatcher;
   private static currentInstance?: AppState;
 
+  //TODO: @Florian help dbPath
+  public dbPath: string;
   public viewName: string;
 
   public company: ViewDefinition<typeof CompanyColumns> = {
@@ -62,7 +64,10 @@ export class AppState implements ICloneable<AppState> {
     rows: []
   };
 
+  
+
   constructor() {
+    this.dbPath  = ""
     this.viewName = "room";
 
     this.company.rows = companyTestData;
