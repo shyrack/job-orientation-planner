@@ -2,34 +2,30 @@
 
 import { ColumnDefinition, ColumnDefinitions, RowDefinition } from "./view";
 
-export const CompanyIdColumnDefinition: ColumnDefinition<"id"> = {
+export const CompanyIdColDef: ColumnDefinition<"id"> = {
   field: "id",
   headerName: "ID",
   width: 90
 };
 
-export const CompanyNameColumnDefinition: ColumnDefinition<"name"> = {
+export const CompanyNameColDef: ColumnDefinition<"name"> = {
   field: "name",
   headerName: "Unternehmen",
   width: 150
 };
 
-export const CompanyFieldColumnDefinition: ColumnDefinition<"field"> = {
+export const CompanyFieldColDef: ColumnDefinition<"field"> = {
   field: "field",
   headerName: "Ausbildungsberufe/Studiengänge",
   width: 300
 };
 
 export const CompanyColumns: ColumnDefinitions<string> = [
-  CompanyIdColumnDefinition,
-  CompanyNameColumnDefinition,
-  CompanyFieldColumnDefinition
+  CompanyIdColDef,
+  CompanyNameColDef,
+  CompanyFieldColDef
 ];
 
 export type CompanyRowDefinition = RowDefinition<
-  [
-    typeof CompanyIdColumnDefinition,
-    typeof CompanyNameColumnDefinition,
-    typeof CompanyFieldColumnDefinition
-  ]
+  [typeof CompanyIdColDef, typeof CompanyNameColDef, typeof CompanyFieldColDef]
 >;

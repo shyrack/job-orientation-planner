@@ -2,34 +2,34 @@
 
 import { ColumnDefinition, ColumnDefinitions, RowDefinition } from "./view";
 
-export const RoomIdViewColumnDefinition: ColumnDefinition<"id"> = {
-  field: "id",
-  headerName: "ID",
+export const RoomNumberViewColDef: ColumnDefinition<"room-number"> = {
+  field: "room-number",
+  headerName: "Raumnummer",
   width: 90
 };
 
-export const RoomNameColumnDefinition: ColumnDefinition<"name"> = {
-  field: "name",
-  headerName: "Name",
-  width: 150
+export const RoomMaxTimeSlotColDef: ColumnDefinition<"max-time-slot"> = {
+  field: "max-time-slot",
+  headerName: "Maximaler Zeitblock",
+  width: 90
 };
 
-export const RoomCapacityViewColumnDefinition: ColumnDefinition<"capacity"> = {
+export const RoomCapacityViewColDef: ColumnDefinition<"capacity"> = {
   field: "capacity",
   headerName: "Kapazität",
   width: 90
 };
 
 export const RoomColumns: ColumnDefinitions<string> = [
-  RoomIdViewColumnDefinition,
-  RoomNameColumnDefinition,
-  RoomCapacityViewColumnDefinition
+  RoomNumberViewColDef,
+  RoomMaxTimeSlotColDef,
+  RoomCapacityViewColDef
 ];
 
 export type RoomRowDefinition = RowDefinition<
   [
-    typeof RoomIdViewColumnDefinition,
-    typeof RoomNameColumnDefinition,
-    typeof RoomCapacityViewColumnDefinition
+    typeof RoomNumberViewColDef,
+    typeof RoomMaxTimeSlotColDef,
+    typeof RoomCapacityViewColDef
   ]
 >;
