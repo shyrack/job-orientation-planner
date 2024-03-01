@@ -3,10 +3,17 @@ import {
   ProcessStepFunctionalComponentProps
 } from "./ProcessStepDefinition";
 import View from "../../../../components/view/View";
+import { AppState } from "../../../state/AppState";
 
 export class ViewTestProcessStepDefinition extends ProcessStepDefinition {
-  constructor() {
-    super("View test process step");
+  constructor(private viewName: string, stepLabel: string) {
+    super(stepLabel);
+  }
+
+  public execute() {
+    AppState.modifyAppState((appState) => {
+      appState.viewName = this.viewName;
+    });
   }
 
   public validate() {

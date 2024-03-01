@@ -7,7 +7,13 @@ type TestProps = {};
 export default function TestViewProcess(props: TestProps) {
   return (
     <PageProvider>
-      <ProcessContainer steps={[new ViewTestProcessStepDefinition()]} />
+      <ProcessContainer
+        steps={[
+          new ViewTestProcessStepDefinition("student", "Schüler"),
+          new ViewTestProcessStepDefinition("company", "Unternehmen"),
+          new ViewTestProcessStepDefinition("room", "Räume")
+        ]}
+      />
     </PageProvider>
   );
 }

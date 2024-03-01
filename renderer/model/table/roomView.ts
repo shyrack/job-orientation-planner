@@ -1,35 +1,43 @@
 // Authors: Andre Löwen
 
-import { ColumnDefinition, ColumnDefinitions, RowDefinition } from "./view";
+import {
+  ColumnDefinitions,
+  RowDefinition,
+  createColumnDefinition
+} from "./view";
 
-export const RoomIdViewColumnDefinition: ColumnDefinition<"id"> = {
-  field: "id",
-  headerName: "ID",
-  width: 90
-};
+export const RoomIDColDef = createColumnDefinition("id", "ID", 90);
 
-export const RoomNameColumnDefinition: ColumnDefinition<"name"> = {
-  field: "name",
-  headerName: "Name",
-  width: 150
-};
+export const RoomNumberColDef = createColumnDefinition(
+  "room-number",
+  "Raumnummer",
+  150
+);
 
-export const RoomCapacityViewColumnDefinition: ColumnDefinition<"capacity"> = {
-  field: "capacity",
-  headerName: "Kapazität",
-  width: 90
-};
+export const RoomMaxTimeSlotColDef = createColumnDefinition(
+  "max-time-slot",
+  "Maximaler Zeitblock",
+  150
+);
+
+export const RoomCapacityViewColDef = createColumnDefinition(
+  "capacity",
+  "Kapazität",
+  150
+);
 
 export const RoomColumns: ColumnDefinitions<string> = [
-  RoomIdViewColumnDefinition,
-  RoomNameColumnDefinition,
-  RoomCapacityViewColumnDefinition
+  RoomIDColDef,
+  RoomNumberColDef,
+  RoomCapacityViewColDef,
+  RoomMaxTimeSlotColDef
 ];
 
 export type RoomRowDefinition = RowDefinition<
   [
-    typeof RoomIdViewColumnDefinition,
-    typeof RoomNameColumnDefinition,
-    typeof RoomCapacityViewColumnDefinition
+    typeof RoomIDColDef,
+    typeof RoomNumberColDef,
+    typeof RoomMaxTimeSlotColDef,
+    typeof RoomCapacityViewColDef
   ]
 >;

@@ -9,10 +9,12 @@ export default function AppStateProvider(props: AppStateProviderProps) {
   const { children } = props;
   const [appState, setAppState] = React.useState(new AppState());
 
-  React.useEffect(() => {
-    AppState.setCurrentInstance(appState);
-    AppState.setAppStateDispatcher(setAppState);
-  }, [appState, setAppState]);
+  AppState.setCurrentInstance(appState);
+  AppState.setAppStateDispatcher(setAppState);
 
-  return <AppStateContext.Provider value={{ state: appState }}>{children}</AppStateContext.Provider>;
+  return (
+    <AppStateContext.Provider value={{ state: appState }}>
+      {children}
+    </AppStateContext.Provider>
+  );
 }
