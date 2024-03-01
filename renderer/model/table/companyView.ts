@@ -11,13 +11,13 @@ export const CompanyIdColDef = createColumnDefinition("id", "ID", 90);
 export const CompanyNameColDef = createColumnDefinition(
   "name",
   "Unternehmen",
-  150
+  300
 );
 
 export const CompanyFieldColDef = createColumnDefinition(
   "field",
   "Ausbildungsberufe/Studiengang",
-  150
+  300
 );
 
 export const CompanyColumns: ColumnDefinitions<string> = [
