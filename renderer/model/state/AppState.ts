@@ -11,6 +11,7 @@ import { CompanyColumns } from "../table/companyView";
 import { RoomColumns } from "../table/roomView";
 import { StudentColumns } from "../table/studentView";
 import { ProcessDefinition } from "../process/definition/ProcessDefinition";
+import { ExcelFileImportProcessState } from "./ExcelFileImportProcessState";
 
 /**
  * Type for a function that is given the current app's global state. Function is allowed to modify.
@@ -62,12 +63,16 @@ export class AppState implements ICloneable<AppState> {
     rows: []
   };
 
+  public excelFileImportProcessState: ExcelFileImportProcessState;
+
   constructor() {
     this.viewName = "room";
 
     this.company.rows = companyTestData;
     this.student.rows = studentTestData;
     this.room.rows = roomTestData;
+
+    this.excelFileImportProcessState = new ExcelFileImportProcessState();
   }
 
   /**
