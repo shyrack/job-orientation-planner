@@ -5,7 +5,5 @@ import FileDropzone from "../../../common/file/FileDropzone";
 export default function ChooseFileStepContent(props: ProcessStepFunctionalComponentProps) {
   const onFilesDrop = React.useCallback((files: Array<File>) => {}, []);
 
-  return (
-    <FileDropzone onFilesDrop={onFilesDrop} text={"Drag and drop Excel files here"} validFileTypes={["xls", "xlsx"]} />
-  );
+  return <FileDropzone onFilesDrop={onFilesDrop} text={"Drag and drop Excel files here"} validFileTypes={["xlsx"]} />;
 }
