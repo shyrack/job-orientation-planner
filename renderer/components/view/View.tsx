@@ -1,13 +1,13 @@
+import { styled } from "@mui/material";
 import { Box } from "@mui/system";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { AppState } from "../../model/state/AppState";
 import { ColumnDefinitions, RowDefinition } from "../../model/table/view";
 import { useAppState } from "../../utils/hooks";
-import { styled } from "@mui/material";
 
 const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
   width: "100%",
-  backgroundcolor: "red"
+  backgroundColor: "red"
 }));
 
 export type ViewDefinition<T extends ColumnDefinitions<string>> = {
@@ -28,15 +28,10 @@ type ViewProps = {
 export default function View(props: ViewProps) {
   const { pageSize } = props;
 
-  const { accessedSubState: viewName } = useAppState(
-    (appState) => appState.viewName
-  );
+  const { accessedSubState: viewName } = useAppState((appState) => appState.viewName);
 
   const { accessedSubState: view } = useAppState(
-    (appState) =>
-      appState[viewName as unknown as keyof AppState] as ViewDefinition<
-        ColumnDefinitions<string>
-      >
+    (appState) => appState[viewName as unknown as keyof AppState] as ViewDefinition<ColumnDefinitions<string>>
   );
 
   return (
