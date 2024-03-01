@@ -69,7 +69,7 @@ export default function FileDropzone(props: FileDropzoneProps) {
   );
 
   return (
-    <FileDropzonePaper onDragOver={onDragOver} onDrop={onFileDrop}>
+    <FileDropzonePaper onDragOver={onDragOver} onDrop={onFileDrop} {...rootPaperProps}>
       <CloudUploadIcon fontSize={"large"} />
       <Typography justifyContent={"center"} variant={"h6"} {...rootTypographyProps}>
         {text}
