@@ -103,7 +103,6 @@ function RemoveExcelFileIcon(props: GridActionsCellItemProps & { file: File }) {
 
   const onRemoveFile = React.useCallback(() => {
     modifyAppState((appState) => {
-      console.log("removing file", file.name);
       _.remove(appState.excelFileImportProcessState.excelFiles, (iterationFile) => iterationFile === file);
     });
   }, [excelFiles, file, modifyAppState]);
