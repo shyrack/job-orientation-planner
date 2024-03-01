@@ -1,18 +1,18 @@
 import { CloudUpload as CloudUploadIcon } from "@mui/icons-material";
-import { Paper, PaperProps, TypographyProps, styled } from "@mui/material";
+import { Paper, PaperProps, TypographyProps, lighten, styled } from "@mui/material";
 import _ from "lodash";
 import React from "react";
 import Typography from "../../text/Typography";
 
 const FileDropzonePaper = styled(Paper)(({ theme }) => ({
   alignItems: "center",
+  backgroundColor: lighten(theme.palette.background.paper, 0.1),
   display: "flex",
   flexDirection: "column",
   flexGrow: 1,
   flexShrink: 0,
   gap: theme.spacing(2),
   justifyContent: "center",
-  height: "100%",
   width: "100%"
 }));
 

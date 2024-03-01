@@ -3,7 +3,7 @@ import { ProcessStepDefinition } from "../ProcessStepDefinition";
 
 export class FileSelectProcessStepDefinition extends ProcessStepDefinition {
   constructor() {
-    super("Select Excel File");
+    super("Wähle Dateien aus");
   }
 
   public validate() {
