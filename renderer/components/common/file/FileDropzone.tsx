@@ -1,5 +1,5 @@
 import { CloudUpload as CloudUploadIcon } from "@mui/icons-material";
-import { Paper, PaperProps, TypographyProps, lighten, styled } from "@mui/material";
+import { Paper, PaperProps, TypographyProps, lighten, styled, useTheme } from "@mui/material";
 import { animated, useSpring } from "@react-spring/web";
 import _ from "lodash";
 import React from "react";
@@ -9,7 +9,7 @@ const FileDropZonePaperAnimationBorder = styled(Paper)(({ theme }) => ({
   display: "flex",
   flexGrow: 1,
   flexShrink: 0,
-  padding: theme.spacing(1)
+  padding: theme.spacing(0.5)
 }));
 
 const AnimatedFileDropZonePaperAnimationBorder = animated(FileDropZonePaperAnimationBorder);
@@ -37,14 +37,17 @@ type FileDropzoneProps = {
 export default function FileDropzone(props: FileDropzoneProps) {
   const { onFilesDrop, rootPaperProps, rootTypographyProps, text, validFileTypes } = props;
 
-  const blubberProps = useSpring({
-    from: { background: "linear-gradient(0deg, rgb(0, 0, 255) 0%, rgb(150, 25, 170) 100%)" },
-    to: { background: "linear-gradient(360deg, rgb(0, 0, 255) 0%, rgb(150, 25, 170) 100%)" },
+  const [isDragOver, setIsDragOver] = React.useState(false);
+  const theme = useTheme();
+
+  const borderGradientElementStyles = useSpring({
+    from: { background: "linear-gradient(0deg, rgb(50, 200, 255) 0%, rgb(125, 0, 255) 100%)" },
+    to: { background: "linear-gradient(360deg, rgb(50, 200, 255) 0%, rgb(125, 0, 255) 100%)" },
     loop: true,
     delay: 0,
     pause: false,
     config: {
-      duration: 10000,
+      duration: 5000,
       bounce: 0
     }
   });
@@ -90,11 +93,21 @@ export default function FileDropzone(props: FileDropzoneProps) {
     [onFilesDrop]
   );
 
+  const onDragEnter = React.useCallback(() => {
+    setIsDragOver(true);
+  }, [setIsDragOver]);
+
+  const onDragLeave = React.useCallback(() => {
+    setIsDragOver(false);
+  }, [setIsDragOver]);
+
   return (
     <AnimatedFileDropZonePaperAnimationBorder
+      onDragEnter={onDragEnter}
       onDragOver={onDragOver}
+      onDragLeave={onDragLeave}
       onDrop={onFileDrop}
-      style={blubberProps}
+      style={borderGradientElementStyles}
       {...rootPaperProps}
     >
       <FileDropzonePaper elevation={0}>
