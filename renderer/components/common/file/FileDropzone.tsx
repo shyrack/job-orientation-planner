@@ -38,9 +38,15 @@ export default function FileDropzone(props: FileDropzoneProps) {
   const { onFilesDrop, rootPaperProps, rootTypographyProps, text, validFileTypes } = props;
 
   const blubberProps = useSpring({
-    from: { background: "linear-gradient(135deg, rgb(185, 198, 109) 0%, rgb(34, 48, 17) 100%)" },
-    to: { background: "linear-gradient(135deg, rgb(192, 199, 165) 0%, rgb(31, 44, 31) 100%)" },
-    loop: true
+    from: { background: "linear-gradient(0deg, rgb(0, 0, 255) 0%, rgb(150, 25, 170) 100%)" },
+    to: { background: "linear-gradient(360deg, rgb(0, 0, 255) 0%, rgb(150, 25, 170) 100%)" },
+    loop: true,
+    delay: 0,
+    pause: false,
+    config: {
+      duration: 10000,
+      bounce: 0
+    }
   });
 
   const normalizedValidFileTypes = React.useMemo(
