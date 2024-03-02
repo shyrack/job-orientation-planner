@@ -1,8 +1,18 @@
 import { CloudUpload as CloudUploadIcon } from "@mui/icons-material";
 import { Paper, PaperProps, TypographyProps, lighten, styled } from "@mui/material";
+import { animated, useSpring } from "@react-spring/web";
 import _ from "lodash";
 import React from "react";
 import Typography from "../../text/Typography";
+
+const FileDropZonePaperAnimationBorder = styled(Paper)(({ theme }) => ({
+  display: "flex",
+  flexGrow: 1,
+  flexShrink: 0,
+  padding: theme.spacing(1)
+}));
+
+const AnimatedFileDropZonePaperAnimationBorder = animated(FileDropZonePaperAnimationBorder);
 
 const FileDropzonePaper = styled(Paper)(({ theme }) => ({
   alignItems: "center",
@@ -11,9 +21,9 @@ const FileDropzonePaper = styled(Paper)(({ theme }) => ({
   flexDirection: "column",
   flexGrow: 1,
   flexShrink: 0,
-  gap: theme.spacing(2),
   justifyContent: "center",
-  width: "100%"
+  gap: theme.spacing(2),
+  pointerEvents: "none"
 }));
 
 type FileDropzoneProps = {
@@ -26,6 +36,12 @@ type FileDropzoneProps = {
 
 export default function FileDropzone(props: FileDropzoneProps) {
   const { onFilesDrop, rootPaperProps, rootTypographyProps, text, validFileTypes } = props;
+
+  const blubberProps = useSpring({
+    from: { background: "linear-gradient(135deg, rgb(185, 198, 109) 0%, rgb(34, 48, 17) 100%)" },
+    to: { background: "linear-gradient(135deg, rgb(192, 199, 165) 0%, rgb(31, 44, 31) 100%)" },
+    loop: true
+  });
 
   const normalizedValidFileTypes = React.useMemo(
     () =>
@@ -69,11 +85,18 @@ export default function FileDropzone(props: FileDropzoneProps) {
   );
 
   return (
-    <FileDropzonePaper onDragOver={onDragOver} onDrop={onFileDrop} {...rootPaperProps}>
-      <CloudUploadIcon fontSize={"large"} />
-      <Typography justifyContent={"center"} variant={"h6"} {...rootTypographyProps}>
-        {text}
-      </Typography>
-    </FileDropzonePaper>
+    <AnimatedFileDropZonePaperAnimationBorder
+      onDragOver={onDragOver}
+      onDrop={onFileDrop}
+      style={blubberProps}
+      {...rootPaperProps}
+    >
+      <FileDropzonePaper elevation={0}>
+        <CloudUploadIcon fontSize={"large"} />
+        <Typography justifyContent={"center"} variant={"h6"} {...rootTypographyProps}>
+          {text}
+        </Typography>
+      </FileDropzonePaper>
+    </AnimatedFileDropZonePaperAnimationBorder>
   );
 }
