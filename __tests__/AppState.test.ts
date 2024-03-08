@@ -1,24 +1,32 @@
-import { AppState } from '../renderer/model/state/AppState.ts';
+import { AppState, AppStateModifier } from '../renderer/model/state/AppState';
+
 
 describe('AppState', () => {
-  it('should initialize with default name', () => {
-    const appState = new AppState();
-    expect(appState.name).toBe('bla');
+  let appState: AppState;
+
+  beforeEach(() => {
+    appState = new AppState();
   });
 
-  it('should clone the app state', () => {
-    const appState = new AppState();
+  it('should initialize with default values', () => {
+    expect(appState.viewName).toEqual('room');
+    expect(appState.company.rows.length).toBeGreaterThan(0);
+    expect(appState.student.rows.length).toBeGreaterThan(0);
+    expect(appState.room.rows.length).toBeGreaterThan(0);
+  });
+
+  it('should clone the AppState correctly', () => {
     const clonedState = appState.clone();
-    expect(clonedState).not.toBe(appState);
-    expect(clonedState.name).toBe(appState.name);
+    expect(clonedState).toEqual(appState);
+    expect(clonedState).not.toBe(appState); 
   });
 
-  it('should clone and modify the app state', () => {
-    const appState = new AppState();
-    const modifiedState = appState.cloneAndModify((state) => {
-      state.name = 'modified';
-    });
-    expect(modifiedState).not.toBe(appState);
-    expect(modifiedState.name).toBe('modified');
+  it('should modify the AppState correctly', () => {
+    const newViewName = 'company';
+    const modifier: AppStateModifier = (appState) => {
+      appState.viewName = newViewName;
+    };
+    appState.cloneAndModify(modifier);
+    expect(appState.viewName).toEqual(newViewName);
   });
 });
