@@ -63,6 +63,11 @@ export default function FileDropzone(props: FileDropzoneProps) {
     }
   });
 
+  const springStyles = React.useMemo(
+    () => ({ ...borderGradientElementStyles, ...sizeMorphElementStyles }),
+    [borderGradientElementStyles, sizeMorphElementStyles]
+  );
+
   const normalizedValidFileTypes = React.useMemo(
     () =>
       _.map(validFileTypes, (validFileType) => {
@@ -136,7 +141,7 @@ export default function FileDropzone(props: FileDropzoneProps) {
     <AnimatedFileDropZonePaperAnimationBorder
       onDragOver={onDragOver}
       onDrop={onFileDrop}
-      style={{ ...borderGradientElementStyles, ...sizeMorphElementStyles }}
+      style={springStyles}
       {...rootPaperProps}
     >
       <FileDropzonePaper elevation={0}>
