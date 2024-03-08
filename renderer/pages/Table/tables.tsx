@@ -4,23 +4,35 @@ import { SelectTable } from "../../model/process/definition/table/tableProcessDe
 
 type TestProps = {};
 
-const Class = new SelectTable("Class", "/Table/tables");
-const Table_Student = new SelectTable("Student", "/Table/tables");
-const Table_StudentPreference = new SelectTable("StudentPreference", "/Table/tables");
-const Table_Schedule = new SelectTable("Schedule", "/Table/tables");
-const Table_TimeSlot = new SelectTable("TimeSlot", "/Table/tables");
+const Table_Class = new SelectTable("Class", "/Table/tables");
 const Table_Company = new SelectTable("Company", "/Table/tables");
 const Table_Event = new SelectTable("Event", "/Table/tables");
+const Table_Room = new SelectTable("Room", "/Table/tables");
+const Table_Scheduler = new SelectTable("Scheduler", "/Table/tables");
+const Table_Student = new SelectTable("Student", "/Table/tables");
+const Table_StudentPreference = new SelectTable("StudentPreference", "/Table/tables");
+const Table_Timeslot = new SelectTable("Timeslot", "/Table/tables");
+
+const tableNames = [
+  "Class",
+  "Company",
+  "Event",
+  "Room",
+  "Scheduler",
+  "Student",
+  "StudentPreference",
+  "Timeslot",
+];
 
 const tablesList = [
-  Class,
-  Table_Student,
-  Table_StudentPreference,
-  Table_Schedule,
-  Table_TimeSlot,
-  Table_Student,
-  Table_Company,
-  Table_Event
+  Table_Class
+  , Table_Company
+  , Table_Event
+  , Table_Room
+  , Table_Scheduler
+  , Table_Student
+  , Table_StudentPreference
+  , Table_Timeslot
 ];
 
 function selectTable(dbPath: string) {

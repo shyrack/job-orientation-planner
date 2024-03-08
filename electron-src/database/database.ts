@@ -3,7 +3,7 @@ import { Database } from "sqlite3";
 
 let DbPath: string;
 
-//TODO: DB ist noch auf teststand.. Room fehlt und manche Constraints 
+//TODO: Constraints
 function onCreateDatabase(event: IpcMainEvent, filepath: string) {
   DbPath = filepath;
   let errors: string[] = [];
@@ -23,8 +23,11 @@ function onCreateDatabase(event: IpcMainEvent, filepath: string) {
   DB.run(
     `
 CREATE TABLE Company (
-    CompanyID INTEGER PRIMARY KEY,
-    CompanyName TEXT NOT NULL
+    company_id        INTEGER PRIMARY KEY,
+    name              TEXT NOT NULL,
+    job_occupation    TEXT NOT NULL,
+    timeslot_start    TEXT NOT NULL,
+    timeslot_end      TEXT NOT NULL
 );`,
     (err: any) => {
       if (err) {
@@ -36,9 +39,10 @@ CREATE TABLE Company (
   DB.run(
     `
 CREATE TABLE Event (
-    EventID INTEGER PRIMARY KEY,
-    EventName TEXT NOT NULL,
-    Year INTEGER
+    event_id          INTEGER PRIMARY KEY,
+    name              TEXT NOT NULL,
+
+    UNIQUE (name)
 );`,
     (err: any) => {
       if (err) {
@@ -47,13 +51,15 @@ CREATE TABLE Event (
     }
   );
 
+  // Class Table
   DB.run(
     `
 CREATE TABLE Class (
-    ClassID INTEGER PRIMARY KEY,
-    ClassName TEXT NOT NULL,
-    Year INTEGER NOT NULL,
-    UNIQUE (ClassName, Year)
+    class_id        INTEGER PRIMARY KEY,
+    name            TEXT NOT NULL,
+    entry_year      INTEGER NOT NULL,
+
+    UNIQUE (name, entry_year)
 );`,
     (err: any) => {
       if (err) {
@@ -66,11 +72,12 @@ CREATE TABLE Class (
   DB.run(
     `
 CREATE TABLE Student (
-    StudentID INTEGER PRIMARY KEY,
-    ClassID INTEGER,
-    LastName TEXT NOT NULL,
-    FirstName TEXT NOT NULL,
-    FOREIGN KEY (ClassID) REFERENCES Class(ClassID)
+    student_id      INTEGER PRIMARY KEY,
+    class_id        INTEGER,
+    firstname       TEXT NOT NULL,
+    lastname        TEXT NOT NULL,
+
+    FOREIGN KEY (class_id) REFERENCES Class(class_id)
 );`,
     (err: any) => {
       if (err) {
@@ -83,14 +90,15 @@ CREATE TABLE Student (
   DB.run(
     `
 CREATE TABLE StudentPreference (
-    PreferenceID INTEGER PRIMARY KEY,
-    StudentID INTEGER,
-    CompanyID INTEGER,
-    Priority INTEGER,
-    EventID INTEGER,
-    FOREIGN KEY (StudentID) REFERENCES Student(StudentID),
-    FOREIGN KEY (CompanyID) REFERENCES Company(CompanyID),
-    FOREIGN KEY (EventID) REFERENCES Event(EventID)
+    studentpreference_id     INTEGER PRIMARY KEY,
+    student_id               INTEGER NOT NULL,
+    company_id               INTEGER NOT NULL,
+    event_id                 INTEGER NOT NULL,
+    priority                 INTEGER NOT NULL,
+
+    FOREIGN KEY (student_id) REFERENCES Student(student_id),
+    FOREIGN KEY (company_id) REFERENCES Company(company_id),
+    FOREIGN KEY (event_id)   REFERENCES Event(event_id)
 );`,
     (err: any) => {
       if (err) {
@@ -99,48 +107,78 @@ CREATE TABLE StudentPreference (
     }
   );
 
-  // Schedule Table
+  // Room Table
   DB.run(
     `
-CREATE TABLE Schedule (
-    PreferenceID INTEGER PRIMARY KEY AUTOINCREMENT,
-    StudentID TEXT,
-    CompanyID TEXT,
-    EventID TEXT,
-    Priority INTEGER,
-    CONSTRAINT CHK_MaxPreferences CHECK (Priority <= 5),
-    CONSTRAINT CHK_UniquePriorityEventStudent UNIQUE (Priority, EventID, StudentID),
-    CONSTRAINT CHK_UniqueStudentEventCompany UNIQUE (StudentID, EventID, CompanyID),
-    FOREIGN KEY (StudentID) REFERENCES Student(StudentID),
-    FOREIGN KEY (CompanyID) REFERENCES Company(CompanyID),
-    FOREIGN KEY (EventID) REFERENCES Event(EventID)
+CREATE TABLE Room (
+    room_id               INTEGER PRIMARY KEY,
+    name                  TEXT NOT NULL,
+    student_capacity      INTEGER NOT NULL
 );`,
     (err: any) => {
-      handleErrors(err);
+      if (err) {
+        handleErrors(err);
+      }
     }
   );
 
-  // Attendance Table
+  // Scheduler Table
   DB.run(
     `
-CREATE TABLE TimeSlot  (
-    AttendanceID INTEGER PRIMARY KEY,
-    EventID INTEGER,
-    StudentID INTEGER,
-    CompanyID INTEGER,
-    FOREIGN KEY (EventID) REFERENCES Event(EventID),
-    FOREIGN KEY (StudentID) REFERENCES Student(StudentID),
-    FOREIGN KEY (CompanyID) REFERENCES Company(CompanyID)
-);`,
+  CREATE TABLE Scheduler (
+    scheduler_id          INTEGER PRIMARY KEY,
+    timeslot_start        TEXT NOT NULL,
+    timeslot_end          INTEGER NOT NULL
+  );`,
     (err: any) => {
-      handleErrors(err);
+      if (err) {
+        handleErrors(err);
+      }
     }
   );
 
+  // Timeslot Table
+  DB.run(
+    `
+  CREATE TABLE Timeslot (
+      timeslot_id           INTEGER PRIMARY KEY,
+      room_id               INTEGER NOT NULL,
+      company_id            INTEGER NOT NULL,
+      event_id              INTEGER NOT NULL,
+      scheduler_id           INTEGER NOT NULL,
+
+      FOREIGN KEY (scheduler_id) REFERENCES Scheduler(scheduler_id),
+      FOREIGN KEY (room_id) REFERENCES Room(room_id),
+      FOREIGN KEY (company_id) REFERENCES Company(company_id),
+      FOREIGN KEY (event_id) REFERENCES Event(event_id)
+  );`,
+    (err: any) => {
+      if (err) {
+        handleErrors(err);
+      }
+    }
+  );
+
+  // Timeslot Table
+  DB.run(
+    `
+    CREATE TABLE StudentAppointment (
+        appointment_id        INTEGER PRIMARY KEY,
+        student_id            INTEGER NOT NULL,
+        timeslot_id           INTEGER NOT NULL,
+  
+        FOREIGN KEY (student_id) REFERENCES Student(student_id),
+        FOREIGN KEY (timeslot_id) REFERENCES Schedule(timeslot_id)
+    );`,
+    (err: any) => {
+      if (err) {
+        handleErrors(err);
+      }
+    }
+  );
   console.log(errors);
   event.sender.send("database-creation", successfully, errors);
 }
-
 function onTestDatabaseConnection(event: IpcMainEvent, filepath: string) {
   DbPath = filepath;
   let db: Database;
@@ -152,13 +190,14 @@ function onTestDatabaseConnection(event: IpcMainEvent, filepath: string) {
     }
 
     const tableNames = [
-      "Student",
+      "Class",
       "Company",
       "Event",
-      "Class",
+      "Room",
+      "Scheduler",
+      "Student",
       "StudentPreference",
-      "Schedule",
-      "TimeSlot",
+      "Timeslot",
     ];
 
     const handleResult = (tableName: string) => (err: any, row: any) => {
