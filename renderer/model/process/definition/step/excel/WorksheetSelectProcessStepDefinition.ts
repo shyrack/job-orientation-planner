@@ -3,7 +3,7 @@ import { ProcessStepDefinition } from "../ProcessStepDefinition";
 
 export class WorksheetSelectProcessStepDefinition extends ProcessStepDefinition {
   constructor() {
-    super("Select Worksheet");
+    super("Worksheet auswählen");
   }
 
   public execute() {}
