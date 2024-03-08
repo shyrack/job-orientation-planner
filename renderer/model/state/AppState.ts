@@ -1,8 +1,5 @@
 import _ from "lodash";
 import React from "react";
-import companyTestData from "../../../electron-src/data/testdata/Companies.json";
-import roomTestData from "../../../electron-src/data/testdata/Rooms.json";
-import studentTestData from "../../../electron-src/data/testdata/Students.json";
 import AppStateProvider from "../../components/provider/AppStateProvider";
 import { ViewDefinition } from "../../components/view/View";
 import { ICloneable } from "../../utils/ICloneable";
@@ -11,7 +8,17 @@ import { CompanyColumns } from "../table/companyView";
 import { RoomColumns } from "../table/roomView";
 import { StudentColumns } from "../table/studentView";
 import { ProcessDefinition } from "../process/definition/ProcessDefinition";
-
+import { ClassColumns } from "../table/classView";
+import { EventColumns } from "../table/eventView";
+import { SchedulerColumns } from "../table/schedulerView";
+import { StudentAppointmentColumns } from "../table/studentAppointmentView";
+import { StudentPreferenceColumns } from "../table/studentPreferenceView";
+import { TimeslotColumns } from "../table/timeslotView";
+import {
+  ClassData,
+  CompanyData,
+  EventData,
+} from "../../../electron-src/database/TableDataTypes";
 /**
  * Type for a function that is given the current app's global state. Function is allowed to modify.
  *
@@ -49,30 +56,112 @@ export class AppState implements ICloneable<AppState> {
   public dbPath: string;
   public viewName: string;
 
+  public class: ViewDefinition<typeof ClassColumns> = {
+    columns: ClassColumns,
+    rows: [],
+  };
+
   public company: ViewDefinition<typeof CompanyColumns> = {
     columns: CompanyColumns,
-    rows: []
+    rows: [],
+  };
+
+  public event: ViewDefinition<typeof EventColumns> = {
+    columns: EventColumns,
+    rows: [],
+  };
+
+  public room: ViewDefinition<typeof RoomColumns> = {
+    columns: EventColumns,
+    rows: [],
+  };
+
+  public scheduler: ViewDefinition<typeof SchedulerColumns> = {
+    columns: RoomColumns,
+    rows: [],
+  };
+
+  public studentAppointment: ViewDefinition<typeof StudentAppointmentColumns> =
+    {
+      columns: RoomColumns,
+      rows: [],
+    };
+
+  public studentPreference: ViewDefinition<typeof StudentPreferenceColumns> = {
+    columns: RoomColumns,
+    rows: [],
   };
 
   public student: ViewDefinition<typeof StudentColumns> = {
     columns: StudentColumns,
-    rows: []
+    rows: [],
   };
 
-  public room: ViewDefinition<typeof RoomColumns> = {
-    columns: RoomColumns,
-    rows: []
+  public timeslot: ViewDefinition<typeof TimeslotColumns> = {
+    columns: StudentColumns,
+    rows: [],
   };
-
-  
 
   constructor() {
-    this.dbPath  = ""
+    this.dbPath = "";
     this.viewName = "room";
 
-    this.company.rows = companyTestData;
-    this.student.rows = studentTestData;
-    this.room.rows = roomTestData;
+    //TODO: @Flo eigentlich besser wenn das OnDemand ausgeführt wird, Aktualisierung auch interessant
+    //TODO: @Flo selectData return Undefined?
+    //this.class.rows = selectData("Class");
+    //this.company.rows = selectData("Company");
+    //this.event.rows = selectData("Event");
+    //this.room.rows = selectData("Room");
+    //this.scheduler.rows = selectData("Scheduler");
+    //this.studentAppointment.rows = selectData("StudentAppointment");
+    //this.studentPreference.rows = selectData("StudentPreference");
+    //this.student.rows = selectData("Student");
+    //this.timeslot.rows = selectData("Timeslot");
+    //console.log(selectData("Student"));
+
+    const classData: ClassData = {
+      name: ["Class Name"],
+      entry_year: [2024],
+    };
+
+    const companyData: CompanyData = {
+      name: ["Company Name", "Yeas"],
+      job_occupation: ["Job Occupation", "Test"],
+      timeslot_start: ["08:00", "08:00"],
+      timeslot_end: ["16:00", "12:00"],
+    };
+
+    const eventData: EventData = {
+      name: ["Event Name", "test"],
+    };
+
+    try {
+      window.electron.createRow(
+        (event, successfullyCreated) => {
+          console.log("Class", successfullyCreated);
+        },
+        "Class",
+        classData
+      );
+
+      window.electron.createRow(
+        (event, successfullyCreated) => {
+          console.log("Company", successfullyCreated);
+        },
+        "Company",
+        companyData
+      );
+
+      window.electron.createRow(
+        (event, successfullyCreated) => {
+          console.log("Event", eventData);
+        },
+        "Event",
+        eventData
+      );
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   /**
@@ -155,5 +244,16 @@ export class AppState implements ICloneable<AppState> {
  * @see {@link https://react.dev/}
  */
 export const AppStateContext = React.createContext({
-  state: new AppState()
+  state: new AppState(),
 });
+
+function selectData(tableName: string): any {
+  try {
+    window.electron.selectTable((event, successfullySelected, obj) => {
+      console.log(obj);
+      return obj;
+    }, tableName);
+  } catch (error) {
+    console.error(error);
+  }
+}

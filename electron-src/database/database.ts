@@ -239,8 +239,52 @@ function selectTable(event: IpcMainEvent, tableName: string) {
   db.close();
 }
 
+function createRow(event: IpcMainEvent, tableName: string, data: any) {
+  const db = new Database(DbPath);
+
+  const keys = Object.keys(data).join(", ");
+  const values = Object.values(data)
+    .map(() => "?")
+    .join(", ");
+
+  const sql = `INSERT INTO ${tableName} (${keys}) VALUES (${values})`;
+
+  db.run(sql, Object.values(data), (err: any) => {
+    if (err) {
+      console.error(err);
+      event.sender.send(`${tableName}-creation`, false, err);
+    } else {
+      event.sender.send(`${tableName}-creation`, true, null);
+    }
+  });
+
+  db.close();
+}
+
 export function registerEventListeners() {
   ipcMain.on("create-database", onCreateDatabase);
   ipcMain.on("test-database-connection", onTestDatabaseConnection);
   ipcMain.on("select-table", selectTable);
+  //CREATE ROW
+  ipcMain.on("create-class", (event, data) => createRow(event, "Class", data));
+  ipcMain.on("create-company", (event, data) =>
+    createRow(event, "Company", data)
+  );
+  ipcMain.on("create-event", (event, data) => createRow(event, "Event", data));
+  ipcMain.on("create-room", (event, data) => createRow(event, "Room", data));
+  ipcMain.on("create-scheduler", (event, data) =>
+    createRow(event, "Scheduler", data)
+  );
+  ipcMain.on("create-student", (event, data) =>
+    createRow(event, "Student", data)
+  );
+  ipcMain.on("create-appointment", (event, data) =>
+    createRow(event, "StudentAppointment", data)
+  );
+  ipcMain.on("create-studentpreference", (event, data) =>
+    createRow(event, "StudentPreference", data)
+  );
+  ipcMain.on("create-timeslot", (event, data) =>
+    createRow(event, "Timeslot", data)
+  );
 }
