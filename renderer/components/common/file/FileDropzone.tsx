@@ -37,7 +37,7 @@ type FileDropzoneProps = {
 export default function FileDropzone(props: FileDropzoneProps) {
   const { onFilesDrop, rootPaperProps, rootTypographyProps, text, validFileTypes } = props;
 
-  const [isDragOver, setIsDragOver] = React.useState(false);
+  const [dragOvers, setDragOvers] = React.useState(0);
   const theme = useTheme();
 
   const borderGradientElementStyles = useSpring({
@@ -55,13 +55,13 @@ export default function FileDropzone(props: FileDropzoneProps) {
     }
   });
 
-  const [sizeMorphElementStyles, sizeMorphElementStylesApi] = useSpring(() => ({
+  const sizeMorphElementStyles = useSpring({
     from: { padding: theme.spacing(0) },
-    to: { padding: theme.spacing(0.5) },
+    to: { padding: dragOvers > 0 ? theme.spacing(0.5) : theme.spacing(0) },
     config: {
       duration: 250
     }
-  }));
+  });
 
   const normalizedValidFileTypes = React.useMemo(
     () =>
@@ -104,21 +104,37 @@ export default function FileDropzone(props: FileDropzoneProps) {
     [onFilesDrop]
   );
 
-  const onDragEnter = React.useCallback(() => {
-    setIsDragOver(true);
-    console.log("drag over", true);
-  }, [setIsDragOver]);
+  const onDragEnter = React.useCallback(
+    (event: DragEvent) => {
+      if (event.relatedTarget === null) {
+        setDragOvers(dragOvers + 1);
+      }
+    },
+    [dragOvers, setDragOvers]
+  );
 
-  const onDragLeave = React.useCallback(() => {
-    setIsDragOver(false);
-    console.log("drag over", false);
-  }, [setIsDragOver]);
+  const onDragLeave = React.useCallback(
+    (event: DragEvent) => {
+      if (event.relatedTarget === null) {
+        setDragOvers(dragOvers - 1);
+      }
+    },
+    [dragOvers, setDragOvers]
+  );
+
+  React.useEffect(() => {
+    document.addEventListener("dragenter", onDragEnter);
+    document.addEventListener("dragleave", onDragLeave);
+
+    return () => {
+      document.removeEventListener("dragenter", onDragEnter);
+      document.removeEventListener("dragleave", onDragLeave);
+    };
+  }, [onDragEnter, onDragLeave]);
 
   return (
     <AnimatedFileDropZonePaperAnimationBorder
-      onDragEnter={onDragEnter}
       onDragOver={onDragOver}
-      onDragLeave={onDragLeave}
       onDrop={onFileDrop}
       style={{ ...borderGradientElementStyles, ...sizeMorphElementStyles }}
       {...rootPaperProps}
