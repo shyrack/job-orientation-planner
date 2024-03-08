@@ -59,7 +59,7 @@ export default function FileDropzone(props: FileDropzoneProps) {
     from: { padding: theme.spacing(0) },
     to: { padding: theme.spacing(0.5) },
     config: {
-      duration: 1000
+      duration: 250
     }
   }));
 
