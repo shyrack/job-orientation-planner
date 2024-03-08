@@ -9,6 +9,7 @@ import FileDropzone from "../../../common/file/FileDropzone";
 import Typography from "../../../text/Typography";
 
 const ChooseFileStepContentCard = styled(Card)(({ theme }) => ({
+  boxSizing: "border-box",
   display: "flex",
   flexDirection: "column",
   gap: theme.spacing(2),
