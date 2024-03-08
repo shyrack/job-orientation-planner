@@ -8,9 +8,9 @@ export default createTheme({
       disabled: "#777"
     },
     secondary: {
-      main: "#0ff",
-      light: "#0f0",
-      dark: "#0ff"
+      light: "#8958c6",
+      main: "#743eb6",
+      dark: "#613498"
     },
     mode: "dark"
   },
