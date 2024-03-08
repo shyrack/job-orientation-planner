@@ -41,16 +41,24 @@ export default function FileDropzone(props: FileDropzoneProps) {
   const theme = useTheme();
 
   const borderGradientElementStyles = useSpring({
-    from: { background: "linear-gradient(0deg, rgb(50, 200, 255) 0%, rgb(125, 0, 255) 100%)" },
-    to: { background: "linear-gradient(360deg, rgb(50, 200, 255) 0%, rgb(125, 0, 255) 100%)" },
+    from: { background: `linear-gradient(0deg, rgb(50, 200, 255) 0%, ${theme.palette.primary.main} 100%)` },
+    to: { background: `linear-gradient(360deg, rgb(50, 200, 255) 0%, ${theme.palette.secondary.main} 100%)` },
     loop: true,
     delay: 0,
     pause: false,
     config: {
-      duration: 5000,
+      duration: 2500,
       bounce: 0
     }
   });
+
+  const [sizeMorphElementStyles, sizeMorphElementStylesApi] = useSpring(() => ({
+    from: { padding: theme.spacing(0) },
+    to: { padding: theme.spacing(0.5) },
+    config: {
+      duration: 1000
+    }
+  }));
 
   const normalizedValidFileTypes = React.useMemo(
     () =>
@@ -95,10 +103,12 @@ export default function FileDropzone(props: FileDropzoneProps) {
 
   const onDragEnter = React.useCallback(() => {
     setIsDragOver(true);
+    console.log("drag over", true);
   }, [setIsDragOver]);
 
   const onDragLeave = React.useCallback(() => {
     setIsDragOver(false);
+    console.log("drag over", false);
   }, [setIsDragOver]);
 
   return (
@@ -107,7 +117,7 @@ export default function FileDropzone(props: FileDropzoneProps) {
       onDragOver={onDragOver}
       onDragLeave={onDragLeave}
       onDrop={onFileDrop}
-      style={borderGradientElementStyles}
+      style={{ ...borderGradientElementStyles, ...sizeMorphElementStyles }}
       {...rootPaperProps}
     >
       <FileDropzonePaper elevation={0}>
