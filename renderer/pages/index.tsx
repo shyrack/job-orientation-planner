@@ -1,3 +1,4 @@
+import FlexContainer from "../components/common/flex/FlexContainer";
 import Panel from "../components/process/Panel";
 import PageProvider from "../components/provider/PageProvider";
 import Typography from "../components/text/Typography";
@@ -17,9 +18,11 @@ export default function IndexPage(props: IndexPageProps) {
       <Typography variant="h5" sx={(theme) => ({ margin: theme.spacing(2) })}>
         Processes:
       </Typography>
-      <Panel processDefinition={testProcessDef} />
-      <Panel processDefinition={viewTestProcessDef} />
-      <Panel processDefinition={excelImportProcessDef} />
+      <FlexContainer>
+        <Panel processDefinition={testProcessDef} />
+        <Panel processDefinition={viewTestProcessDef} />
+        <Panel processDefinition={excelImportProcessDef} />
+      </FlexContainer>
     </PageProvider>
   );
 }
