@@ -29,19 +29,11 @@ export default function Navbar() {
           <IconButton onClick={onClick}>
             <HomeIcon />
           </IconButton>
-          <Typography
-            variant="h5"
-            component="div"
-            sx={{ display: { xs: "none", sm: "block" }, marginRight: "5px" }}
-          >
-            JOP
+          <Typography variant="h5" component="div" sx={{ display: { xs: "none", sm: "block" }, marginRight: "5px" }}>
+            Job Orientation Booster
           </Typography>
           {navItems.map((name, index) => (
-            <NavbarItem
-              key={`NavBar-Item-${index}`}
-              name={name}
-              pageId="blubber"
-            />
+            <NavbarItem key={`NavBar-Item-${index}`} name={name} pageId="blubber" />
           ))}
         </Toolbar>
       </AppBar>
