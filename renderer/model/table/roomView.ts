@@ -6,17 +6,11 @@ import {
   createColumnDefinition
 } from "./view";
 
-export const RoomIDColDef = createColumnDefinition("id", "ID", 90);
+export const RoomIDColDef = createColumnDefinition("id", "ID", 90, true);
 
 export const RoomNumberColDef = createColumnDefinition(
   "room-number",
   "Raumnummer",
-  150
-);
-
-export const RoomMaxTimeSlotColDef = createColumnDefinition(
-  "max-time-slot",
-  "Maximaler Zeitblock",
   150
 );
 
@@ -29,15 +23,9 @@ export const RoomCapacityViewColDef = createColumnDefinition(
 export const RoomColumns: ColumnDefinitions<string> = [
   RoomIDColDef,
   RoomNumberColDef,
-  RoomCapacityViewColDef,
-  RoomMaxTimeSlotColDef
+  RoomCapacityViewColDef
 ];
 
 export type RoomRowDefinition = RowDefinition<
-  [
-    typeof RoomIDColDef,
-    typeof RoomNumberColDef,
-    typeof RoomMaxTimeSlotColDef,
-    typeof RoomCapacityViewColDef
-  ]
+  [typeof RoomIDColDef, typeof RoomNumberColDef, typeof RoomCapacityViewColDef]
 >;

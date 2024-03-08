@@ -5,7 +5,12 @@ import {
   createColumnDefinition
 } from "./view";
 
-export const ClassIdColDef = createColumnDefinition("id", "Klassen-ID", 90);
+export const ClassIdColDef = createColumnDefinition(
+  "id",
+  "Klassen-ID",
+  90,
+  true
+);
 
 export const ClassNameColDef = createColumnDefinition("name", "Name", 150);
 

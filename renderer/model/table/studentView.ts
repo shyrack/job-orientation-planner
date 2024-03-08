@@ -1,5 +1,6 @@
 // Authors: Florian Jahn, Andre Löwen
 
+import { TroubleshootOutlined } from "@mui/icons-material";
 import {
   ColumnDefinition,
   ColumnDefinitions,
@@ -7,7 +8,7 @@ import {
   createColumnDefinition
 } from "./view";
 
-export const StudentIDColDef = createColumnDefinition("id", "ID", 90);
+export const StudentIDColDef = createColumnDefinition("id", "ID", 90, true);
 
 export const StudentClassColDef = createColumnDefinition(
   "class",

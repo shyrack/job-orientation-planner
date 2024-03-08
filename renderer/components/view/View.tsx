@@ -8,7 +8,7 @@ import {
   styled
 } from "@mui/material";
 import { Box } from "@mui/system";
-import { DataGrid, GridColDef, useGridApiContext } from "@mui/x-data-grid";
+import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { useEffect, useState } from "react";
 import { AppState } from "../../model/state/AppState";
 import { ColumnDefinitions, RowDefinition } from "../../model/table/view";
@@ -28,6 +28,7 @@ type FormData = {
   field: string;
   label: string;
   value: string | number;
+  hidden: boolean;
 };
 
 export type ViewDefinition<T extends ColumnDefinitions<string>> = {
@@ -57,9 +58,11 @@ export default function View() {
     const updatedFormData = view.columns.map((column) => ({
       field: column.field,
       label: column.headerName,
-      value: ""
+      value: "",
+      hidden: column.hideInForm
     }));
     setFormData(updatedFormData);
+    console.log(formData);
   }, [view]);
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -93,7 +96,8 @@ export default function View() {
     const updatedFormData = view.columns.map((column) => ({
       field: column.field,
       label: column.headerName,
-      value: ""
+      value: "",
+      hidden: column.hideInForm
     }));
 
     setFormData(updatedFormData);
@@ -105,12 +109,17 @@ export default function View() {
     const updatedFormData = view.columns.map((column) => ({
       field: column.field,
       label: column.headerName,
-      value: selectedRow[column.field]
+      value: selectedRow[column.field],
+      hidden: column.hideInForm
     }));
 
     setFormData(updatedFormData);
     setFormMode("edit");
     setShowDialog(true);
+  };
+
+  const handleDelete = () => {
+    console.log("DELETED", selectedRow);
   };
 
   return (
@@ -147,22 +156,25 @@ export default function View() {
             <Typography variant="h4">Schüler hinzufügen</Typography>
           </Box>
           <Form onSubmit={handleSubmit}>
-            {formData.map(({ field, label, value }) => (
-              <Grid
-                item
-                xs={12}
-                key={field}
-                style={{ display: field === "id" ? "none" : "block" }}
-              >
-                <TextField
-                  fullWidth
-                  name={field}
-                  label={label}
-                  value={value}
-                  onChange={handleInputChange}
-                />
-              </Grid>
-            ))}
+            {formData.map(({ field, label, value, hidden }) => {
+              console.log(field, label, value, hidden);
+              return (
+                <Grid
+                  item
+                  xs={12}
+                  key={field}
+                  style={{ display: hidden ? "none" : "block" }}
+                >
+                  <TextField
+                    fullWidth
+                    name={field}
+                    label={label}
+                    value={value}
+                    onChange={handleInputChange}
+                  />
+                </Grid>
+              );
+            })}
             <Grid item xs={12}>
               <StyledButton
                 onClick={() => {
@@ -183,6 +195,7 @@ export default function View() {
       </Dialog>
       <Button onClick={handleCreate}>Benutzer hinzufügen</Button>
       <Button onClick={handleEdit}>Bearbeiten</Button>
+      <Button onClick={handleDelete}>Löschen</Button>
     </StyledBox>
   );
 }

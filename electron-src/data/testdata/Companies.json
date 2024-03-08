@@ -13,5 +13,90 @@
     "id": 3,
     "name": "Bauhaus",
     "field": "Einzelhandelkaufsleute"
+  },
+  {
+    "id": 4,
+    "name": "TechCom",
+    "field": "Informatikkaufleute"
+  },
+  {
+    "id": 5,
+    "name": "Metallix",
+    "field": "Maschinenbau"
+  },
+  {
+    "id": 6,
+    "name": "FoodLabs",
+    "field": "Lebensmitteltechnologie"
+  },
+  {
+    "id": 7,
+    "name": "GreenEnergy",
+    "field": "Erneuerbare Energien"
+  },
+  {
+    "id": 8,
+    "name": "FashionTrend",
+    "field": "Mode- und Textilmanagement"
+  },
+  {
+    "id": 9,
+    "name": "BioMedTech",
+    "field": "Medizintechnik"
+  },
+  {
+    "id": 10,
+    "name": "LogiTech",
+    "field": "Logistikmanagement"
+  },
+  {
+    "id": 11,
+    "name": "MediaWave",
+    "field": "Medienmanagement"
+  },
+  {
+    "id": 12,
+    "name": "GreenSolutions",
+    "field": "Umwelttechnik"
+  },
+  {
+    "id": 13,
+    "name": "FinanceCorp",
+    "field": "Finanzwesen"
+  },
+  {
+    "id": 14,
+    "name": "HealthCare",
+    "field": "Gesundheitsmanagement"
+  },
+  {
+    "id": 15,
+    "name": "EduTech",
+    "field": "Bildungstechnologie"
+  },
+  {
+    "id": 16,
+    "name": "AeroDynamics",
+    "field": "Luft- und Raumfahrttechnik"
+  },
+  {
+    "id": 17,
+    "name": "Robotix",
+    "field": "Robotik"
+  },
+  {
+    "id": 18,
+    "name": "EnergySavers",
+    "field": "Energieeffizienz"
+  },
+  {
+    "id": 19,
+    "name": "AquaTech",
+    "field": "Wassertechnologie"
+  },
+  {
+    "id": 20,
+    "name": "TechSupport",
+    "field": "IT-Support"
   }
 ]

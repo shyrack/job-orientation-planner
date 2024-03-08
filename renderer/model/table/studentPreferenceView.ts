@@ -8,7 +8,8 @@ import {
 export const StudentPreferenceIDColDef = createColumnDefinition(
   "preference-id",
   "Schüler-Präferenz",
-  90
+  90,
+  true
 );
 
 export const StudentPreferenceStudentSurnameColDef = createColumnDefinition(

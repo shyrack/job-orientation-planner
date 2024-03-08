@@ -7,7 +7,8 @@ import {
 export const AttendanceIdColDef = createColumnDefinition(
   "id",
   "Teilnahme-ID",
-  150
+  150,
+  true
 );
 
 export const AttendanceTimeslotRoomColDef = createColumnDefinition(

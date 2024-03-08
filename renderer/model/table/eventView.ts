@@ -4,7 +4,7 @@ import {
   createColumnDefinition
 } from "./view";
 
-export const EventIDColDef = createColumnDefinition("id", "ID", 90);
+export const EventIDColDef = createColumnDefinition("id", "ID", 90, true);
 
 export const EventNameColDef = createColumnDefinition("name", "Eventname", 150);
 

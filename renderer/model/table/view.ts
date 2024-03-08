@@ -4,6 +4,7 @@ export type ColumnDefinition<K extends string> = {
   field: K;
   headerName: string;
   width?: number;
+  hideInForm: boolean;
 };
 
 export type ColumnDefinitions<K extends string> = Array<ColumnDefinition<K>>;
@@ -26,11 +27,13 @@ export type RowDefinition<T extends ColumnDefinition<string>[]> = T extends
 export function createColumnDefinition<K extends string>(
   field: K,
   headerName: string,
-  width: number
+  width: number,
+  hideInForm: boolean = false
 ): ColumnDefinition<K> {
   return {
     field,
     headerName,
-    width
+    width,
+    hideInForm
   };
 }

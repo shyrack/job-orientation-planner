@@ -6,7 +6,7 @@ import {
   createColumnDefinition
 } from "./view";
 
-export const CompanyIdColDef = createColumnDefinition("id", "ID", 90);
+export const CompanyIdColDef = createColumnDefinition("id", "ID", 90, true);
 
 export const CompanyNameColDef = createColumnDefinition(
   "name",
