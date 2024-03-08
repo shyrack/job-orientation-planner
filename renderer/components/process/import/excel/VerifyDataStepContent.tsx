@@ -1,13 +1,20 @@
-import { Button, Step, StepContent, StepContentProps, StepLabel, Stepper, styled } from "@mui/material";
+import { Button, Card, Step, StepContent, StepContentProps, StepLabel, Stepper, styled } from "@mui/material";
 import _ from "lodash";
 import React from "react";
 import { useAppState } from "../../../../utils/hooks";
 import FlexContainer from "../../../common/flex/FlexContainer";
 import FlexSpacer from "../../../common/flex/FlexSpacer";
+import Typography from "../../../text/Typography";
 
-const VerifyDataStepWrapper = styled(FlexContainer)({
-  flexDirection: "column"
-});
+const VerifyDataStepWrapper = styled(Card)(({ theme }) => ({
+  display: "flex",
+  flexDirection: "column",
+  flexGrow: 1,
+  flexShrink: 0,
+  flexWrap: "wrap",
+  gap: theme.spacing(2),
+  padding: theme.spacing(2)
+}));
 
 const StepperButtonWrapper = styled(FlexContainer)({
   flexGrow: 0,
@@ -33,6 +40,7 @@ export default function VerifyDataStepContent(props: StepContentProps) {
 
   return (
     <VerifyDataStepWrapper>
+      <Typography variant={"h6"}>Daten in Worksheets verifizieren</Typography>
       <Stepper activeStep={activeStep} nonLinear={true} orientation={"vertical"}>
         {_.map(worksheets, (worksheet, index) => (
           <Step
