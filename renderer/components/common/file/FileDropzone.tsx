@@ -41,10 +41,13 @@ export default function FileDropzone(props: FileDropzoneProps) {
   const theme = useTheme();
 
   const borderGradientElementStyles = useSpring({
-    from: { background: `linear-gradient(0deg, rgb(50, 200, 255) 0%, ${theme.palette.primary.main} 100%)` },
-    to: { background: `linear-gradient(360deg, rgb(50, 200, 255) 0%, ${theme.palette.secondary.main} 100%)` },
+    from: {
+      background: `linear-gradient(0deg, ${theme.palette.secondary.main} 0%, ${theme.palette.primary.main} 100%)`
+    },
+    to: {
+      background: `linear-gradient(360deg, ${theme.palette.secondary.main} 0%, ${theme.palette.primary.main} 100%)`
+    },
     loop: true,
-    delay: 0,
     pause: false,
     config: {
       duration: 2500,
