@@ -34,7 +34,7 @@ export default function Navbar() {
             component="div"
             sx={{ display: { xs: "none", sm: "block" }, marginRight: "5px" }}
           >
-            JOP
+            BOP {/* Berufs-Orientierungs-Planer */}
           </Typography>
           {navItems.map((name, index) => (
             <NavbarItem

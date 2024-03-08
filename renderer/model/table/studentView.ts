@@ -29,16 +29,16 @@ export const StudentFirstNameViewColDef = createColumnDefinition(
 
 export const StudentColumns: ColumnDefinitions<string> = [
   StudentIDColDef,
-  StudentClassColDef,
+  StudentFirstNameViewColDef,
   StudentNameViewColDef,
-  StudentFirstNameViewColDef
+  StudentClassColDef
 ];
 
 export type StudentRowDefinition = RowDefinition<
   [
     typeof StudentIDColDef,
-    typeof StudentClassColDef,
+    typeof StudentFirstNameViewColDef,
     typeof StudentNameViewColDef,
-    typeof StudentFirstNameViewColDef
+    typeof StudentClassColDef
   ]
 >;

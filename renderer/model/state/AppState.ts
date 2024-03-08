@@ -10,7 +10,6 @@ import * as hooks from "../../utils/hooks";
 import { CompanyColumns } from "../table/companyView";
 import { RoomColumns } from "../table/roomView";
 import { StudentColumns } from "../table/studentView";
-import { ProcessDefinition } from "../process/definition/ProcessDefinition";
 
 /**
  * Type for a function that is given the current app's global state. Function is allowed to modify.
@@ -28,7 +27,7 @@ type AppStateSetStateDispatcher = React.Dispatch<
   React.SetStateAction<AppState>
 >;
 
-export type AvailableViews = "company" | "student";
+export type AvailableViews = "student" | "company" | "room";
 
 /**
  * A class for defining and implementing app's global state. The classes instance is accessible in React functional components via {@link hooks.useAppState}.
@@ -63,8 +62,7 @@ export class AppState implements ICloneable<AppState> {
   };
 
   constructor() {
-    this.viewName = "room";
-
+    this.viewName = "student";
     this.company.rows = companyTestData;
     this.student.rows = studentTestData;
     this.room.rows = roomTestData;

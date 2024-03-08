@@ -3,7 +3,8 @@ import {
   ProcessStepFunctionalComponentProps
 } from "./ProcessStepDefinition";
 import View from "../../../../components/view/View";
-import { AppState } from "../../../state/AppState";
+import { AppState, AvailableViews } from "../../../state/AppState";
+import { Nullable } from "../../../../utils/types";
 
 export class ViewTestProcessStepDefinition extends ProcessStepDefinition {
   constructor(private viewName: string, stepLabel: string) {
@@ -20,7 +21,9 @@ export class ViewTestProcessStepDefinition extends ProcessStepDefinition {
     return false;
   }
 
-  public getStepContentFunctionalComponent() {
+  public getStepContentFunctionalComponent(): (
+    props: ProcessStepFunctionalComponentProps
+  ) => Nullable<React.JSX.Element> {
     return View;
   }
 }

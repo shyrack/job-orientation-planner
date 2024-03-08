@@ -5,7 +5,11 @@ import { Nullable } from "../../../../utils/types";
 export type ProcessStepFunctionalComponentProps = {};
 
 export abstract class ProcessStepDefinition {
-  constructor(private label: string, private muiStepProps?: StepProps, private muiStepLabelProps?: StepLabelProps) {}
+  constructor(
+    private label: string,
+    private muiStepProps?: StepProps,
+    private muiStepLabelProps?: StepLabelProps
+  ) {}
 
   public getLabel() {
     return this.label;
