@@ -10,7 +10,7 @@ const ProcessContainerWrapper = styled(FlexContainer)({
   flexDirection: "column"
 });
 
-const ProcessContainerButtonWrapper = styled(FlexContainer)({
+const StepperButtonWrapper = styled(FlexContainer)({
   flexGrow: 0,
   flexShrink: 1
 });
@@ -66,7 +66,7 @@ export default function ProcessContainer(props: ProcessContainerProps) {
         })}
       </ProcessContainerStepper>
       <ProcessStepContainer activeStep={activeStep} steps={steps} />
-      <ProcessContainerButtonWrapper>
+      <StepperButtonWrapper>
         <Tooltip title={isFirstStep ? "Keine vorherigen Schritte" : ""}>
           <span>
             <Button disabled={isFirstStep} onClick={onBackButtonClick}>
@@ -86,7 +86,7 @@ export default function ProcessContainer(props: ProcessContainerProps) {
         ) : (
           <Button onClick={onNextButtonClick}>Weiter</Button>
         )}
-      </ProcessContainerButtonWrapper>
+      </StepperButtonWrapper>
     </ProcessContainerWrapper>
   );
 }
