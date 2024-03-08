@@ -27,8 +27,8 @@ export default function ChooseWorksheetStepContent(props: StepContentProps) {
     async function buildWorksheetList() {
       const worksheetFileMap = await Promise.all(
         _.map(excelFiles, async (excelFile) => {
-          const excelFileText = await excelFile.text();
-          const readExcelWorkbook = xlsx.read(excelFileText);
+          const excelFileBuffer = await excelFile.arrayBuffer();
+          const readExcelWorkbook = xlsx.read(excelFileBuffer);
 
           return _.map(
             readExcelWorkbook.Sheets,
