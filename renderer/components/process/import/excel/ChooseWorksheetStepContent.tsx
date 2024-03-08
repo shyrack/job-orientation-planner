@@ -8,24 +8,46 @@ import { useAppState } from "../../../../utils/hooks";
 
 export default function ChooseWorksheetStepContent(props: StepContentProps) {
   const { accessedSubState: excelFiles } = useAppState((appState) => appState.excelFileImportProcessState.excelFiles);
+  const [worksheets, setWorksheets] = React.useState<Array<Worksheet>>([]);
 
-  const buildWorksheetList = React.useCallback(async () => {
-    const worksheetMap = await Promise.all(
-      _.map(excelFiles, async (excelFile) => {
-        const excelFileText = await excelFile.text();
-        const readExcelWorkbook = xlsx.read(excelFileText);
+  const worksheetData = React.useMemo(
+    () =>
+      _.map(worksheets, (worksheet, index) => ({
+        filename: worksheet.getFilename(),
+        id: `worksheet-${worksheet.getName()}-${index}`,
+        name: worksheet.getName()
+      })),
+    [worksheets]
+  );
 
-        return _.map(
-          readExcelWorkbook.Sheets,
-          (worksheet, worksheetName) => new Worksheet(worksheetName, xlsx.utils.sheet_to_json(worksheet))
-        );
-      })
-    );
+  React.useEffect(() => {
+    async function buildWorksheetList() {
+      const worksheetFileMap = await Promise.all(
+        _.map(excelFiles, async (excelFile) => {
+          const excelFileText = await excelFile.text();
+          const readExcelWorkbook = xlsx.read(excelFileText);
 
-    return _.flatten(worksheetMap);
-  }, [excelFiles]);
+          return _.map(
+            readExcelWorkbook.Sheets,
+            (worksheet, worksheetName) =>
+              new Worksheet(excelFile.name, worksheetName, xlsx.utils.sheet_to_json(worksheet))
+          );
+        })
+      );
 
-  const worksheets = React.useMemo(() => buildWorksheetList(), [buildWorksheetList]);
+      setWorksheets(_.flatten(worksheetFileMap));
+    }
 
-  return <DataGrid columns={[]} rows={[]} />;
+    buildWorksheetList();
+  }, [excelFiles, setWorksheets]);
+
+  return (
+    <DataGrid
+      columns={[
+        { field: "filename", headerName: "Workbook Name" },
+        { field: "name", headerName: "Worksheet Name" }
+      ]}
+      rows={worksheetData}
+    />
+  );
 }
