@@ -1,6 +1,6 @@
 import {
   ProcessStepDefinition,
-  ProcessStepFunctionalComponentProps
+  ProcessStepFunctionalComponentProps,
 } from "./ProcessStepDefinition";
 import View from "../../../../components/view/View";
 import { AppState } from "../../../state/AppState";

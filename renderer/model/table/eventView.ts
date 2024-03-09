@@ -1,18 +1,19 @@
-import {
-  ColumnDefinitions,
-  RowDefinition,
-  createColumnDefinition
-} from "./view";
+// Authors: Florian Jahn, Andre Löwen
 
-export const EventIDColDef = createColumnDefinition("id", "ID", 90);
+import { ColumnDefinition, ColumnDefinitions, RowDefinition } from "./view";
 
-export const EventNameColDef = createColumnDefinition("name", "Eventname", 150);
+export const EventIdColumnDefinition: ColumnDefinition<"event_id"> = {
+  field: "event_id",
+  headerName: "ID",
+  width: 90
+};
 
-export const EventColumns: ColumnDefinitions<string> = [
-  EventIDColDef,
-  EventNameColDef
-];
+export const EventNameColumnDefinition: ColumnDefinition<"name"> = {
+  field: "name",
+  headerName: "Name",
+  width: 150
+};
 
-export type EventRowDefinition = RowDefinition<
-  [typeof EventIDColDef, typeof EventNameColDef]
->;
+export type EventRowDefinition = RowDefinition<[typeof EventIdColumnDefinition, typeof EventNameColumnDefinition]>;
+
+export const EventColumns: ColumnDefinitions<string> = [EventIdColumnDefinition, EventNameColumnDefinition];

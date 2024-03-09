@@ -19,8 +19,8 @@ app.on("ready", async () => {
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
-      preload: join(__dirname, "preload.js")
-    }
+      preload: join(__dirname, "preload.js"),
+    },
   });
 
   const url = isDev
@@ -28,12 +28,17 @@ app.on("ready", async () => {
     : format({
         pathname: join(__dirname, "../renderer/out/index.html"),
         protocol: "file:",
-        slashes: true
+        slashes: true,
       });
 
   if (isDev) mainWindow.webContents.openDevTools();
 
   mainWindow.loadURL(url);
+
+  ipcMain.on("database-filepath-provided", (event, filePath) => {
+    event.preventDefault();
+    console.log("filePath:", filePath);
+  });
 });
 
 // Quit the app once all windows are closed
