@@ -189,16 +189,7 @@ function onTestDatabaseConnection(event: IpcMainEvent, filepath: string) {
       return;
     }
 
-    const tableNames = [
-      "Class",
-      "Company",
-      "Event",
-      "Room",
-      "Scheduler",
-      "Student",
-      "StudentPreference",
-      "Timeslot",
-    ];
+    const tableNames = ["Class", "Company", "Event", "Room", "Scheduler", "Student", "StudentPreference", "Timeslot"];
 
     const handleResult = (tableName: string) => (err: any, row: any) => {
       if (err) {
@@ -267,24 +258,12 @@ export function registerEventListeners() {
   ipcMain.on("select-table", selectTable);
   //CREATE ROW
   ipcMain.on("create-class", (event, data) => createRow(event, "Class", data));
-  ipcMain.on("create-company", (event, data) =>
-    createRow(event, "Company", data)
-  );
+  ipcMain.on("create-company", (event, data) => createRow(event, "Company", data));
   ipcMain.on("create-event", (event, data) => createRow(event, "Event", data));
   ipcMain.on("create-room", (event, data) => createRow(event, "Room", data));
-  ipcMain.on("create-scheduler", (event, data) =>
-    createRow(event, "Scheduler", data)
-  );
-  ipcMain.on("create-student", (event, data) =>
-    createRow(event, "Student", data)
-  );
-  ipcMain.on("create-appointment", (event, data) =>
-    createRow(event, "StudentAppointment", data)
-  );
-  ipcMain.on("create-studentpreference", (event, data) =>
-    createRow(event, "StudentPreference", data)
-  );
-  ipcMain.on("create-timeslot", (event, data) =>
-    createRow(event, "Timeslot", data)
-  );
+  ipcMain.on("create-scheduler", (event, data) => createRow(event, "Scheduler", data));
+  ipcMain.on("create-student", (event, data) => createRow(event, "Student", data));
+  ipcMain.on("create-appointment", (event, data) => createRow(event, "StudentAppointment", data));
+  ipcMain.on("create-studentpreference", (event, data) => createRow(event, "StudentPreference", data));
+  ipcMain.on("create-timeslot", (event, data) => createRow(event, "Timeslot", data));
 }
