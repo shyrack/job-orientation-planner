@@ -2,9 +2,7 @@ import { DataGridProps } from "@mui/x-data-grid";
 import _ from "lodash";
 
 export class Worksheet {
-  constructor(private filename: string, private name: string, private data: Array<string>) {
-    console.log("data", data);
-  }
+  constructor(private filename: string, private name: string, private data: Array<string>) {}
 
   getFilename() {
     return this.filename;
