@@ -1,3 +1,4 @@
+import { styled } from "@mui/material";
 import React from "react";
 import { ProcessStepDefinition } from "../../model/process/definition/step/ProcessStepDefinition";
 import FlexContainer from "../common/flex/FlexContainer";
@@ -6,6 +7,11 @@ type ProcessStepContainerProps = {
   activeStep: number;
   steps: Array<ProcessStepDefinition>;
 };
+
+const ProcessStep = styled(FlexContainer)({
+  flexShrink: 1,
+  overflow: "hidden"
+});
 
 export default function ProcessStepContainer(props: ProcessStepContainerProps) {
   const { activeStep, steps } = props;
@@ -18,8 +24,8 @@ export default function ProcessStepContainer(props: ProcessStepContainerProps) {
   }, [currentStep]);
 
   return (
-    <FlexContainer>
+    <ProcessStep>
       <CurrentStepComponent />
-    </FlexContainer>
+    </ProcessStep>
   );
 }

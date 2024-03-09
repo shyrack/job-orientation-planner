@@ -8,7 +8,10 @@ import ProcessStepContainer from "./ProcessStepContainer";
 
 const ProcessContainerWrapper = styled(FlexContainer)({
   boxSizing: "border-box",
-  height: "100%"
+  flex: "1 0 0",
+  flexDirection: "column",
+  flexWrap: "nowrap",
+  overflow: "hidden"
 });
 
 const StepperButtonWrapper = styled(FlexContainer)({
