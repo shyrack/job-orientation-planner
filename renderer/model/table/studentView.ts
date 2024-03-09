@@ -1,6 +1,6 @@
 // Authors: Florian Jahn, Andre Löwen
 
-import { ColumnDefinition, ColumnDefinitions, RowDefinition, createColumnDefinition } from "./view";
+import { ColumnDefinition, ColumnDefinitions, RowDefinition } from "./view";
 
 export const StudentIdViewColumnDefinition: ColumnDefinition<"student_id"> = {
   field: "student_id",

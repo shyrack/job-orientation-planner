@@ -1,6 +1,6 @@
 // Authors: Andre Löwen
 
-import { ColumnDefinitions, RowDefinition, createColumnDefinition } from "./view";
+import { ColumnDefinition, ColumnDefinitions } from "./view";
 
 export const RoomIdViewColumnDefinition: ColumnDefinition<"room_id"> = {
   field: "room_id",
@@ -25,7 +25,3 @@ export const RoomColumns: ColumnDefinitions<string> = [
   RoomNameColumnDefinition,
   RoomCapacityViewColumnDefinition
 ];
-
-export type RoomRowDefinition = RowDefinition<
-  [typeof RoomIDColDef, typeof RoomNumberColDef, typeof RoomMaxTimeSlotColDef, typeof RoomCapacityViewColDef]
->;

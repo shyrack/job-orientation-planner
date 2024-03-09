@@ -1,6 +1,6 @@
 // Authors: Florian Jahn, Andre Löwen
 
-import { ColumnDefinitions, RowDefinition, createColumnDefinition } from "./view";
+import { ColumnDefinition, ColumnDefinitions, RowDefinition } from "./view";
 
 export const CompanyIdColumnDefinition: ColumnDefinition<"company_id"> = {
   field: "company_id",
