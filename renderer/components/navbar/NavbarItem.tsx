@@ -8,5 +8,5 @@ type Props = {
 export default function NavbarItem(props: Props) {
   const { name, pageId } = props;
 
-  return <Button color="secondary">{name}</Button>;
+  return <Button color="primary">{name}</Button>;
 }
