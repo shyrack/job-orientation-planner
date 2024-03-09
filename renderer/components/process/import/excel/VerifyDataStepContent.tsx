@@ -1,4 +1,4 @@
-import { Button, Card, Step, StepContent, StepContentProps, StepLabel, Stepper, styled } from "@mui/material";
+import { Button, Card, Step, StepContentProps, StepLabel, Stepper, styled } from "@mui/material";
 import _ from "lodash";
 import React from "react";
 import { useAppState } from "../../../../utils/hooks";
@@ -8,23 +8,36 @@ import FlexSpacer from "../../../common/flex/FlexSpacer";
 import Typography from "../../../text/Typography";
 
 const VerifyDataStepWrapper = styled(Card)(({ theme }) => ({
+  boxSizing: "border-box",
   display: "flex",
   flexDirection: "column",
-  flexGrow: 1,
-  flexShrink: 0,
-  flexWrap: "wrap",
+  flex: "1 1 fit-content",
+  flexWrap: "nowrap",
   gap: theme.spacing(2),
-  maxHeight: "100%",
+  height: "100%",
+  overflow: "hidden",
   padding: theme.spacing(2)
 }));
+
+const WorksheetStepper = styled(Stepper)({
+  overflow: "hidden"
+});
+
+const WorksheetStep = styled(Step)({
+  display: "flex",
+  flexDirection: "column",
+  overflow: "hidden"
+});
+
+const WorksheetStepContent = styled(FlexContainer)({
+  flex: "1 1 fit-content",
+  flexDirection: "column",
+  overflow: "hidden"
+});
 
 const StepperButtonWrapper = styled(FlexContainer)({
   flexGrow: 0,
   flexShrink: 1
-});
-
-const ButtonStepperSpacer = styled(FlexSpacer)({
-  flexGrow: 1
 });
 
 export default function VerifyDataStepContent(props: StepContentProps) {
@@ -43,22 +56,19 @@ export default function VerifyDataStepContent(props: StepContentProps) {
   return (
     <VerifyDataStepWrapper id="test">
       <Typography variant={"h6"}>Daten in Worksheets verifizieren</Typography>
-      <Stepper activeStep={activeStep} nonLinear={true} orientation={"vertical"}>
+      <WorksheetStepper activeStep={activeStep} nonLinear={true} orientation={"vertical"}>
         {_.map(worksheets, (worksheet, index) => (
-          <Step
+          <WorksheetStep
             key={`verify-data-step-${worksheet.getFilename()}-${worksheet.getName()}-${index}`}
             completed={index < activeStep}
           >
             <StepLabel>{`${worksheet.getFilename()}: ${worksheet.getName()}`}</StepLabel>
-            <StepContent>
-              <FlexContainer>
-                <AdvancedDataGrid columns={worksheet.getColumns()} rows={worksheet.getRows()} />
-              </FlexContainer>
-            </StepContent>
-          </Step>
+            <WorksheetStepContent sx={{ display: index === activeStep ? "flex" : "none" }}>
+              <AdvancedDataGrid columns={worksheet.getColumns()} rows={worksheet.getRows()} />
+            </WorksheetStepContent>
+          </WorksheetStep>
         ))}
-      </Stepper>
-      <ButtonStepperSpacer />
+      </WorksheetStepper>
       <StepperButtonWrapper>
         <Button disabled={activeStep === 0} onClick={onBackButtonClick}>
           Zurück
