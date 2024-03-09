@@ -1,37 +1,35 @@
 // Authors: Florian Jahn, Andre Löwen
 
-import { ColumnDefinition, ColumnDefinitions, RowDefinition } from "./view";
+import { ColumnDefinitions, RowDefinition, createColumnDefinition } from "./view";
 
 export const CompanyIdColumnDefinition: ColumnDefinition<"company_id"> = {
   field: "company_id",
   headerName: "ID",
-  width: 90,
+  width: 90
 };
 
 export const CompanyNameColumnDefinition: ColumnDefinition<"name"> = {
   field: "name",
   headerName: "Unternehmen",
-  width: 150,
+  width: 150
 };
 
-export const CompanyJobOccupationColumnDefinition: ColumnDefinition<"job_occupation"> =
-  {
-    field: "job_occupation",
-    headerName: "Ausbildungsberufe/Studiengänge",
-    width: 300,
-  };
+export const CompanyJobOccupationColumnDefinition: ColumnDefinition<"job_occupation"> = {
+  field: "job_occupation",
+  headerName: "Ausbildungsberufe/Studiengänge",
+  width: 300
+};
 
-export const CompanyTimeStartColumnDefinition: ColumnDefinition<"company_start"> =
-  {
-    field: "company_start",
-    headerName: "Verfügbarkeit Beginn",
-    width: 150,
-  };
+export const CompanyTimeStartColumnDefinition: ColumnDefinition<"company_start"> = {
+  field: "company_start",
+  headerName: "Verfügbarkeit Beginn",
+  width: 150
+};
 
 export const CompanyTimeEndColumnDefinition: ColumnDefinition<"company_end"> = {
   field: "company_end",
   headerName: "Verfügbarkeit Ende",
-  width: 150,
+  width: 150
 };
 
 export type CompanyRowDefinition = RowDefinition<
@@ -49,5 +47,5 @@ export const CompanyColumns: ColumnDefinitions<string> = [
   CompanyNameColumnDefinition,
   CompanyJobOccupationColumnDefinition,
   CompanyTimeStartColumnDefinition,
-  CompanyTimeEndColumnDefinition,
+  CompanyTimeEndColumnDefinition
 ];

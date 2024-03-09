@@ -1,11 +1,24 @@
 import { Home as HomeIcon } from "@mui/icons-material";
-import AppBar from "@mui/material/AppBar";
-import IconButton from "@mui/material/IconButton";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import styled from "@mui/styled-engine";
-import Box from "@mui/system/Box";
+import { AppBar, Box, IconButton, Toolbar, styled } from "@mui/material";
+import React from "react";
+import FlexContainer from "../common/flex/FlexContainer";
+import Typography from "../text/Typography";
 import NavbarItem from "./NavbarItem";
+
+const StyledBox = styled(Box)({
+  display: "flex",
+  flex: "0 0 fit-content",
+  width: "100%"
+});
+
+const StyledAppBar = styled(AppBar)({
+  position: "inherit"
+});
+
+const NavigationItems = styled(FlexContainer)(({ theme }) => ({
+  flexWrap: "nowrap",
+  gap: theme.spacing(1)
+}));
 
 export default function Navbar() {
   const navItems = [
@@ -15,46 +28,27 @@ export default function Navbar() {
     { name: "Credits", pageId: "/" }
   ];
 
-  const StyledBox = styled(Box)(({ theme }) => ({
-    display: "flex",
-    position: "relative",
-    height: "64px",
-    width: "100%",
-    flexShrink: 1,
-  }));
-
-  const onClickHome = () => {
+  const onClick = React.useCallback(() => {
     window.location.href = "/";
-  };
-
-  const onItemClick = (pageId: string) => {
-    window.location.href = `${pageId}`;
-  };
+  }, []);
 
   return (
     <StyledBox>
-      <AppBar component="nav">
+      <StyledAppBar>
         <Toolbar>
           <IconButton onClick={onClickHome}>
             <HomeIcon />
           </IconButton>
-          <Typography
-            variant="h5"
-            component="div"
-            sx={{ display: { xs: "none", sm: "block" }, marginRight: "5px" }}
-          >
-            JOP
+          <Typography variant="h5" component="div" sx={{ display: { xs: "none", sm: "block" }, marginRight: "5px" }}>
+            Job Orientation Booster
           </Typography>
-          {navItems.map((item, index) => (
-            <NavbarItem
-              key={`NavBar-Item-${index}`}
-              name={item.name}
-              pageId={item.pageId}
-              onItemClick={onItemClick}
-            />
-          ))}
+          <NavigationItems>
+            {navItems.map((name, index) => (
+              <NavbarItem key={`NavBar-Item-${index}`} name={name} pageId="blubber" />
+            ))}
+          </NavigationItems>
         </Toolbar>
-      </AppBar>
+      </StyledAppBar>
     </StyledBox>
   );
 }

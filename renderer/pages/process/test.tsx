@@ -1,7 +1,6 @@
 import ProcessContainer from "../../components/process/ProcessContainer";
 import PageProvider from "../../components/provider/PageProvider";
 import { TestProcessStepDefinition } from "../../model/process/definition/step/TestProcessStepDefinition";
-import View from "../../components/view/View";
 
 type TestProps = {};
 

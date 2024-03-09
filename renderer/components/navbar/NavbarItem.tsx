@@ -13,7 +13,7 @@ export default function NavbarItem({ name, pageId, onItemClick }: Props) {
   };
 
   return (
-    <Button color="secondary" onClick={handleClick}>
+    <Button color={"primary"} onClick={handleClick}>
       {name}
     </Button>
   );
