@@ -10,14 +10,8 @@ type ProcessStepContainerProps = {
 export default function ProcessStepContainer(props: ProcessStepContainerProps) {
   const { activeStep, steps } = props;
 
-  const currentStep = React.useMemo(
-    () => steps[activeStep],
-    [activeStep, steps]
-  );
-  const CurrentStepComponent = React.useMemo(
-    () => currentStep.getStepContentFunctionalComponent(),
-    [currentStep]
-  );
+  const currentStep = React.useMemo(() => steps[activeStep], [activeStep, steps]);
+  const CurrentStepComponent = React.useMemo(() => currentStep.getStepContentFunctionalComponent(), [currentStep]);
 
   React.useEffect(() => {
     currentStep.execute();

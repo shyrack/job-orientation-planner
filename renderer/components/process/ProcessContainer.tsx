@@ -7,7 +7,8 @@ import FlexSpacer from "../common/flex/FlexSpacer";
 import ProcessStepContainer from "./ProcessStepContainer";
 
 const ProcessContainerWrapper = styled(FlexContainer)({
-  flexDirection: "column"
+  boxSizing: "border-box",
+  height: "100%"
 });
 
 const StepperButtonWrapper = styled(FlexContainer)({

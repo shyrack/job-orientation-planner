@@ -2,6 +2,7 @@ import { Button, Card, Step, StepContent, StepContentProps, StepLabel, Stepper, 
 import _ from "lodash";
 import React from "react";
 import { useAppState } from "../../../../utils/hooks";
+import { AdvancedDataGrid } from "../../../common/data/AdvancedDataGrid";
 import FlexContainer from "../../../common/flex/FlexContainer";
 import FlexSpacer from "../../../common/flex/FlexSpacer";
 import Typography from "../../../text/Typography";
@@ -13,6 +14,7 @@ const VerifyDataStepWrapper = styled(Card)(({ theme }) => ({
   flexShrink: 0,
   flexWrap: "wrap",
   gap: theme.spacing(2),
+  maxHeight: "100%",
   padding: theme.spacing(2)
 }));
 
@@ -39,7 +41,7 @@ export default function VerifyDataStepContent(props: StepContentProps) {
   }, [activeStep, setActiveStep]);
 
   return (
-    <VerifyDataStepWrapper>
+    <VerifyDataStepWrapper id="test">
       <Typography variant={"h6"}>Daten in Worksheets verifizieren</Typography>
       <Stepper activeStep={activeStep} nonLinear={true} orientation={"vertical"}>
         {_.map(worksheets, (worksheet, index) => (
@@ -49,7 +51,9 @@ export default function VerifyDataStepContent(props: StepContentProps) {
           >
             <StepLabel>{`${worksheet.getFilename()}: ${worksheet.getName()}`}</StepLabel>
             <StepContent>
-              <div>Some very important step content stuff</div>
+              <FlexContainer>
+                <AdvancedDataGrid columns={worksheet.getColumns()} rows={worksheet.getRows()} />
+              </FlexContainer>
             </StepContent>
           </Step>
         ))}
