@@ -127,15 +127,21 @@ export default function FileDropzone(props: FileDropzoneProps) {
     [dragOvers, setDragOvers]
   );
 
+  const onDrop = React.useCallback(() => {
+    setDragOvers(0);
+  }, [setDragOvers]);
+
   React.useEffect(() => {
     document.addEventListener("dragenter", onDragEnter);
     document.addEventListener("dragleave", onDragLeave);
+    document.addEventListener("drop", onDrop);
 
     return () => {
       document.removeEventListener("dragenter", onDragEnter);
       document.removeEventListener("dragleave", onDragLeave);
+      document.removeEventListener("drop", onDrop);
     };
-  }, [onDragEnter, onDragLeave]);
+  }, [onDragEnter, onDragLeave, onDrop]);
 
   return (
     <AnimatedFileDropZonePaperAnimationBorder
