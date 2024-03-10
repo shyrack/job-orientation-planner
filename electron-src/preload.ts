@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { IpcRendererEvent, contextBridge, ipcRenderer } from "electron";
+import _ from "lodash";
 import { Table } from "./database/database";
 
 // Create DB
@@ -49,12 +50,14 @@ function selectTable(
 
 function createRow(
   callback: (event: IpcRendererEvent, successfullyCreated: boolean, error: any) => void,
-  tableName: string,
+  tableName: Table,
   obj: any,
   retries: number = 3
 ) {
-  ipcRenderer.send(`create-${tableName.toLowerCase()}`, obj);
-  ipcRenderer.once(`${tableName.toLowerCase()}-creation`, (event, successfullyCreated, error) => {
+  const lowerCaseTableName = _.toLower(tableName);
+
+  ipcRenderer.send(`create-${lowerCaseTableName}`, obj);
+  ipcRenderer.once(`${lowerCaseTableName}-creation`, (event, successfullyCreated, error) => {
     if (error && retries > 0) {
       console.log(`Error creating row in ${tableName}. Retrying in 5 seconds...`);
       setTimeout(() => createRow(callback, tableName, obj, retries - 1), 5000);
@@ -64,12 +67,34 @@ function createRow(
   });
 }
 
+async function createTableRows(table: Table, rows: Array<Record<string, any>>) {
+  return new Promise<{ successfully: boolean; error: Error | null }>((resolve) => {
+    const rowCreationOperationId = _.uniqueId();
+
+    const rowCreationsCallback = (
+      _ignore: IpcRendererEvent,
+      operationId: string,
+      successfully: boolean,
+      error: Error | null
+    ) => {
+      if (rowCreationOperationId === operationId) {
+        ipcRenderer.removeListener("row-creations", rowCreationsCallback);
+        resolve({ successfully, error });
+      }
+    };
+
+    ipcRenderer.on("row-creations", rowCreationsCallback);
+    ipcRenderer.send("create-table-rows", table, rows, rowCreationOperationId);
+  });
+}
+
 const electronApi = {
   createDatabase,
   createRow,
+  createTableRows,
   selectDatabase,
   selectTable,
-  database_tables: Table,
+  DatabaseTables: Table,
   testDatabase
 };
 

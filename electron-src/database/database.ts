@@ -265,7 +265,12 @@ function createRow(event: IpcMainEvent, tableName: string, data: any) {
   db.close();
 }
 
-function createRows(event: IpcMainEvent, table: Table, rows: Array<Record<string, any>>, operationId: string) {
+export function createTableRows(
+  event: IpcMainEvent,
+  table: Table,
+  rows: Array<Record<string, any>>,
+  operationId: string
+) {
   function commandCallback(_ignore: RunResult, error: Error | null) {
     event.sender.send(`row-creations`, operationId, !Boolean(error), error);
   }
@@ -299,7 +304,7 @@ export function registerEventListeners() {
     ipcMain.on(`create-${tableName.toLowerCase()}`, (event, data) => createRow(event, tableName, data));
   });
 
-  ipcMain.on("create-rows", createRows);
+  ipcMain.on("create-table-rows", createTableRows);
 
   // ipcMain.on("create-class", (event, data) => createRow(event, "Class", data));
   // ipcMain.on("create-company", (event, data) => createRow(event, "Company", data));
