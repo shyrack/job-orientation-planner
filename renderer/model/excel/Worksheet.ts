@@ -114,11 +114,11 @@ export class Worksheet {
     return databaseTables;
   }
 
-  getDatabaseTableRows(): Record<UnionObjectValues<typeof Database.Table>, Array<Record<string, any>>> {
-    const tableRows = [];
+  // getDatabaseTableRows(): Record<UnionObjectValues<typeof Database.Table>, Array<Record<string, any>>> {
+  //   const tableRows = [];
 
-    return {};
-  }
+  //   return {};
+  // }
 
   private static parseRow(row: any): Record<string, any> {
     if (typeof row === "string") {
