@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-namespace */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { IpcRendererEvent, contextBridge, ipcRenderer } from "electron";
-import { Tables } from "./database/database";
+import { Table } from "./database/database";
 
 // Create DB
 function createDatabase(
@@ -69,7 +69,7 @@ const electronApi = {
   createRow,
   selectDatabase,
   selectTable,
-  database_tables: Tables,
+  database_tables: Table,
   testDatabase
 };
 

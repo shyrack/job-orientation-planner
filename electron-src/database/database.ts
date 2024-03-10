@@ -1,7 +1,8 @@
 import { IpcMainEvent, ipcMain } from "electron";
 import { Database } from "sqlite3";
+import _ from "lodash";
 
-export enum Tables {
+export enum Table {
   CLASS = "Class",
   COMPANY = "Company",
   EVENT = "Event",
@@ -201,7 +202,7 @@ function onTestDatabaseConnection(event: IpcMainEvent, filepath: string) {
       return;
     }
 
-    const tableNames = ["Class", "Company", "Event", "Room", "Scheduler", "Student", "StudentPreference", "Timeslot"];
+    const tableNames = _.keys(Table);
 
     const handleResult = (tableName: string) => (err: any, row: any) => {
       if (err) {
