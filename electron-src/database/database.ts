@@ -1,6 +1,18 @@
 import { IpcMainEvent, ipcMain } from "electron";
 import { Database } from "sqlite3";
 
+export enum Tables {
+  CLASS = "Class",
+  COMPANY = "Company",
+  EVENT = "Event",
+  ROOM = "Room",
+  SCHEDULER = "Scheduler",
+  STUDENT = "Student",
+  STUDENT_APPOINTMENT = "StudentAppointment",
+  STUDENT_PREFERENCE = "StudentPreference",
+  TIME_SLOT = "Timeslot"
+}
+
 let DbPath: string;
 
 //TODO: Constraints
