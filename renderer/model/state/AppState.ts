@@ -4,17 +4,16 @@ import AppStateProvider from "../../components/provider/AppStateProvider";
 import { ViewDefinition } from "../../components/view/View";
 import { ICloneable } from "../../utils/ICloneable";
 import * as hooks from "../../utils/hooks";
-import { CompanyColumns } from "../table/companyView";
-import { RoomColumns } from "../table/roomView";
-import { StudentColumns } from "../table/studentView";
-import { ExcelFileImportProcessState } from "./ExcelFileImportProcessState";
 import { ClassColumns } from "../table/classView";
+import { CompanyColumns } from "../table/companyView";
 import { EventColumns } from "../table/eventView";
+import { RoomColumns } from "../table/roomView";
 import { SchedulerColumns } from "../table/schedulerView";
 import { StudentAppointmentColumns } from "../table/studentAppointmentView";
 import { StudentPreferenceColumns } from "../table/studentPreferenceView";
+import { StudentColumns } from "../table/studentView";
 import { TimeslotColumns } from "../table/timeslotView";
-import { ClassData, CompanyData, EventData } from "../../../electron-src/database/TableDataTypes";
+import { ExcelFileImportProcessState } from "./ExcelFileImportProcessState";
 /**
  * Type for a function that is given the current app's global state. Function is allowed to modify.
  *
@@ -114,49 +113,49 @@ export class AppState implements ICloneable<AppState> {
     //this.timeslot.rows = selectData("Timeslot");
     //console.log(selectData("Student"));
 
-    const classData: ClassData = {
-      name: ["Class Name"],
-      entry_year: [2024]
-    };
+    // const classData: ClassData = {
+    //   name: ["Class Name"],
+    //   entry_year: [2024]
+    // };
 
-    const companyData: CompanyData = {
-      name: ["Company Name", "Yeas"],
-      job_occupation: ["Job Occupation", "Test"],
-      timeslot_start: ["08:00", "08:00"],
-      timeslot_end: ["16:00", "12:00"]
-    };
+    // const companyData: CompanyData = {
+    //   name: ["Company Name", "Yeas"],
+    //   job_occupation: ["Job Occupation", "Test"],
+    //   timeslot_start: ["08:00", "08:00"],
+    //   timeslot_end: ["16:00", "12:00"]
+    // };
 
-    const eventData: EventData = {
-      name: ["Event Name", "test"]
-    };
+    // const eventData: EventData = {
+    //   name: ["Event Name", "test"]
+    // };
 
-    try {
-      window.electron.createRow(
-        (event, successfullyCreated) => {
-          console.log("Class", successfullyCreated);
-        },
-        "Class",
-        classData
-      );
+    // try {
+    //   window.electron.createRow(
+    //     (event, successfullyCreated) => {
+    //       console.log("Class", successfullyCreated);
+    //     },
+    //     "Class",
+    //     classData
+    //   );
 
-      window.electron.createRow(
-        (event, successfullyCreated) => {
-          console.log("Company", successfullyCreated);
-        },
-        "Company",
-        companyData
-      );
+    //   window.electron.createRow(
+    //     (event, successfullyCreated) => {
+    //       console.log("Company", successfullyCreated);
+    //     },
+    //     "Company",
+    //     companyData
+    //   );
 
-      window.electron.createRow(
-        (event, successfullyCreated) => {
-          console.log("Event", eventData);
-        },
-        "Event",
-        eventData
-      );
-    } catch (error) {
-      console.error(error);
-    }
+    //   window.electron.createRow(
+    //     (event, successfullyCreated) => {
+    //       console.log("Event", eventData);
+    //     },
+    //     "Event",
+    //     eventData
+    //   );
+    // } catch (error) {
+    //   console.error(error);
+    // }
 
     this.excelFileImportProcessState = new ExcelFileImportProcessState();
   }

@@ -1,11 +1,24 @@
 import { IpcMainEvent, ipcMain } from "electron";
-import { Database } from "sqlite3";
+import _ from "lodash";
+import { Database, RunResult } from "sqlite3";
 
-let DbPath: string;
+export enum Table {
+  CLASS = "Class",
+  COMPANY = "Company",
+  EVENT = "Event",
+  ROOM = "Room",
+  SCHEDULER = "Scheduler",
+  STUDENT = "Student",
+  STUDENT_APPOINTMENT = "StudentAppointment",
+  STUDENT_PREFERENCE = "StudentPreference",
+  TIME_SLOT = "Timeslot"
+}
+
+let DATABASE_PATH: string;
 
 //TODO: Constraints
 function onCreateDatabase(event: IpcMainEvent, filepath: string) {
-  DbPath = filepath;
+  DATABASE_PATH = filepath;
   let errors: string[] = [];
   let successfully: boolean = true;
   function handleErrors(errorMessage: any) {
@@ -14,7 +27,7 @@ function onCreateDatabase(event: IpcMainEvent, filepath: string) {
   }
 
   const sql3 = require("sqlite3").verbose();
-  const DB = new sql3.Database(DbPath, sql3.OPEN_READWRITE, (err: any) => {
+  const DB = new sql3.Database(DATABASE_PATH, sql3.OPEN_READWRITE, (err: any) => {
     successfully = false;
     if (err) handleErrors(err);
   });
@@ -180,25 +193,16 @@ CREATE TABLE Room (
   event.sender.send("database-creation", successfully, errors);
 }
 function onTestDatabaseConnection(event: IpcMainEvent, filepath: string) {
-  DbPath = filepath;
+  DATABASE_PATH = filepath;
   let db: Database;
-  db = new Database(DbPath, (err: any) => {
+  db = new Database(DATABASE_PATH, (err: any) => {
     if (err) {
       console.error(err);
       event.sender.send("connection-database-test", false, err);
       return;
     }
 
-    const tableNames = [
-      "Class",
-      "Company",
-      "Event",
-      "Room",
-      "Scheduler",
-      "Student",
-      "StudentPreference",
-      "Timeslot",
-    ];
+    const tableNames = _.keys(Table);
 
     const handleResult = (tableName: string) => (err: any, row: any) => {
       if (err) {
@@ -223,7 +227,7 @@ function onTestDatabaseConnection(event: IpcMainEvent, filepath: string) {
 }
 
 function selectTable(event: IpcMainEvent, tableName: string) {
-  const db = new Database(DbPath);
+  const db = new Database(DATABASE_PATH);
 
   db.all(`SELECT * FROM ${tableName}`, [], (err: any, rows: any) => {
     if (err) {
@@ -240,7 +244,7 @@ function selectTable(event: IpcMainEvent, tableName: string) {
 }
 
 function createRow(event: IpcMainEvent, tableName: string, data: any) {
-  const db = new Database(DbPath);
+  const db = new Database(DATABASE_PATH);
 
   const keys = Object.keys(data).join(", ");
   const values = Object.values(data)
@@ -261,30 +265,45 @@ function createRow(event: IpcMainEvent, tableName: string, data: any) {
   db.close();
 }
 
+export function createTableRows(
+  event: IpcMainEvent,
+  table: Table,
+  rows: Array<Record<string, any>>,
+  operationId: string
+) {
+  function commandCallback(_ignore: RunResult, error: Error | null) {
+    event.sender.send(`row-creations`, operationId, !Boolean(error), error);
+  }
+
+  executeDatabaseOperation((database) => {
+    _.forEach(rows, (row) => {
+      const columns = _.keys(row).join(", ");
+      const questionMarks = _.map(columns, () => "?").join(", ");
+      const command = `INSERT INTO ${table} (${columns}) VALUES (${questionMarks})`;
+
+      database.run(command, _.values(row), commandCallback);
+    });
+  });
+}
+
+function executeDatabaseOperation(databaseOperation: (database: Database) => any) {
+  const database = new Database(DATABASE_PATH);
+  databaseOperation(database);
+  database.close();
+}
+
 export function registerEventListeners() {
   ipcMain.on("create-database", onCreateDatabase);
   ipcMain.on("test-database-connection", onTestDatabaseConnection);
   ipcMain.on("select-table", selectTable);
-  //CREATE ROW
-  ipcMain.on("create-class", (event, data) => createRow(event, "Class", data));
-  ipcMain.on("create-company", (event, data) =>
-    createRow(event, "Company", data)
-  );
-  ipcMain.on("create-event", (event, data) => createRow(event, "Event", data));
-  ipcMain.on("create-room", (event, data) => createRow(event, "Room", data));
-  ipcMain.on("create-scheduler", (event, data) =>
-    createRow(event, "Scheduler", data)
-  );
-  ipcMain.on("create-student", (event, data) =>
-    createRow(event, "Student", data)
-  );
-  ipcMain.on("create-appointment", (event, data) =>
-    createRow(event, "StudentAppointment", data)
-  );
-  ipcMain.on("create-studentpreference", (event, data) =>
-    createRow(event, "StudentPreference", data)
-  );
-  ipcMain.on("create-timeslot", (event, data) =>
-    createRow(event, "Timeslot", data)
-  );
+
+  // Create row
+  const tables = _.keys(Table) as Array<keyof typeof Table>;
+  _.forEach(tables, (table) => {
+    const tableName = Table[table];
+    ipcMain.on(`create-${tableName.toLowerCase()}`, (event, data) => createRow(event, tableName, data));
+  });
+
+  // Create rows
+  ipcMain.on("create-table-rows", createTableRows);
 }
