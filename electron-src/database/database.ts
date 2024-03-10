@@ -297,22 +297,13 @@ export function registerEventListeners() {
   ipcMain.on("test-database-connection", onTestDatabaseConnection);
   ipcMain.on("select-table", selectTable);
 
-  //CREATE ROW
+  // Create row
   const tables = _.keys(Table) as Array<keyof typeof Table>;
   _.forEach(tables, (table) => {
     const tableName = Table[table];
     ipcMain.on(`create-${tableName.toLowerCase()}`, (event, data) => createRow(event, tableName, data));
   });
 
+  // Create rows
   ipcMain.on("create-table-rows", createTableRows);
-
-  // ipcMain.on("create-class", (event, data) => createRow(event, "Class", data));
-  // ipcMain.on("create-company", (event, data) => createRow(event, "Company", data));
-  // ipcMain.on("create-event", (event, data) => createRow(event, "Event", data));
-  // ipcMain.on("create-room", (event, data) => createRow(event, "Room", data));
-  // ipcMain.on("create-scheduler", (event, data) => createRow(event, "Scheduler", data));
-  // ipcMain.on("create-student", (event, data) => createRow(event, "Student", data));
-  // ipcMain.on("create-appointment", (event, data) => createRow(event, "StudentAppointment", data));
-  // ipcMain.on("create-studentpreference", (event, data) => createRow(event, "StudentPreference", data));
-  // ipcMain.on("create-timeslot", (event, data) => createRow(event, "Timeslot", data));
 }
