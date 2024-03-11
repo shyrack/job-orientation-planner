@@ -94,7 +94,6 @@ const electronApi = {
   createTableRows,
   selectDatabase,
   selectTable,
-  DatabaseTables: Table,
   testDatabase
 };
 
