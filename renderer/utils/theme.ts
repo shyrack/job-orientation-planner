@@ -7,6 +7,11 @@ export default createTheme({
       secondary: "#999",
       disabled: "#777"
     },
+    secondary: {
+      light: "#8958c6",
+      main: "#743eb6",
+      dark: "#613498"
+    },
     mode: "dark"
   },
   shape: {

@@ -13,7 +13,7 @@ export default function Test(props: TestProps) {
           new TestProcessStepDefinition("Second test process step."),
           new TestProcessStepDefinition("Third test process step.")
         ]}
-      ></ProcessContainer>
+      />
     </PageProvider>
   );
 }

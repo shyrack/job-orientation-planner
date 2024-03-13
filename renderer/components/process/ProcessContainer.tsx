@@ -4,14 +4,26 @@ import React from "react";
 import { ProcessStepDefinition } from "../../model/process/definition/step/ProcessStepDefinition";
 import FlexContainer from "../common/flex/FlexContainer";
 import FlexSpacer from "../common/flex/FlexSpacer";
+import ProcessStepContainer from "./ProcessStepContainer";
 
-const ProcessContainerWrapper = styled(FlexContainer)();
+const ProcessContainerWrapper = styled(FlexContainer)({
+  boxSizing: "border-box",
+  flex: "1 0 0",
+  flexDirection: "column",
+  flexWrap: "nowrap",
+  overflow: "hidden"
+});
 
-const ProcessContainerButtonWrapper = styled(FlexContainer)({
+const StepperButtonWrapper = styled(FlexContainer)({
+  flexGrow: 0,
+  flexShrink: 1
+});
+
+const ProcessContainerStepper = styled(Stepper)({
+  display: "flex",
   flexGrow: 0,
   flexShrink: 1,
-  height: "fit-content",
-  width: "100%"
+  flexWrap: "wrap"
 });
 
 type ProcessContainerProps = { steps: Array<ProcessStepDefinition> } & StepperProps;
@@ -43,7 +55,7 @@ export default function ProcessContainer(props: ProcessContainerProps) {
 
   return (
     <ProcessContainerWrapper>
-      <Stepper activeStep={activeStep} {...otherProps}>
+      <ProcessContainerStepper activeStep={activeStep} nonLinear={true} {...otherProps}>
         {_.map(steps, (step, stepIndex) => {
           const stepProps = step.getMuiStepProps();
           const labelProps = step.getMuiStepLabelProps();
@@ -56,8 +68,9 @@ export default function ProcessContainer(props: ProcessContainerProps) {
             </Step>
           );
         })}
-      </Stepper>
-      <ProcessContainerButtonWrapper>
+      </ProcessContainerStepper>
+      <ProcessStepContainer activeStep={activeStep} steps={steps} />
+      <StepperButtonWrapper>
         <Tooltip title={isFirstStep ? "Keine vorherigen Schritte" : ""}>
           <span>
             <Button disabled={isFirstStep} onClick={onBackButtonClick}>
@@ -77,7 +90,7 @@ export default function ProcessContainer(props: ProcessContainerProps) {
         ) : (
           <Button onClick={onNextButtonClick}>Weiter</Button>
         )}
-      </ProcessContainerButtonWrapper>
+      </StepperButtonWrapper>
     </ProcessContainerWrapper>
   );
 }
