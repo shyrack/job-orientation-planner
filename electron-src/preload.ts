@@ -88,6 +88,16 @@ function createRow(
   });
 }
 
+function createRowAsync(tableName: Table, obj: any, retries: number = 3) {
+  return new Promise<{ successfully: boolean; error: any }>((resolve) => {
+    function onCreateRowCallback(_event: IpcRendererEvent, successfullyCreated: boolean, error: any) {
+      resolve({ error: error, successfully: successfullyCreated });
+    }
+
+    createRow(onCreateRowCallback, tableName, obj, retries);
+  });
+}
+
 function createTableRows(table: Table, rows: Array<Record<string, any>>) {
   return new Promise<{ successfully: boolean; error: Error | null }>((resolve) => {
     const rowCreationOperationId = _.uniqueId();
@@ -112,6 +122,7 @@ function createTableRows(table: Table, rows: Array<Record<string, any>>) {
 const electronApi = {
   createDatabase,
   createRow,
+  createRowAsync,
   createTableRows,
   selectDatabase,
   selectTable,
