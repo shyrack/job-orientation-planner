@@ -1,7 +1,5 @@
-import { IImportStrategy } from "./IImportStrategy";
+import { ImportStrategy } from "./ImportStrategy";
 
-export class CompanyImportStrategy implements IImportStrategy {
-  import(row: Record<string, any>) {
-    return { command: "", params: [] };
-  }
-}
+// export class CompanyImportStrategy extends ImportStrategy {
+//   import() {}
+// }
