@@ -1,5 +1,6 @@
 import { DataGridProps } from "@mui/x-data-grid";
 import _ from "lodash";
+import z from "zod";
 import { Database } from "../../database/helper";
 import { UnionObjectValues } from "../../utils/types";
 
@@ -19,6 +20,18 @@ export enum Column {
   NAME = "Name",
   ROOM = "Raum"
 }
+
+export const choiceImportRowSchema = z.object({
+  [Column.CLASS]: z.string(),
+  [Column.NAME]: z.string(),
+  [Column.FIRST_NAME]: z.string(),
+  [Column.CHOICE_1]: z.number().int().optional(),
+  [Column.CHOICE_2]: z.number().int().optional(),
+  [Column.CHOICE_3]: z.number().int().optional(),
+  [Column.CHOICE_4]: z.number().int().optional(),
+  [Column.CHOICE_5]: z.number().int().optional(),
+  [Column.CHOICE_6]: z.number().int().optional()
+});
 
 export class WorksheetDatabaseColumn {
   constructor(
@@ -113,12 +126,6 @@ export class Worksheet {
 
     return databaseTables;
   }
-
-  // getDatabaseTableRows(): Record<UnionObjectValues<typeof Database.Table>, Array<Record<string, any>>> {
-  //   const tableRows = [];
-
-  //   return {};
-  // }
 
   private static parseRow(row: any): Record<string, any> {
     if (typeof row === "string") {
