@@ -43,6 +43,16 @@ export class StudentPreferenceImportStrategy extends ClassBasedImportStrategy {
   }
 
   verify() {
-    return true;
+    const {
+      "Wahl 1": choiceOne,
+      "Wahl 2": choiceTwo,
+      "Wahl 3": choiceThree,
+      "Wahl 4": choiceFour,
+      "Wahl 5": choiceFive,
+      "Wahl 6": choiceSix
+    } = this.parsedRow;
+    const choices = [choiceSix, choiceFive, choiceFour, choiceThree, choiceTwo, choiceOne];
+
+    return _.some(choices, (choice) => Boolean(choice));
   }
 }
