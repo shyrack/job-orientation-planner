@@ -17,6 +17,7 @@ app.on("ready", async () => {
     width: 800,
     height: 600,
     webPreferences: {
+      sandbox: false,
       nodeIntegration: false,
       contextIsolation: true,
       preload: join(__dirname, "preload.js"),
