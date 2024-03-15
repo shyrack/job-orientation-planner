@@ -207,6 +207,10 @@ export class AppState implements ICloneable<AppState> {
     AppState.currentInstance = appState;
   }
 
+  public static get instance() {
+    return AppState.currentInstance;
+  }
+
   /**
    *
    * @author Florian Jahn
