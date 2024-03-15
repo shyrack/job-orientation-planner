@@ -40,7 +40,11 @@ export default function Navbar() {
     <StyledBox>
       <StyledAppBar>
         <Toolbar>
-          <IconButton onClick={onClick}>
+          <IconButton onClick={onClick} 
+            sx={{ 
+             padding: '15px 15px', 
+            }}
+                >
             <HomeIcon />
           </IconButton>
           <Typography variant="h5" component="div" sx={{ display: { xs: "none", sm: "block" }, marginRight: "5px" }}>

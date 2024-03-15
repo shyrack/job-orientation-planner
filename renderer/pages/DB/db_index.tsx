@@ -1,3 +1,4 @@
+import FlexContainer from "../../components/common/flex/FlexContainer";
 import Panel from "../../components/process/Panel";
 import PageProvider from "../../components/provider/PageProvider";
 import Typography from "../../components/text/Typography";
@@ -15,8 +16,10 @@ export default function DbIndexPage(props: IndexPageProps) {
       <Typography variant="h5" sx={(theme) => ({ margin: theme.spacing(2) })}>
         Database Action:
       </Typography>
+      <FlexContainer>
       <Panel processDefinition={createDB} />
       <Panel processDefinition={selectDB} />
+      </FlexContainer>
     </PageProvider>
   );
 }
