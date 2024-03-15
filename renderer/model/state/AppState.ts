@@ -20,6 +20,7 @@ import { ExcelFileImportProcessState } from "./ExcelFileImportProcessState";
  * @author Florian Jahn
  */
 export type AppStateModifier = (appState: AppState) => void;
+export type AppStateListener = AppStateModifier;
 
 /**
  * Type for setState function from React's useState hook.
@@ -44,6 +45,8 @@ export type AvailableViews = "company" | "student";
 export class AppState implements ICloneable<AppState> {
   private static appStateDispatcher?: AppStateSetStateDispatcher;
   private static currentInstance?: AppState;
+
+  private listeners: Array<AppStateListener>;
 
   //TODO: @Florian help dbPath
   public dbPath: string;
@@ -99,6 +102,8 @@ export class AppState implements ICloneable<AppState> {
   constructor() {
     this.dbPath = "";
     this.viewName = "room";
+
+    this.listeners = [];
 
     //TODO: @Flo eigentlich besser wenn das OnDemand ausgeführt wird, Aktualisierung auch interessant
     //TODO: @Flo selectData return Undefined?
@@ -209,6 +214,26 @@ export class AppState implements ICloneable<AppState> {
 
   public static get instance() {
     return AppState.currentInstance;
+  }
+
+  public subscribe(listener: AppStateListener, initialExecute?: boolean) {
+    const isAlreadySubscribed = _.includes(this.listeners, listener);
+
+    if (!isAlreadySubscribed) {
+      this.listeners.push(listener);
+    }
+
+    if (initialExecute && !isAlreadySubscribed) {
+      listener(this);
+    }
+  }
+
+  public unsubscribe(listener: AppStateListener) {
+    const index = _.findIndex(this.listeners, (listenerComparison) => listenerComparison === listener);
+
+    if (index !== -1) {
+      _.remove(this.listeners, (_listener, listenerIndex) => listenerIndex === index);
+    }
   }
 
   /**
