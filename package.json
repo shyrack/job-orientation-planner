@@ -14,7 +14,7 @@
     "dist": "npm run build && electron-builder",
     "type-check": "tsc -p ./renderer/tsconfig.json && tsc -p ./electron-src/tsconfig.json",
     "make": "npm run clean && npm run build && npx electron-packager . job-orientation-planner --all",
-    "test": "jest"
+    "debugging-backtracking": "ts-node ./renderer/model/data/main.ts"
   },
   "dependencies": {
     "@emotion/react": "^11.11.3",
