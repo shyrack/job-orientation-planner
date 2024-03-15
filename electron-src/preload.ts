@@ -48,6 +48,27 @@ function selectTable(
   });
 }
 
+function selectTableNew(tableName: string) {
+  return new Promise<{ successfully: boolean; data: Array<any> }>((resolve) => {
+    const selectTableOperationId = _.uniqueId();
+
+    const selectTableCallback = (
+      _ignore: IpcRendererEvent,
+      operationId: string,
+      successfully: boolean,
+      data: Array<any>
+    ) => {
+      if (selectTableOperationId === operationId) {
+        ipcRenderer.removeListener("select-table", selectTableCallback);
+        resolve({ successfully, data });
+      }
+    };
+
+    ipcRenderer.on("table-selection", selectTableCallback);
+    ipcRenderer.send("select-table", tableName);
+  });
+}
+
 function createRow(
   callback: (event: IpcRendererEvent, successfullyCreated: boolean, error: any) => void,
   tableName: Table,
@@ -67,7 +88,17 @@ function createRow(
   });
 }
 
-async function createTableRows(table: Table, rows: Array<Record<string, any>>) {
+function createRowAsync(tableName: Table, obj: any, retries: number = 3) {
+  return new Promise<{ successfully: boolean; error: any }>((resolve) => {
+    function onCreateRowCallback(_event: IpcRendererEvent, successfullyCreated: boolean, error: any) {
+      resolve({ error: error, successfully: successfullyCreated });
+    }
+
+    createRow(onCreateRowCallback, tableName, obj, retries);
+  });
+}
+
+function createTableRows(table: Table, rows: Array<Record<string, any>>) {
   return new Promise<{ successfully: boolean; error: Error | null }>((resolve) => {
     const rowCreationOperationId = _.uniqueId();
 
@@ -91,10 +122,11 @@ async function createTableRows(table: Table, rows: Array<Record<string, any>>) {
 const electronApi = {
   createDatabase,
   createRow,
+  createRowAsync,
   createTableRows,
   selectDatabase,
   selectTable,
-  DatabaseTables: Table,
+  selectTableNew,
   testDatabase
 };
 

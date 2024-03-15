@@ -1,7 +1,12 @@
 import { DataGridProps } from "@mui/x-data-grid";
 import _ from "lodash";
+import z from "zod";
 import { Database } from "../../database/helper";
 import { UnionObjectValues } from "../../utils/types";
+import { ClassImportStrategy } from "./import/ClassImportStrategy";
+import { ImportStrategy } from "./import/ImportStrategy";
+import { StudentImportStrategy } from "./import/StudentImportStrategy";
+import { StudentPreferenceImportStrategy } from "./import/StudentPreferenceImportStrategy";
 
 export enum Column {
   CAPACITY = "Kapazität",
@@ -19,6 +24,18 @@ export enum Column {
   NAME = "Name",
   ROOM = "Raum"
 }
+
+export const choiceImportRowSchema = z.object({
+  [Column.CLASS]: z.string(),
+  [Column.NAME]: z.string(),
+  [Column.FIRST_NAME]: z.string(),
+  [Column.CHOICE_1]: z.number().int().optional(),
+  [Column.CHOICE_2]: z.number().int().optional(),
+  [Column.CHOICE_3]: z.number().int().optional(),
+  [Column.CHOICE_4]: z.number().int().optional(),
+  [Column.CHOICE_5]: z.number().int().optional(),
+  [Column.CHOICE_6]: z.number().int().optional()
+});
 
 export class WorksheetDatabaseColumn {
   constructor(
@@ -59,6 +76,44 @@ export const worksheetDatabaseColumns: Array<WorksheetDatabaseColumn> = [
 
 export class Worksheet {
   constructor(private filename: string, private name: string, private data: Array<string>) {}
+
+  private executeImportStrategies(importStrategies: Array<ImportStrategy>) {
+    const verifiedImportStrategyIndex = _.findIndex(importStrategies, (importStrategy) => importStrategy.verify());
+
+    if (verifiedImportStrategyIndex !== -1) {
+      const importStrategy = _.find(
+        importStrategies,
+        (_importStrategy, index) => index === verifiedImportStrategyIndex
+      );
+      const notResolvedImportStrategies = _.reject(
+        importStrategies,
+        (_importStrategy, index) => index === verifiedImportStrategyIndex
+      );
+
+      if (importStrategy?.resolveDependencies()) {
+        importStrategy?.import();
+      } else {
+        throw new Error(`Dependencies for import strategy ${importStrategy?.constructor.name} could not be resolved.`);
+      }
+
+      if (_.size(notResolvedImportStrategies) > 0) {
+        this.executeImportStrategies(_.clone(notResolvedImportStrategies));
+      }
+    }
+  }
+
+  importInDatabase() {
+    _.forEach(this.data, (row) => {
+      const parsedRow = Worksheet.parseRow(row);
+      const strategies = [
+        new ClassImportStrategy(parsedRow),
+        new StudentImportStrategy(parsedRow),
+        new StudentPreferenceImportStrategy(parsedRow)
+      ];
+
+      this.executeImportStrategies(strategies);
+    });
+  }
 
   getFilename() {
     return this.filename;
@@ -113,12 +168,6 @@ export class Worksheet {
 
     return databaseTables;
   }
-
-  // getDatabaseTableRows(): Record<UnionObjectValues<typeof Database.Table>, Array<Record<string, any>>> {
-  //   const tableRows = [];
-
-  //   return {};
-  // }
 
   private static parseRow(row: any): Record<string, any> {
     if (typeof row === "string") {

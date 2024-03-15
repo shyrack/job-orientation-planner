@@ -8,7 +8,7 @@ export class SelectTable extends ProcessDefinition {
     this.tableName = tableName;
   }
 
-  public execute() {
+  execute() {
     //TODO: This doesnt work? Security Warning? obj too big?
     console.log("execute select");
 
@@ -20,4 +20,6 @@ export class SelectTable extends ProcessDefinition {
       console.error(error);
     }
   }
+
+  onProcessFinished() {}
 }

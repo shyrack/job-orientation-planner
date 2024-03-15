@@ -1,6 +1,6 @@
 import { IpcMainEvent, ipcMain } from "electron";
 import _ from "lodash";
-import { Database, RunResult } from "sqlite3";
+import { Database, RunResult, verbose } from "sqlite3";
 
 export enum Table {
   CLASS = "Class",
@@ -26,7 +26,7 @@ function onCreateDatabase(event: IpcMainEvent, filepath: string) {
     errors.push(errorMessage);
   }
 
-  const sql3 = require("sqlite3").verbose();
+  const sql3 = verbose();
   const DB = new sql3.Database(DATABASE_PATH, sql3.OPEN_READWRITE, (err: any) => {
     successfully = false;
     if (err) handleErrors(err);

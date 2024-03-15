@@ -1,6 +1,7 @@
 import { Button, Step, StepLabel, Stepper, StepperProps, Tooltip, styled } from "@mui/material";
 import _ from "lodash";
 import React from "react";
+import { ProcessDefinition } from "../../model/process/definition/ProcessDefinition";
 import { ProcessStepDefinition } from "../../model/process/definition/step/ProcessStepDefinition";
 import FlexContainer from "../common/flex/FlexContainer";
 import FlexSpacer from "../common/flex/FlexSpacer";
@@ -26,11 +27,12 @@ const ProcessContainerStepper = styled(Stepper)({
   flexWrap: "wrap"
 });
 
-type ProcessContainerProps = { steps: Array<ProcessStepDefinition> } & StepperProps;
+type ProcessContainerProps = { definition: ProcessDefinition; steps: Array<ProcessStepDefinition> } & StepperProps;
 
 export default function ProcessContainer(props: ProcessContainerProps) {
-  const { steps, ...otherProps } = props;
+  const { definition, steps, ...otherProps } = props;
   const [activeStep, setActiveStep] = React.useState(0);
+  const [validationMap, setValidationMap] = React.useState<Record<string, boolean>>({});
 
   const stepCount = React.useMemo(() => _.size(steps), [steps]);
   const isFirstStep = React.useMemo(() => activeStep === 0, [activeStep]);
@@ -51,19 +53,37 @@ export default function ProcessContainer(props: ProcessContainerProps) {
     [activeStep, setActiveStep]
   );
 
-  const onFinishButtonClick = React.useCallback((event: React.MouseEvent<HTMLButtonElement>) => {}, []);
+  const onFinishButtonClick = React.useCallback(
+    (event: React.MouseEvent<HTMLButtonElement>) => {
+      definition.onProcessFinished();
+    },
+    [definition]
+  );
+
+  const onValidationChange = React.useCallback(
+    (valid: boolean, id?: string) => {
+      if (id && validationMap[id] !== valid) {
+        setValidationMap({ ...validationMap, id: valid });
+      }
+    },
+    [setValidationMap, validationMap]
+  );
 
   return (
     <ProcessContainerWrapper>
       <ProcessContainerStepper activeStep={activeStep} nonLinear={true} {...otherProps}>
         {_.map(steps, (step, stepIndex) => {
+          const stepId = _.uniqueId();
           const stepProps = step.getMuiStepProps();
           const labelProps = step.getMuiStepLabelProps();
           const label = step.getLabel();
-          const isValid = step.validate();
+
+          step.setId(stepId);
+
+          const isValid = step.validate(onValidationChange);
 
           return (
-            <Step key={`${label}-${stepIndex}`} completed={isValid} {...stepProps}>
+            <Step key={`${label}-${stepIndex}`} completed={validationMap[stepId] || isValid} {...stepProps}>
               <StepLabel {...labelProps}>{label}</StepLabel>
             </Step>
           );
