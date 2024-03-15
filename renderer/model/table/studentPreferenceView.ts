@@ -1,70 +1,51 @@
-import {
-  ColumnDefinition,
-  ColumnDefinitions,
-  RowDefinition,
-  createColumnDefinition
-} from "./view";
+// Authors: Florian Jahn, Andre Löwen
 
-export const StudentPreferenceIDColDef = createColumnDefinition(
-  "preference-id",
-  "Schüler-Präferenz",
-  90
-);
+import { ColumnDefinition, ColumnDefinitions, RowDefinition } from "./view";
 
-export const StudentPreferenceStudentSurnameColDef = createColumnDefinition(
-  "student-surname",
-  "Schüler Nachname",
-  150
-);
+export const StudentPreferenceIdViewColumnDefinition: ColumnDefinition<"studentPreference_id"> = {
+  field: "studentPreference_id",
+  headerName: "ID",
+  width: 90
+};
 
-export const StudentPreferenceStudentFirstnameColDef = createColumnDefinition(
-  "student-first-name",
-  "Schüler Vorname",
-  150
-);
+export const StudentPreferenceStudentIdColumnDefinition: ColumnDefinition<"student_id"> = {
+  field: "student_id",
+  headerName: "Student",
+  width: 150
+};
 
-export const StudentPreferenceClassColDef = createColumnDefinition(
-  "student-class",
-  "Klasse",
-  90
-);
+export const StudentPreferenceCompanyIdViewColumnDefinition: ColumnDefinition<"company_id"> = {
+  field: "company_id",
+  headerName: "Company",
+  width: 150
+};
 
-export const StudentPreferenceCompanyNameColDef = createColumnDefinition(
-  "company-name",
-  "Unternehmen",
-  150
-);
+export const StudentPreferenceEventIdViewColumnDefinition: ColumnDefinition<"event_id"> = {
+  field: "event_id",
+  headerName: "Event",
+  width: 150
+};
 
-export const StudentPreferenceCompanyFieldColDef = createColumnDefinition(
-  "company-field",
-  "Ausbildungsberufe/Studiengänge",
-  150
-);
+export const StudentPreferencePriorityViewColumnDefinition: ColumnDefinition<"priority"> = {
+  field: "priority",
+  headerName: "Priorität",
+  width: 150
+};
 
-export const StudentPreferencePriorityColDef = createColumnDefinition(
-  "priority",
-  "Priorität",
-  90
-);
-
-export const SPColumns: ColumnDefinitions<string> = [
-  StudentPreferenceIDColDef,
-  StudentPreferenceStudentSurnameColDef,
-  StudentPreferenceStudentFirstnameColDef,
-  StudentPreferenceClassColDef,
-  StudentPreferenceCompanyNameColDef,
-  StudentPreferenceCompanyFieldColDef,
-  StudentPreferencePriorityColDef
+export const StudentPreferenceColumns: ColumnDefinitions<string> = [
+  StudentPreferenceIdViewColumnDefinition,
+  StudentPreferenceStudentIdColumnDefinition,
+  StudentPreferenceCompanyIdViewColumnDefinition,
+  StudentPreferenceEventIdViewColumnDefinition,
+  StudentPreferencePriorityViewColumnDefinition
 ];
 
-export type SPRowDefinition = RowDefinition<
+export type StudentPreferenceRowDefinition = RowDefinition<
   [
-    typeof StudentPreferenceIDColDef,
-    typeof StudentPreferenceStudentSurnameColDef,
-    typeof StudentPreferenceStudentFirstnameColDef,
-    typeof StudentPreferenceClassColDef,
-    typeof StudentPreferenceCompanyNameColDef,
-    typeof StudentPreferenceCompanyFieldColDef,
-    typeof StudentPreferencePriorityColDef
+    typeof StudentPreferenceIdViewColumnDefinition,
+    typeof StudentPreferenceStudentIdColumnDefinition,
+    typeof StudentPreferenceCompanyIdViewColumnDefinition,
+    typeof StudentPreferenceEventIdViewColumnDefinition,
+    typeof StudentPreferencePriorityViewColumnDefinition
   ]
 >;

@@ -1,12 +1,22 @@
-import { Button } from "@mui/material";
+import Button from "@mui/material/Button";
+import React from "react";
 
-type Props = {
+type NavbarItemProps = {
   name: string;
   pageId: string;
+  onItemClick: (pageId: string) => void;
 };
 
-export default function NavbarItem(props: Props) {
-  const { name, pageId } = props;
+export default function NavbarItem(props: NavbarItemProps) {
+  const { name, onItemClick, pageId } = props;
 
-  return <Button color="secondary">{name}</Button>;
+  const handleClick = React.useCallback(() => {
+    onItemClick(pageId);
+  }, [onItemClick, pageId]);
+
+  return (
+    <Button color={"primary"} onClick={handleClick}>
+      {name}
+    </Button>
+  );
 }
