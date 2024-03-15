@@ -5,6 +5,8 @@ import { Nullable } from "../../../../utils/types";
 export type ProcessStepFunctionalComponentProps = {};
 
 export abstract class ProcessStepDefinition {
+  protected id?: string;
+
   constructor(private label: string, private muiStepProps?: StepProps, private muiStepLabelProps?: StepLabelProps) {}
 
   public getLabel() {
@@ -19,7 +21,11 @@ export abstract class ProcessStepDefinition {
     return this.muiStepLabelProps;
   }
 
-  public abstract validate(): boolean;
+  public setId(id: string) {
+    this.id = id;
+  }
+
+  public abstract validate(callback?: (valid: boolean, id?: string) => void): boolean;
   public abstract getStepContentFunctionalComponent(): (
     props: ProcessStepFunctionalComponentProps
   ) => Nullable<React.JSX.Element>;

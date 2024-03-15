@@ -32,6 +32,7 @@ type ProcessContainerProps = { definition: ProcessDefinition; steps: Array<Proce
 export default function ProcessContainer(props: ProcessContainerProps) {
   const { definition, steps, ...otherProps } = props;
   const [activeStep, setActiveStep] = React.useState(0);
+  const [validationMap, setValidationMap] = React.useState<Record<string, boolean>>({});
 
   const stepCount = React.useMemo(() => _.size(steps), [steps]);
   const isFirstStep = React.useMemo(() => activeStep === 0, [activeStep]);
@@ -59,17 +60,30 @@ export default function ProcessContainer(props: ProcessContainerProps) {
     [definition]
   );
 
+  const onValidationChange = React.useCallback(
+    (valid: boolean, id?: string) => {
+      if (id && validationMap[id] !== valid) {
+        setValidationMap({ ...validationMap, id: valid });
+      }
+    },
+    [setValidationMap, validationMap]
+  );
+
   return (
     <ProcessContainerWrapper>
       <ProcessContainerStepper activeStep={activeStep} nonLinear={true} {...otherProps}>
         {_.map(steps, (step, stepIndex) => {
+          const stepId = _.uniqueId();
           const stepProps = step.getMuiStepProps();
           const labelProps = step.getMuiStepLabelProps();
           const label = step.getLabel();
-          const isValid = step.validate();
+
+          step.setId(stepId);
+
+          const isValid = step.validate(onValidationChange);
 
           return (
-            <Step key={`${label}-${stepIndex}`} completed={isValid} {...stepProps}>
+            <Step key={`${label}-${stepIndex}`} completed={validationMap[stepId] || isValid} {...stepProps}>
               <StepLabel {...labelProps}>{label}</StepLabel>
             </Step>
           );

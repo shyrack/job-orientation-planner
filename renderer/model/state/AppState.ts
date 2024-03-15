@@ -193,6 +193,10 @@ export class AppState implements ICloneable<AppState> {
     const clonedInstance = this.clone();
     modifier(clonedInstance);
 
+    _.forEach(clonedInstance.listeners, (listener) => {
+      listener(clonedInstance);
+    });
+
     return clonedInstance;
   }
 
