@@ -1,3 +1,5 @@
+import _ from "lodash";
+import { AppState } from "../../state/AppState";
 import { ProcessDefinition } from "./ProcessDefinition";
 
 export class ExcelFileImportProcessDefinition extends ProcessDefinition {
@@ -6,5 +8,15 @@ export class ExcelFileImportProcessDefinition extends ProcessDefinition {
   }
 
   execute() {}
-  onProcessFinished() {}
+
+  onProcessFinished() {
+    const excelProcessState = AppState.instance?.excelFileImportProcessState;
+    const worksheets = excelProcessState?.worksheets;
+
+    if (_.isArray(worksheets)) {
+      _.forEach(worksheets, (worksheet) => {
+        worksheet.importInDatabase();
+      });
+    }
+  }
 }
