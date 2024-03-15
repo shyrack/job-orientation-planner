@@ -5,5 +5,6 @@ export class ViewTestProcessDefinition extends ProcessDefinition {
     super("View test process", "/process/view");
   }
 
-  public execute() {}
+  execute() {}
+  onProcessFinished() {}
 }

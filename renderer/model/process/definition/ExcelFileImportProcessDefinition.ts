@@ -5,5 +5,6 @@ export class ExcelFileImportProcessDefinition extends ProcessDefinition {
     super("Excel File Import", "/process/excel/import");
   }
 
-  public execute() {}
+  execute() {}
+  onProcessFinished() {}
 }

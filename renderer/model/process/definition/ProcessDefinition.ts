@@ -1,8 +1,6 @@
 export abstract class ProcessDefinition {
   constructor(private name: string, private url: string) {}
 
-  public abstract execute(): unknown;
-
   public getName() {
     return this.name;
   }
@@ -10,4 +8,7 @@ export abstract class ProcessDefinition {
   public getUrl() {
     return this.url;
   }
+
+  abstract execute(): void;
+  abstract onProcessFinished(): void;
 }
