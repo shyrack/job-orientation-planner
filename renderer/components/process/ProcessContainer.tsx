@@ -1,6 +1,7 @@
 import { Button, Step, StepLabel, Stepper, StepperProps, Tooltip, styled } from "@mui/material";
 import _ from "lodash";
 import React from "react";
+import { ProcessDefinition } from "../../model/process/definition/ProcessDefinition";
 import { ProcessStepDefinition } from "../../model/process/definition/step/ProcessStepDefinition";
 import FlexContainer from "../common/flex/FlexContainer";
 import FlexSpacer from "../common/flex/FlexSpacer";
@@ -26,10 +27,10 @@ const ProcessContainerStepper = styled(Stepper)({
   flexWrap: "wrap"
 });
 
-type ProcessContainerProps = { steps: Array<ProcessStepDefinition> } & StepperProps;
+type ProcessContainerProps = { definition: ProcessDefinition; steps: Array<ProcessStepDefinition> } & StepperProps;
 
 export default function ProcessContainer(props: ProcessContainerProps) {
-  const { steps, ...otherProps } = props;
+  const { definition, steps, ...otherProps } = props;
   const [activeStep, setActiveStep] = React.useState(0);
 
   const stepCount = React.useMemo(() => _.size(steps), [steps]);
@@ -51,7 +52,12 @@ export default function ProcessContainer(props: ProcessContainerProps) {
     [activeStep, setActiveStep]
   );
 
-  const onFinishButtonClick = React.useCallback((event: React.MouseEvent<HTMLButtonElement>) => {}, []);
+  const onFinishButtonClick = React.useCallback(
+    (event: React.MouseEvent<HTMLButtonElement>) => {
+      definition.onProcessFinished();
+    },
+    [definition]
+  );
 
   return (
     <ProcessContainerWrapper>
