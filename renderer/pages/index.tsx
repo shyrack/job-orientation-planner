@@ -18,11 +18,11 @@ export default function IndexPage(props: IndexPageProps) {
       <Typography variant="h5" sx={(theme) => ({ margin: theme.spacing(2) })}>
         Processes:
       </Typography>
-      <FlexContainer>
+<FlexContainer>
         <Panel processDefinition={testProcessDef} />
         <Panel processDefinition={viewTestProcessDef} />
         <Panel processDefinition={excelImportProcessDef} />
-      </FlexContainer>
+</FlexContainer>
     </PageProvider>
   );
 }

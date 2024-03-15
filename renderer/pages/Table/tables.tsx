@@ -1,5 +1,7 @@
+import FlexContainer from "../../components/common/flex/FlexContainer";
 import Panel from "../../components/process/Panel";
 import PageProvider from "../../components/provider/PageProvider";
+import Typography from "../../components/text/Typography";
 import { SelectTable } from "../../model/process/definition/table/tableProcessDefinition";
 
 type TestProps = {};
@@ -49,11 +51,14 @@ function selectTable(dbPath: string) {
 export default function Tables(props: TestProps) {
   return (
     <PageProvider>
-      <div style={{ display: "flex", flexWrap: "wrap" }}>
+      <Typography variant="h5" sx={(theme) => ({ margin: theme.spacing(2) })}>
+        Tables:
+      </Typography>
+      <FlexContainer>
         {tablesList.map((table, index) => (
           <Panel key={index} processDefinition={table} />
         ))}
-      </div>
+      </FlexContainer>
     </PageProvider>
   );
 }
