@@ -14,11 +14,11 @@ export abstract class ClassBasedImportStrategy extends ImportStrategy {
 
   protected calculateEntryYear() {
     const className = this.parsedRow[Column.CLASS];
-    const regex = /^[A-Za-z]{2,3}\d{2}\d+$/;
-    const match = className.match(regex);
+    const regex = new RegExp("(\\d{2})", "gmi");
+    const matches = regex.exec(className);
 
-    if (_.isArray(match) && _.size(match) > 2) {
-      return parseInt("20" + match[1]);
+    if (matches && !_.isEmpty(matches)) {
+      return parseInt("20" + matches[0]);
     } else {
       throw new Error(`Could not resolve class name: ${className}.`);
     }
