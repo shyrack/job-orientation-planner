@@ -5,5 +5,6 @@ export class TestProcessDefinition extends ProcessDefinition {
     super("Test process", "/process/test");
   }
 
-  public execute() {}
+  execute() {}
+  onProcessFinished() {}
 }

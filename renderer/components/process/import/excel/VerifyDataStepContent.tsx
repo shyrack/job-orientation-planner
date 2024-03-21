@@ -41,7 +41,9 @@ const StepperButtonWrapper = styled(FlexContainer)({
 });
 
 export default function VerifyDataStepContent(props: StepContentProps) {
-  const { accessedSubState: worksheets } = useAppState((appState) => appState.excelFileImportProcessState.worksheets);
+  const { accessedSubState: worksheets, modifyAppState } = useAppState(
+    (appState) => appState.excelFileImportProcessState.worksheets
+  );
   const worksheetCount = React.useMemo(() => _.size(worksheets), [worksheets]);
   const [activeStep, setActiveStep] = React.useState(0);
 
@@ -52,6 +54,12 @@ export default function VerifyDataStepContent(props: StepContentProps) {
   const onBackButtonClick = React.useCallback(() => {
     setActiveStep(activeStep - 1);
   }, [activeStep, setActiveStep]);
+
+  React.useEffect(() => {
+    modifyAppState((appState) => {
+      appState.excelFileImportProcessState.reviewedWorksheets = true;
+    });
+  }, [modifyAppState]);
 
   return (
     <VerifyDataStepWrapper id="test">
