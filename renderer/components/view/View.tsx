@@ -7,7 +7,7 @@ import { useAppState } from "../../utils/hooks";
 
 const StyledDataGrid = styled(DataGrid)(({ theme }) => ({
   width: "100%",
-  backgroundColor: "red"
+  backgroundColor: "grey"
 }));
 
 export type ViewDefinition<T extends ColumnDefinitions<string>> = {
