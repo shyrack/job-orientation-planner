@@ -111,7 +111,7 @@ function executeOperation<T>(channel: string, responseChannel: string, param: an
   });
 }
 
-function selectTableNew(table: Table) {
+function retrieveTable(table: Table) {
   return executeOperation<{ error: Error | null; rows: Array<unknown> }>("retrieve-table", "table-retrieved", table);
 }
 
@@ -120,9 +120,9 @@ const electronApi = {
   createRow,
   createRowAsync,
   createTableRows,
+  retrieveTable,
   selectDatabase,
   selectTable,
-  selectTableNew,
   testDatabase
 };
 

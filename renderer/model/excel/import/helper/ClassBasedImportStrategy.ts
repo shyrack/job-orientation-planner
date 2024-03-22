@@ -28,7 +28,7 @@ export abstract class ClassBasedImportStrategy extends ImportStrategy {
   protected async retrieveClassId() {
     const entryYear = this.calculateEntryYear();
     const className = this.parsedRow[Column.CLASS];
-    const classTable = await this.electron.selectTableNew(Database.Table.CLASS);
+    const classTable = await this.electron.retrieveTable(Database.Table.CLASS);
     const classIndex = _.findIndex(
       classTable.rows as Array<any>,
       (classRow) => classRow["entry_year"] === entryYear && classRow["name"] === className.toUpperCase()
