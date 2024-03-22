@@ -7,9 +7,8 @@ export class Student extends TimetableReceiver {
 
     protected appointments: Appointment[] = new Array(5);
 
-    constructor(id: number, votes: Vote[]) {
+    constructor(id: number) {
         super(id);
-        this.votes = votes;
     }
 
     public isValid(): boolean {
@@ -40,7 +39,23 @@ export class Student extends TimetableReceiver {
         return score;
     }
 
+    public addVote(vote: Vote): void {
+        this.votes.push(vote);
+    }
+
     public getVotes(): Vote[] {
         return this.votes;
+    }
+
+    public toString(): String {
+        let output = `Votes:\n`;
+
+        this.votes.forEach(vote => output += `    ${vote.toString()}\n`);
+
+        output += `Appointments:\n`;
+
+        this.votes.forEach(appointment => output += `    ${appointment.toString()}\n`);
+
+        return output;
     }
 }

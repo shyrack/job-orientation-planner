@@ -1,0 +1,44 @@
+[
+    {
+        "company_id": 1,
+        "event_id": 1,
+        "priority": 1,
+        "student_id": 1,
+        "studentpreference_id": 1
+    },
+    {
+        "company_id": 2,
+        "event_id": 1,
+        "priority": 2,
+        "student_id": 1,
+        "studentpreference_id": 2
+    },
+    {
+        "company_id": 3,
+        "event_id": 1,
+        "priority": 3,
+        "student_id": 1,
+        "studentpreference_id": 3
+    },
+    {
+        "company_id": 4,
+        "event_id": 1,
+        "priority": 4,
+        "student_id": 1,
+        "studentpreference_id": 4
+    },
+    {
+        "company_id": 5,
+        "event_id": 1,
+        "priority": 5,
+        "student_id": 1,
+        "studentpreference_id": 5
+    },
+    {
+        "company_id": 6,
+        "event_id": 1,
+        "priority": 6,
+        "student_id": 1,
+        "studentpreference_id": 6
+    }
+]

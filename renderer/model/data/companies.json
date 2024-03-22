@@ -1,0 +1,44 @@
+[
+    {
+        "company_id": 1,
+        "job_occupation": "Fachinformatiker Anwendungsentwicklung",
+        "name": "Affe",
+        "timeslot_end": "16:00",
+        "timeslot_start": "08:00"
+    },
+    {
+        "company_id": 2,
+        "job_occupation": "Fachinformatiker Systemintegration",
+        "name": "Banane",
+        "timeslot_end": "16:00",
+        "timeslot_start": "08:00"
+    },
+    {
+        "company_id": 3,
+        "job_occupation": "Kaufmann im Einzelhandel",
+        "name": "Affe",
+        "timeslot_end": "16:00",
+        "timeslot_start": "08:00"
+    },
+    {
+        "company_id": 4,
+        "job_occupation": "Fachkraft für Lagerlogistik",
+        "name": "Rechner",
+        "timeslot_end": "16:00",
+        "timeslot_start": "08:00"
+    },
+    {
+        "company_id": 5,
+        "job_occupation": "Mechatroniker",
+        "name": "Affe",
+        "timeslot_end": "16:00",
+        "timeslot_start": "08:00"
+    },
+    {
+        "company_id": 6,
+        "job_occupation": "Kaufmann fuer Bueromanagement",
+        "name": "Banane",
+        "timeslot_end": "16:00",
+        "timeslot_start": "08:00"
+    }
+]

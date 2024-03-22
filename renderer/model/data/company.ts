@@ -1,24 +1,17 @@
 import { Appointment } from "./appointment";
-import { Room } from "./room";
 import { Timeslot } from "./timeslot";
 import { TimetableReceiver } from "./timetableReceiver";
 
 export class Company extends TimetableReceiver {
-    private professions: String[];
-    private eventLimit: number;
-    private studentLimit: number;
+    private name: string;
     private available: Timeslot[];
-    private rooms: Room[];
 
     protected appointments: Appointment[] = [];
 
-    constructor(id: number, professions: String[], eventLimit: number, studentLimit: number, availabe: Timeslot[], rooms: Room[]) {
+    constructor(id: number, name: string, availabe: Timeslot[]) {
         super(id);
-        this.professions = professions;
-        this.eventLimit = eventLimit;
-        this.studentLimit = studentLimit;
+        this.name = name;
         this.available = availabe;
-        this.rooms = rooms;
     }
 
     public isValid(): boolean {
@@ -26,5 +19,27 @@ export class Company extends TimetableReceiver {
             return true;
         }
         return false;
+    }
+
+    public getName(): string {
+        return this.name;
+    }
+
+    public getAvailable(): Timeslot[] {
+        return this.available;
+    }
+
+    public toString(): String {
+        let output = `Name: ${this.name}`;
+
+        output += `Available:\n`;
+
+        this.available.forEach(timeslot => output += `    ${timeslot}\n`);
+
+        output += `Appointments:\n`;
+
+        this.appointments.forEach(appointment => output += `    ${appointment.toString()}\n`);
+
+        return output;
     }
 }
