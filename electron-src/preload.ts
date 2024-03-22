@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-namespace */
+// eslint-disable @typescript-eslint/no-namespace
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { IpcRendererEvent, contextBridge, ipcRenderer } from "electron";
 import _ from "lodash";
@@ -45,27 +45,6 @@ function selectTable(
     } else {
       callback(event, successfullySelected, error);
     }
-  });
-}
-
-function selectTableNew(tableName: string) {
-  return new Promise<{ successfully: boolean; data: Array<any> }>((resolve) => {
-    const selectTableOperationId = _.uniqueId();
-
-    const selectTableCallback = (
-      _ignore: IpcRendererEvent,
-      operationId: string,
-      successfully: boolean,
-      data: Array<any>
-    ) => {
-      if (selectTableOperationId === operationId) {
-        ipcRenderer.removeListener("select-table", selectTableCallback);
-        resolve({ successfully, data });
-      }
-    };
-
-    ipcRenderer.on("table-selection", selectTableCallback);
-    ipcRenderer.send("select-table", tableName);
   });
 }
 
@@ -132,7 +111,7 @@ function executeOperation<T>(channel: string, responseChannel: string, param: an
   });
 }
 
-function selectTableNewNew(table: Table) {
+function retrieveTable(table: Table) {
   return executeOperation<{ error: Error | null; rows: Array<unknown> }>("retrieve-table", "table-retrieved", table);
 }
 
@@ -141,10 +120,9 @@ const electronApi = {
   createRow,
   createRowAsync,
   createTableRows,
+  retrieveTable,
   selectDatabase,
   selectTable,
-  selectTableNew,
-  selectTableNewNew,
   testDatabase
 };
 

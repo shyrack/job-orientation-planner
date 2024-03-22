@@ -7,7 +7,7 @@ export class StudentPreferenceImportStrategy extends ClassBasedImportStrategy {
 
   private async retrieveStudentId() {
     const { Name: name, Vorname: firstName } = this.parsedRow;
-    const studentTable = await this.electron.selectTableNewNew(Database.Table.STUDENT);
+    const studentTable = await this.electron.retrieveTable(Database.Table.STUDENT);
     const studentIndex = _.findIndex(
       studentTable.rows as Array<any>,
       (student) => student.lastname === name && student.firstname === firstName

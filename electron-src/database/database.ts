@@ -278,8 +278,6 @@ export function createTableRows(
   operationId: string
 ) {
   function commandCallback(_ignore: RunResult, error: Error | null) {
-    console.log("_ignore", _ignore);
-    console.log("error", error);
     event.sender.send(`row-creations`, operationId, !Boolean(error), error);
   }
 
@@ -289,8 +287,6 @@ export function createTableRows(
       const values = _.values(row).join(", ");
       const questionMarks = _.map(columns, () => "?").join(", ");
       const command = `INSERT INTO ${table} (${questionMarks}) VALUES (${values})`;
-
-      console.log("command", command);
 
       database.run(command, _.values(row), commandCallback);
     });
@@ -304,8 +300,6 @@ function executeDatabaseOperation(databaseOperation: (database: Database) => any
 }
 
 function retrieveTable(table: Table) {
-  const db = new Database(DATABASE_PATH);
-
   return new Promise<{ error: Error | null; rows: Array<unknown> }>((resolve) => {
     function onDatabaseResponse(error: Error | null, rows: Array<unknown>) {
       resolve({
@@ -314,8 +308,9 @@ function retrieveTable(table: Table) {
       });
     }
 
-    db.all(`SELECT * FROM ${table}`, [], onDatabaseResponse);
-    db.close();
+    executeDatabaseOperation((database) => {
+      database.all(`SELECT * FROM ${table}`, [], onDatabaseResponse);
+    });
   });
 }
 
