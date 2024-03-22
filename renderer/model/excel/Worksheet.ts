@@ -4,6 +4,7 @@ import z from "zod";
 import { Database } from "../../database/helper";
 import { UnionObjectValues } from "../../utils/types";
 import { ClassImportStrategy } from "./import/ClassImportStrategy";
+import { CompanyImportStrategy } from "./import/CompanyImportStrategy";
 import { ImportStrategy } from "./import/ImportStrategy";
 import { StudentImportStrategy } from "./import/StudentImportStrategy";
 import { StudentPreferenceImportStrategy } from "./import/StudentPreferenceImportStrategy";
@@ -20,7 +21,10 @@ export enum Column {
   COMPANY = "Unternehmen",
   COMPANY_ID = "Nr.",
   COMPANY_OCCUPATION = "Fachrichtung",
+  EARLIEST_TIME = "Frühster Zeitpunkt",
   FIRST_NAME = "Vorname",
+  MAX_EVENTS = "Max. Veranstaltungen",
+  MAX_PARTICIPANTS = "Max. Teilnehmer",
   NAME = "Name",
   ROOM = "Raum"
 }
@@ -35,6 +39,15 @@ export const choiceImportRowSchema = z.object({
   [Column.CHOICE_4]: z.number().int().optional(),
   [Column.CHOICE_5]: z.number().int().optional(),
   [Column.CHOICE_6]: z.number().int().optional()
+});
+
+export const eventImportRowSchema = z.object({
+  [Column.COMPANY_ID]: z.number().int(),
+  [Column.COMPANY]: z.string(),
+  [Column.COMPANY_OCCUPATION]: z.string().optional(),
+  [Column.MAX_PARTICIPANTS]: z.number().int(),
+  [Column.MAX_EVENTS]: z.number().int(),
+  [Column.EARLIEST_TIME]: z.string()
 });
 
 export class WorksheetDatabaseColumn {
@@ -108,7 +121,8 @@ export class Worksheet {
       const strategies = [
         new ClassImportStrategy(parsedRow),
         new StudentImportStrategy(parsedRow),
-        new StudentPreferenceImportStrategy(parsedRow)
+        new StudentPreferenceImportStrategy(parsedRow),
+        new CompanyImportStrategy(parsedRow)
       ];
 
       this.executeImportStrategies(strategies);
