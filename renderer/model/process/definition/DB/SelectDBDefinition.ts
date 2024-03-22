@@ -6,4 +6,6 @@ export class SelectDBDefinition extends ProcessDefinition {
   }
 
   public execute() {}
+
+  onProcessFinished() {}
 }
