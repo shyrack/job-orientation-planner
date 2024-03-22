@@ -304,8 +304,6 @@ function executeDatabaseOperation(databaseOperation: (database: Database) => any
 }
 
 function retrieveTable(table: Table) {
-  const db = new Database(DATABASE_PATH);
-
   return new Promise<{ error: Error | null; rows: Array<unknown> }>((resolve) => {
     function onDatabaseResponse(error: Error | null, rows: Array<unknown>) {
       resolve({
@@ -314,8 +312,9 @@ function retrieveTable(table: Table) {
       });
     }
 
-    db.all(`SELECT * FROM ${table}`, [], onDatabaseResponse);
-    db.close();
+    executeDatabaseOperation((database) => {
+      database.all(`SELECT * FROM ${table}`, [], onDatabaseResponse);
+    });
   });
 }
 
