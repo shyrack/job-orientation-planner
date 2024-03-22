@@ -36,7 +36,7 @@ export default function Panel(props: PanelProps) {
     backgroundColor: isPointerOver ? lighten(theme.palette.background.paper, 0.1) : theme.palette.background.paper,
     config: {
       bounce: 0,
-      duration: 250
+      duration: 200
     },
     scale: isPointerOver ? 1.075 : 1.0
   });
