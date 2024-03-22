@@ -278,8 +278,6 @@ export function createTableRows(
   operationId: string
 ) {
   function commandCallback(_ignore: RunResult, error: Error | null) {
-    console.log("_ignore", _ignore);
-    console.log("error", error);
     event.sender.send(`row-creations`, operationId, !Boolean(error), error);
   }
 
@@ -289,8 +287,6 @@ export function createTableRows(
       const values = _.values(row).join(", ");
       const questionMarks = _.map(columns, () => "?").join(", ");
       const command = `INSERT INTO ${table} (${questionMarks}) VALUES (${values})`;
-
-      console.log("command", command);
 
       database.run(command, _.values(row), commandCallback);
     });
