@@ -1,5 +1,6 @@
 import _ from "lodash";
 import z from "zod";
+import { Database } from "../../../../database/helper";
 import { Column, choiceImportRowSchema } from "../../Worksheet";
 import { ImportRow, ImportStrategy } from "../ImportStrategy";
 
@@ -27,12 +28,12 @@ export abstract class ClassBasedImportStrategy extends ImportStrategy {
   protected async retrieveClassId() {
     const entryYear = this.calculateEntryYear();
     const className = this.parsedRow[Column.CLASS];
-
-    const classTable = await this.electron.selectTableNew("Class");
+    const classTable = await this.electron.selectTableNewNew(Database.Table.CLASS);
     const classIndex = _.findIndex(
-      classTable.data,
-      (classRow) => classRow["entry_year"] === entryYear && classRow["name"] === className
+      classTable.rows as Array<any>,
+      (classRow) => classRow["entry_year"] === entryYear && classRow["name"] === className.toUpperCase()
     );
-    return classTable.data[classIndex]["class_id"];
+
+    return (classTable.rows[classIndex] as any)["class_id"];
   }
 }

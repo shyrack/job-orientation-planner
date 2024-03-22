@@ -102,7 +102,7 @@ export default function ProcessContainer(props: ProcessContainerProps) {
         {isLastStep ? (
           <Tooltip title={!isEveryStepValid ? "Nicht abgeschlossene Schritte übrig" : ""}>
             <span>
-              <Button disabled={!isEveryStepValid} onClick={onFinishButtonClick}>
+              <Button disabled={false} onClick={onFinishButtonClick}>
                 Abschließen
               </Button>
             </span>

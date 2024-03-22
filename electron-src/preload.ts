@@ -72,29 +72,26 @@ function selectTableNew(tableName: string) {
 function createRow(
   callback: (event: IpcRendererEvent, successfullyCreated: boolean, error: any) => void,
   tableName: Table,
-  obj: any,
-  retries: number = 3
+  obj: any
 ) {
   const lowerCaseTableName = _.toLower(tableName);
-
   ipcRenderer.send(`create-${lowerCaseTableName}`, obj);
   ipcRenderer.once(`${lowerCaseTableName}-creation`, (event, successfullyCreated, error) => {
-    if (error && retries > 0) {
+    if (!!error) {
       console.log(`Error creating row in ${tableName}. Retrying in 5 seconds...`);
-      setTimeout(() => createRow(callback, tableName, obj, retries - 1), 5000);
     } else {
       callback(event, successfullyCreated, error);
     }
   });
 }
 
-function createRowAsync(tableName: Table, obj: any, retries: number = 3) {
+function createRowAsync(tableName: Table, obj: any) {
   return new Promise<{ successfully: boolean; error: any }>((resolve) => {
     function onCreateRowCallback(_event: IpcRendererEvent, successfullyCreated: boolean, error: any) {
       resolve({ error: error, successfully: successfullyCreated });
     }
 
-    createRow(onCreateRowCallback, tableName, obj, retries);
+    createRow(onCreateRowCallback, tableName, obj);
   });
 }
 
@@ -119,6 +116,26 @@ function createTableRows(table: Table, rows: Array<Record<string, any>>) {
   });
 }
 
+function executeOperation<T>(channel: string, responseChannel: string, param: any) {
+  const operationId = _.uniqueId();
+
+  return new Promise<T>((resolve) => {
+    const onResponse = (_event: IpcRendererEvent, responseOperationId: string, result: T) => {
+      if (operationId === responseOperationId) {
+        ipcRenderer.removeListener(responseChannel, onResponse);
+        resolve(result);
+      }
+    };
+
+    ipcRenderer.on(responseChannel, onResponse);
+    ipcRenderer.send(channel, operationId, param);
+  });
+}
+
+function selectTableNewNew(table: Table) {
+  return executeOperation<{ error: Error | null; rows: Array<unknown> }>("retrieve-table", "table-retrieved", table);
+}
+
 const electronApi = {
   createDatabase,
   createRow,
@@ -127,6 +144,7 @@ const electronApi = {
   selectDatabase,
   selectTable,
   selectTableNew,
+  selectTableNewNew,
   testDatabase
 };
 
