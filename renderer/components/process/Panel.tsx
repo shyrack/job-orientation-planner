@@ -32,11 +32,12 @@ export default function Panel(props: PanelProps) {
   const [isPointerOver, setIsPointerOver] = React.useState(false);
 
   const theme = useTheme();
-  const panelStyles = useSpring({
+  const panelAnimationStyle = useSpring({
     backgroundColor: isPointerOver ? lighten(theme.palette.background.paper, 0.1) : theme.palette.background.paper,
     config: {
-      bounce: 0,
-      duration: 200
+      friction: 50,
+      mass: 5,
+      tension: 1000
     },
     scale: isPointerOver ? 1.075 : 1.0
   });
@@ -65,7 +66,7 @@ export default function Panel(props: PanelProps) {
       onClick={onClick}
       onPointerEnter={onPointerEnter}
       onPointerLeave={onPointerLeave}
-      style={panelStyles}
+      style={panelAnimationStyle}
     >
       <TableRowsIcon sx={{ fontSize: "75px" }} />
       <Typography justifyContent="center" variant="h6">
