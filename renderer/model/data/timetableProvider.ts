@@ -49,7 +49,7 @@ export class TimetableProvider {
         console.log(`ITERATION COUNTER: ${this.iterationCounter++}`);
         console.log(`STUDENTS LEVEL COUNTER: ${this.levelCounter++}`);
 
-        if (this.isStudentValid() && this.isStudentComplete()) {
+        if (this.isStudentValid()) {
             if (this.isStudentComplete()) {
                 let currentScore = this.getScore();
 
@@ -58,49 +58,47 @@ export class TimetableProvider {
                     this.bestSolution = this.deepCopy();
                 }
             }
-        }
+            else {
+                // iterate over votesLeft
+                for (let i = 0; i < this.votesLeft.length; i++) {
+                    let popped = this.votesLeft.pop();
 
-        if (!this.isStudentComplete()) {
+                    if (popped !== undefined) { this.votesDone.push(popped);
+                        let vote = popped[0];
+                        let student = popped[1];
 
-            // iterate over votesLeft
-            for (let i = 0; i < this.votesLeft.length; i++) {
-                let popped = this.votesLeft.pop();
+                        let possibleAppointments = this.findPossibleAppointments(vote.getDemonstrationType());
 
-                if (popped !== undefined) { this.votesDone.push(popped);
-                    let vote = popped[0];
-                    let student = popped[1];
+                        if (possibleAppointments.length != 0) { // no possible appointments available
+                            // iterate over possibleAppointments
+                            possibleAppointments.forEach(possibleAppointment => {
 
-                    let possibleAppointments = this.findPossibleAppointments(vote.getDemonstrationType());
+                            // execute this possibility
+                            student.addAppointment(possibleAppointment);
 
-                    if (possibleAppointments.length != 0) { // no possible appointments available
-                        // iterate over possibleAppointments
-                        possibleAppointments.forEach(possibleAppointment => {
+                            // execute next possibility/entry next recursion level
+                            this.backtrackingStudents();
+                        })
+                        }
+                        else { // generate possible appointment
+                            this.appointments.push(new Appointment(vote.getDemonstrationType(), this.appointments.length));
 
-                        // execute this possibility
-                        student.addAppointment(possibleAppointment);
+                            // execute this possibility
+                            student.addAppointment(this.appointments[this.appointments.length - 1]);
 
-                        // execute next possibility/entry next recursion level
-                        this.backtrackingStudents();
-                    })
-                    }
-                    else { // generate possible appointment
-                        this.appointments.push(new Appointment(vote.getDemonstrationType(), this.appointments.length));
+                            // execute next possibility/entry next recursion level
+                            this.backtrackingStudents();
 
-                        // execute this possibility
-                        student.addAppointment(this.appointments[this.appointments.length - 1]);
-
-                        // execute next possibility/entry next recursion level
-                        this.backtrackingStudents();
+                            // revert this execution/step back
+                            this.appointments.pop();
+                        }
 
                         // revert this execution/step back
-                        this.appointments.pop();
+                        student.removeAppointment();
+
+                        this.votesDone.pop();
+                        if (popped !== undefined) { this.votesLeft.push(popped); }
                     }
-
-                    // revert this execution/step back
-                    student.removeAppointment();
-
-                    this.votesDone.pop();
-                    if (popped !== undefined) { this.votesLeft.push(popped); }
                 }
             }
         }
@@ -178,9 +176,5 @@ export class TimetableProvider {
         })
 
         return score;
-    }
-
-    private runGreedy(): void {
-        console.log("DEBUG");
     }
 }

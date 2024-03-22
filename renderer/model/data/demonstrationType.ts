@@ -5,19 +5,9 @@ export class DemonstrationType {
     private demonstrationId: number
     private company: Company;
 
-    private rooms: Room[] = [];
-
     constructor(demonstrationId: number, company: Company) {
         this.demonstrationId = demonstrationId;
         this.company = company;
-    }
-
-    public addRoom(room: Room): void {
-        this.rooms.push(room);
-    }
-
-    public removeRoom(): void {
-        this.rooms.pop();
     }
 
     public getDemonstrationId(): number {
@@ -28,7 +18,15 @@ export class DemonstrationType {
         return this.company;
     }
 
-    public getRooms(): Room[] {
-        return this.rooms;
+    public toString(): String {
+        let output = `DemonstrationId: ${this.demonstrationId}\n`;
+
+        output += `Company:\n`;
+
+        output += `    Id: ${this.company.getId()}\n`;
+
+        output += `    Name: ${this.company.getName()}\n`;
+
+        return output;
     }
 }

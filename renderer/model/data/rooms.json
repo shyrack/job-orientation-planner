@@ -1,0 +1,72 @@
+[
+    {
+        "name": "008",
+        "room_id": 1,
+        "student_capacity": 15
+    },
+    {
+        "name": "101",
+        "room_id": 2,
+        "student_capacity": 20
+    },
+    {
+        "name": "102",
+        "room_id": 3,
+        "student_capacity": 20
+    },
+    {
+        "name": "103",
+        "room_id": 4,
+        "student_capacity": 20
+    },
+    {
+        "name": "106",
+        "room_id": 5,
+        "student_capacity": 20
+    },
+    {
+        "name": "107",
+        "room_id": 6,
+        "student_capacity": 20
+    },
+    {
+        "name": "108",
+        "room_id": 7,
+        "student_capacity": 20
+    },
+    {
+        "name": "109",
+        "room_id": 8,
+        "student_capacity": 20
+    },
+    {
+        "name": "110",
+        "room_id": 9,
+        "student_capacity": 20
+    },
+    {
+        "name": "111",
+        "room_id": 10,
+        "student_capacity": 20
+    },
+    {
+        "name": "112",
+        "room_id": 11,
+        "student_capacity": 20
+    },
+    {
+        "name": "113",
+        "room_id": 12,
+        "student_capacity": 20
+    },
+    {
+        "name": "Aula",
+        "room_id": 13,
+        "student_capacity": 50
+    },
+    {
+        "name": "209",
+        "room_id": 14,
+        "student_capacity": 20
+    }
+]

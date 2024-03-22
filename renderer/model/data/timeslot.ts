@@ -1,6 +1,6 @@
-export enum Timeslot { // analogue to school periods
-    "" = -1,
-    "8:45 - 9:30" = 2,
+/// School periods
+export enum Timeslot {
+    "8:45 - 9:30",
     "9:50 - 10:35",
     "10:35 - 11:20",
     "11:40 - 12:25",
