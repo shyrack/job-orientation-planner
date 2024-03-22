@@ -39,3 +39,6 @@ next-env.d.ts
 
 # Vistual Studio Code
 .vscode
+
+# Database
+*.db
