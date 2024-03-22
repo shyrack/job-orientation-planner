@@ -6,6 +6,7 @@ import { UnionObjectValues } from "../../utils/types";
 import { ClassImportStrategy } from "./import/ClassImportStrategy";
 import { CompanyImportStrategy } from "./import/CompanyImportStrategy";
 import { ImportStrategy } from "./import/ImportStrategy";
+import { RoomImportStrategy } from "./import/RoomImportStrategy";
 import { StudentImportStrategy } from "./import/StudentImportStrategy";
 import { StudentPreferenceImportStrategy } from "./import/StudentPreferenceImportStrategy";
 
@@ -48,6 +49,11 @@ export const eventImportRowSchema = z.object({
   [Column.MAX_PARTICIPANTS]: z.number().int(),
   [Column.MAX_EVENTS]: z.number().int(),
   [Column.EARLIEST_TIME]: z.string()
+});
+
+export const roomImportRowSchema = z.object({
+  [Column.ROOM]: z.string(),
+  [Column.CAPACITY]: z.number().int()
 });
 
 export class WorksheetDatabaseColumn {
@@ -120,9 +126,10 @@ export class Worksheet {
       const parsedRow = Worksheet.parseRow(row);
       const strategies = [
         new ClassImportStrategy(parsedRow),
+        new CompanyImportStrategy(parsedRow),
+        new RoomImportStrategy(parsedRow),
         new StudentImportStrategy(parsedRow),
-        new StudentPreferenceImportStrategy(parsedRow),
-        new CompanyImportStrategy(parsedRow)
+        new StudentPreferenceImportStrategy(parsedRow)
       ];
 
       this.executeImportStrategies(strategies);
