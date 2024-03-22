@@ -6,4 +6,6 @@ export class CreateDBDefinition extends ProcessDefinition {
   }
 
   public execute() {}
+
+  onProcessFinished() {}
 }
