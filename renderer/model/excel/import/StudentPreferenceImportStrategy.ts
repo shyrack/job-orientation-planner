@@ -3,17 +3,17 @@ import { Database } from "../../../database/helper";
 import { ClassBasedImportStrategy } from "./helper/ClassBasedImportStrategy";
 
 export class StudentPreferenceImportStrategy extends ClassBasedImportStrategy {
-  private eventId?: string;
+  private eventId: number = 112;
 
   private async retrieveStudentId() {
     const { Name: name, Vorname: firstName } = this.parsedRow;
-    const studentTable = await this.electron.selectTableNew(Database.Table.STUDENT);
+    const studentTable = await this.electron.selectTableNewNew(Database.Table.STUDENT);
     const studentIndex = _.findIndex(
-      studentTable.data,
+      studentTable.rows as Array<any>,
       (student) => student.lastname === name && student.firstname === firstName
     );
 
-    return studentTable.data[studentIndex]["student_id"];
+    return (studentTable.rows[studentIndex] as any)["student_id"];
   }
 
   async import() {

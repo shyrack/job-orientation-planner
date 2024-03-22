@@ -9,7 +9,7 @@ export class ClassImportStrategy extends ClassBasedImportStrategy {
 
     await super.createDatabaseTableRow(Database.Table.CLASS, {
       entry_year: entryYear,
-      name: studentClass
+      name: studentClass.toUpperCase()
     });
   }
 

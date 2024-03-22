@@ -243,9 +243,15 @@ function selectTable(event: IpcMainEvent, tableName: string) {
   db.close();
 }
 
+function makeOperation<T, U>(operable: (param: T) => U, responseChannel: string) {
+  return async function (event: IpcMainEvent, operationId: string, param: T) {
+    const result = await operable(param);
+    event.sender.send(responseChannel, operationId, result);
+  };
+}
+
 function createRow(event: IpcMainEvent, tableName: string, data: any) {
   const db = new Database(DATABASE_PATH);
-
   const keys = Object.keys(data).join(", ");
   const values = Object.values(data)
     .map(() => "?")
@@ -272,14 +278,19 @@ export function createTableRows(
   operationId: string
 ) {
   function commandCallback(_ignore: RunResult, error: Error | null) {
+    console.log("_ignore", _ignore);
+    console.log("error", error);
     event.sender.send(`row-creations`, operationId, !Boolean(error), error);
   }
 
   executeDatabaseOperation((database) => {
     _.forEach(rows, (row) => {
-      const columns = _.keys(row).join(", ");
+      const columns = _.keys(row);
+      const values = _.values(row).join(", ");
       const questionMarks = _.map(columns, () => "?").join(", ");
-      const command = `INSERT INTO ${table} (${columns}) VALUES (${questionMarks})`;
+      const command = `INSERT INTO ${table} (${questionMarks}) VALUES (${values})`;
+
+      console.log("command", command);
 
       database.run(command, _.values(row), commandCallback);
     });
@@ -290,6 +301,22 @@ function executeDatabaseOperation(databaseOperation: (database: Database) => any
   const database = new Database(DATABASE_PATH);
   databaseOperation(database);
   database.close();
+}
+
+function retrieveTable(table: Table) {
+  const db = new Database(DATABASE_PATH);
+
+  return new Promise<{ error: Error | null; rows: Array<unknown> }>((resolve) => {
+    function onDatabaseResponse(error: Error | null, rows: Array<unknown>) {
+      resolve({
+        error,
+        rows
+      });
+    }
+
+    db.all(`SELECT * FROM ${table}`, [], onDatabaseResponse);
+    db.close();
+  });
 }
 
 export function registerEventListeners() {
@@ -306,4 +333,7 @@ export function registerEventListeners() {
 
   // Create rows
   ipcMain.on("create-table-rows", createTableRows);
+
+  // Testing code
+  ipcMain.on("retrieve-table", makeOperation(retrieveTable, "table-retrieved"));
 }
