@@ -4,12 +4,11 @@ export class SelectTable extends ProcessDefinition {
   private tableName: string;
 
   constructor(tableName: string, path: string) {
-    super(`Select ${tableName}`, path);
+    super(`Select ${tableName}`, path, false);
     this.tableName = tableName;
   }
 
   execute() {
-    //TODO: This doesnt work? Security Warning? obj too big?
     console.log("execute select");
 
     try {
