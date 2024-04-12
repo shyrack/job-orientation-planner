@@ -194,6 +194,26 @@ function selectTable(event: IpcMainEvent, tableName: string) {
   db.close();
 }
 
+function printSelect(event: IpcMainEvent, string: string) {
+  const db = new Database(DATABASE_PATH);
+
+  db.all(string, [], (err: any, rows: any) => {
+    if (err) {
+      console.error(err);
+      event.sender.send("table-selection", false, err);
+    } else {
+      const jsonString = JSON.stringify(rows);
+      console.log(jsonString);
+      printJsonInTable(JSON.parse(jsonString), "tableName");
+      event.sender.send("table-printselect", true, jsonString);
+    }
+  });
+
+  db.close();
+}
+
+ipcMain.on("printselect-table", printSelect);
+
 function makeOperation<T, U>(
   operable: (param: T) => U,
   responseChannel: string

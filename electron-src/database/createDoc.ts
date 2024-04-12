@@ -43,11 +43,6 @@ export function printJsonInTable(jsonData: any[], filename: string) {
   });
 
   Packer.toBuffer(doc).then((buffer) => {
-    fs.writeFileSync(
-      "C:/Repositories/jobv2/job-orientation-planner/electron-src/data/" +
-        filename +
-        ".docx",
-      buffer
-    );
+    fs.writeFileSync("C:/DATA/" + filename + ".docx", buffer);
   });
 }
