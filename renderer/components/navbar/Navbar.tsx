@@ -8,6 +8,7 @@ import NavbarItem from "./NavbarItem";
 const navItems = [
   { name: "Prozesse", pageId: "/" },
   { name: "Tabellen", pageId: "/Table/tables" },
+  { name: "TestPrint", pageId: "/Table/viewPrint" },
   { name: "Database Setup", pageId: "/DB/db_index" },
   { name: "Credits", pageId: "/" }
 ];

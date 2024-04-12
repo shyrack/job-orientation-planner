@@ -17,14 +17,14 @@ export class CompanyImportStrategy extends ImportStrategy {
       [Column.EARLIEST_TIME]: earliestTime,
       [Column.COMPANY_ID]: id,
       [Column.COMPANY]: name,
-      [Column.COMPANY_OCCUPATION]: occupation
+      [Column.COMPANY_OCCUPATION]: occupation,
     } = this.parsedRow;
 
     await super.createDatabaseTableRow(Database.Table.COMPANY, {
       company_id: id,
       name,
       job_occupation: occupation,
-      timeslot_start: earliestTime
+      timeslot_start: earliestTime,
     });
   }
 
