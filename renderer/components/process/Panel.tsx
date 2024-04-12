@@ -55,7 +55,9 @@ export default function Panel(props: PanelProps) {
 
   const onClick = React.useCallback(
     (event: React.MouseEvent<HTMLDivElement>) => {
-      window.location.href = url;
+      if (processDefinition.getIsRouter()) {
+        window.location.href = url;
+      }
       processDefinition.execute();
     },
     [processDefinition]

@@ -1,6 +1,7 @@
 import { IpcMainEvent, ipcMain } from "electron";
 import _ from "lodash";
 import { Database, RunResult, verbose } from "sqlite3";
+import { printJsonInTable } from "./createDoc";
 
 export enum Table {
   CLASS = "Class",
@@ -11,188 +12,137 @@ export enum Table {
   STUDENT = "Student",
   STUDENT_APPOINTMENT = "StudentAppointment",
   STUDENT_PREFERENCE = "StudentPreference",
-  TIME_SLOT = "Timeslot"
+  TIME_SLOT = "Timeslot",
 }
 
 let DATABASE_PATH: string;
 
-//TODO: Constraints
-function onCreateDatabase(event: IpcMainEvent, filepath: string) {
+async function onCreateDatabase(event: IpcMainEvent, filepath: string) {
   DATABASE_PATH = filepath;
+  const fs = require("fs");
+  if (!fs.existsSync(DATABASE_PATH)) {
+    try {
+      fs.writeFileSync(DATABASE_PATH, "");
+    } catch (err) {
+      handleErrors(err);
+    }
+  }
+
   let errors: string[] = [];
   let successfully: boolean = true;
   function handleErrors(errorMessage: any) {
+    successfully = false;
     console.error(errorMessage);
     errors.push(errorMessage);
   }
 
   const sql3 = verbose();
-  const DB = new sql3.Database(DATABASE_PATH, sql3.OPEN_READWRITE, (err: any) => {
-    successfully = false;
-    if (err) handleErrors(err);
-  });
-
-  // Company Table
-  DB.run(
-    `
-CREATE TABLE Company (
-    company_id        INTEGER PRIMARY KEY,
-    name              TEXT NOT NULL,
-    job_occupation    TEXT NOT NULL,
-    timeslot_start    TEXT NOT NULL,
-    timeslot_end      TEXT NOT NULL
-);`,
+  const DB = new sql3.Database(
+    DATABASE_PATH,
+    sql3.OPEN_READWRITE,
     (err: any) => {
-      if (err) {
-        handleErrors(err);
-      }
-    }
-  );
-  // Event Table
-  DB.run(
-    `
-CREATE TABLE Event (
-    event_id          INTEGER PRIMARY KEY,
-    name              TEXT NOT NULL,
-
-    UNIQUE (name)
-);`,
-    (err: any) => {
-      if (err) {
-        handleErrors(err);
-      }
+      successfully = false;
+      if (err) handleErrors(err);
     }
   );
 
-  // Class Table
-  DB.run(
-    `
-CREATE TABLE Class (
-    class_id        INTEGER PRIMARY KEY,
-    name            TEXT NOT NULL,
-    entry_year      INTEGER NOT NULL,
-
-    UNIQUE (name, entry_year)
-);`,
-    (err: any) => {
-      if (err) {
-        handleErrors(err);
-      }
-    }
-  );
-
-  // Student Table
-  DB.run(
-    `
-CREATE TABLE Student (
-    student_id      INTEGER PRIMARY KEY,
-    class_id        INTEGER,
-    firstname       TEXT NOT NULL,
-    lastname        TEXT NOT NULL,
-
-    FOREIGN KEY (class_id) REFERENCES Class(class_id)
-);`,
-    (err: any) => {
-      if (err) {
-        handleErrors(err);
-      }
-    }
-  );
-
-  // StudentPreference Table
-  DB.run(
-    `
-CREATE TABLE StudentPreference (
-    studentpreference_id     INTEGER PRIMARY KEY,
-    student_id               INTEGER NOT NULL,
-    company_id               INTEGER NOT NULL,
-    event_id                 INTEGER NOT NULL,
-    priority                 INTEGER NOT NULL,
-
-    FOREIGN KEY (student_id) REFERENCES Student(student_id),
-    FOREIGN KEY (company_id) REFERENCES Company(company_id),
-    FOREIGN KEY (event_id)   REFERENCES Event(event_id)
-);`,
-    (err: any) => {
-      if (err) {
-        handleErrors(err);
-      }
-    }
-  );
-
-  // Room Table
-  DB.run(
-    `
-CREATE TABLE Room (
-    room_id               INTEGER PRIMARY KEY,
-    name                  TEXT NOT NULL,
-    student_capacity      INTEGER NOT NULL
-);`,
-    (err: any) => {
-      if (err) {
-        handleErrors(err);
-      }
-    }
-  );
-
-  // Scheduler Table
-  DB.run(
-    `
-  CREATE TABLE Scheduler (
-    scheduler_id          INTEGER PRIMARY KEY,
-    timeslot_start        TEXT NOT NULL,
-    timeslot_end          INTEGER NOT NULL
-  );`,
-    (err: any) => {
-      if (err) {
-        handleErrors(err);
-      }
-    }
-  );
-
-  // Timeslot Table
-  DB.run(
-    `
-  CREATE TABLE Timeslot (
-      timeslot_id           INTEGER PRIMARY KEY,
-      room_id               INTEGER NOT NULL,
-      company_id            INTEGER NOT NULL,
-      event_id              INTEGER NOT NULL,
-      scheduler_id           INTEGER NOT NULL,
-
-      FOREIGN KEY (scheduler_id) REFERENCES Scheduler(scheduler_id),
-      FOREIGN KEY (room_id) REFERENCES Room(room_id),
-      FOREIGN KEY (company_id) REFERENCES Company(company_id),
-      FOREIGN KEY (event_id) REFERENCES Event(event_id)
-  );`,
-    (err: any) => {
-      if (err) {
-        handleErrors(err);
-      }
-    }
-  );
-
-  // Timeslot Table
-  DB.run(
-    `
-    CREATE TABLE StudentAppointment (
+  const sqlTableCreationStrings: string[] = [
+    `CREATE TABLE Company (
+        company_id        INTEGER PRIMARY KEY,
+        name              TEXT NOT NULL,
+        job_occupation    TEXT NOT NULL,
+        timeslot_start    TEXT NOT NULL,
+        timeslot_end      TEXT NOT NULL,
+        UNIQUE (name,job_occupation)
+    );`,
+    `CREATE TABLE Event (
+        event_id          INTEGER PRIMARY KEY,
+        name              TEXT NOT NULL,
+        UNIQUE (name)
+    );`,
+    `CREATE TABLE Class (
+        class_id        INTEGER PRIMARY KEY,
+        name            TEXT NOT NULL,
+        entry_year      INTEGER NOT NULL,
+        UNIQUE (name, entry_year)
+    );`,
+    `CREATE TABLE Student (
+        student_id      INTEGER PRIMARY KEY,
+        class_id        INTEGER,
+        firstname       TEXT NOT NULL,
+        lastname        TEXT NOT NULL,
+        FOREIGN KEY (class_id) REFERENCES Class(class_id),
+        UNIQUE (firstname, lastname)
+    );`,
+    `CREATE TABLE StudentPreference (
+        studentpreference_id     INTEGER PRIMARY KEY,
+        student_id               INTEGER NOT NULL,
+        company_id               INTEGER NOT NULL,
+        event_id                 INTEGER NOT NULL,
+        priority                 INTEGER NOT NULL,
+        FOREIGN KEY (student_id) REFERENCES Student(student_id),
+        FOREIGN KEY (company_id) REFERENCES Company(company_id),
+        FOREIGN KEY (event_id)   REFERENCES Event(event_id)
+    );`,
+    `CREATE TABLE Room (
+        room_id               INTEGER PRIMARY KEY,
+        name                  TEXT NOT NULL,
+        student_capacity      INTEGER NOT NULL,
+        UNIQUE (name)
+    );`,
+    `CREATE TABLE Timeslot (
+        timeslot_id           INTEGER PRIMARY KEY,
+        room_id               INTEGER NOT NULL,
+        company_id            INTEGER NOT NULL,
+        event_id              INTEGER NOT NULL,
+        scheduler_id          INTEGER NOT NULL,
+        FOREIGN KEY (scheduler_id) REFERENCES Scheduler(scheduler_id),
+        FOREIGN KEY (room_id) REFERENCES Room(room_id),
+        FOREIGN KEY (company_id) REFERENCES Company(company_id),
+        FOREIGN KEY (event_id) REFERENCES Event(event_id),
+        UNIQUE (room_id,company_id,event_id,scheduler_id)
+    );`,
+    `CREATE TABLE StudentAppointment (
         appointment_id        INTEGER PRIMARY KEY,
         student_id            INTEGER NOT NULL,
         timeslot_id           INTEGER NOT NULL,
-  
         FOREIGN KEY (student_id) REFERENCES Student(student_id),
-        FOREIGN KEY (timeslot_id) REFERENCES Schedule(timeslot_id)
+        FOREIGN KEY (timeslot_id) REFERENCES Timeslot(timeslot_id),
+        UNIQUE (student_id,timeslot_id)
     );`,
-    (err: any) => {
-      if (err) {
-        handleErrors(err);
-      }
-    }
-  );
+    `CREATE TABLE Scheduler (
+      scheduler_id          INTEGER PRIMARY KEY,
+      timeslot_start        TEXT NOT NULL,
+      timeslot_end          INTEGER NOT NULL
+      CONSTRAINT start_end_check CHECK (timeslot_start < timeslot_end)
+    );`,
+    `INSERT INTO Scheduler (timeslot_start, timeslot_end) VALUES
+    ('08:45', '09:30'),
+    ('09:50', '10:35'),
+    ('10:35', '11:20'),
+    ('11:40', '12:25'),
+    ('12:25', '13:10');
+    `,
+  ];
+
+  for (const sql of sqlTableCreationStrings) {
+    await new Promise<void>((resolve) => {
+      DB.run(sql, (err: any) => {
+        if (!!err) {
+          handleErrors(err);
+        }
+        resolve();
+      });
+    });
+  }
+
   console.log(errors);
+  console.log(successfully);
   event.sender.send("database-creation", successfully, errors);
 }
+
 function onTestDatabaseConnection(event: IpcMainEvent, filepath: string) {
+  console.log("print executed");
   DATABASE_PATH = filepath;
   let db: Database;
   db = new Database(DATABASE_PATH, (err: any) => {
@@ -236,6 +186,7 @@ function selectTable(event: IpcMainEvent, tableName: string) {
     } else {
       const jsonString = JSON.stringify(rows);
       console.log(jsonString);
+      printJsonInTable(JSON.parse(jsonString), tableName);
       event.sender.send("table-selection", true, jsonString);
     }
   });
@@ -243,7 +194,10 @@ function selectTable(event: IpcMainEvent, tableName: string) {
   db.close();
 }
 
-function makeOperation<T, U>(operable: (param: T) => U, responseChannel: string) {
+function makeOperation<T, U>(
+  operable: (param: T) => U,
+  responseChannel: string
+) {
   return async function (event: IpcMainEvent, operationId: string, param: T) {
     const result = await operable(param);
     event.sender.send(responseChannel, operationId, result);
@@ -293,25 +247,29 @@ export function createTableRows(
   });
 }
 
-function executeDatabaseOperation(databaseOperation: (database: Database) => any) {
+function executeDatabaseOperation(
+  databaseOperation: (database: Database) => any
+) {
   const database = new Database(DATABASE_PATH);
   databaseOperation(database);
   database.close();
 }
 
 function retrieveTable(table: Table) {
-  return new Promise<{ error: Error | null; rows: Array<unknown> }>((resolve) => {
-    function onDatabaseResponse(error: Error | null, rows: Array<unknown>) {
-      resolve({
-        error,
-        rows
+  return new Promise<{ error: Error | null; rows: Array<unknown> }>(
+    (resolve) => {
+      function onDatabaseResponse(error: Error | null, rows: Array<unknown>) {
+        resolve({
+          error,
+          rows,
+        });
+      }
+
+      executeDatabaseOperation((database) => {
+        database.all(`SELECT * FROM ${table}`, [], onDatabaseResponse);
       });
     }
-
-    executeDatabaseOperation((database) => {
-      database.all(`SELECT * FROM ${table}`, [], onDatabaseResponse);
-    });
-  });
+  );
 }
 
 export function registerEventListeners() {
@@ -323,7 +281,9 @@ export function registerEventListeners() {
   const tables = _.keys(Table) as Array<keyof typeof Table>;
   _.forEach(tables, (table) => {
     const tableName = Table[table];
-    ipcMain.on(`create-${tableName.toLowerCase()}`, (event, data) => createRow(event, tableName, data));
+    ipcMain.on(`create-${tableName.toLowerCase()}`, (event, data) =>
+      createRow(event, tableName, data)
+    );
   });
 
   // Create rows
