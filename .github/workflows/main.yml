@@ -2,9 +2,7 @@ name: Electron executable build
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   build:
@@ -13,20 +11,19 @@ jobs:
     strategy:
       matrix:
         node-version: [latest]
-        
+
     steps:
-    - name: Check out Git repository
-      uses: actions/checkout@v4
+      - name: Check out Git repository
+        uses: actions/checkout@v4
 
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v4
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
 
-    - name: Build/release Electron app
-      uses: samuelmeuli/action-electron-builder@v1
-      with:
-        github_token: ${{ secrets.github_token }}
-        release: ${{ startsWith(github.ref, 'refs/tags/v') }}
-    
+      - name: Install Node.js packages
+        run: npm i
+
+      - name: Make Electron app
+        run: npm run make
